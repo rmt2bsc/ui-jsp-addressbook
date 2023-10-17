@@ -17,7 +17,7 @@
 		<table width="99%" border="0">
 		  <tr>
 		    <td colspan="2" height="51">
-		      <div align="center"><b><font size="7" color="#0000FF">User Security Login</font></b></div>
+		      <div align="center"><b><font size="7" color="#0000FF">Address Book</font></b></div>
 		    </td>
 		  </tr>
 		  <tr>
