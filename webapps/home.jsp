@@ -22,73 +22,73 @@
   </head>
   
   <body>
-		  <h1>Contacts Application</h1> 
-		  <br><br>
-		  <table width="50%" border="1" cellpadding="0" cellspacing="0">
-		    <caption align="left">
-		       <font color="blue" size="4">
-		          <strong>Main Menu</strong>
-		       </font>
-		    </caption>
-		    <tr> 
-		      <td>
-		      <table width="100%" border="0">
-		         <tr>
-			      <td width="12%" valign="top" align="center"> 
-			          <a href="/contacts/unsecureRequestProcessor/GeneralCodeGroup.GeneralCodeGroupList.?clientAction=list&<%=SESSION_BEAN.getAuthUrlParms()%>"> 
-			            General Code Maintenance
-			          </a>
-			      </td>
-			      <td width="12%" valign="top" align="center"> 
-			          <a href="/contacts/unsecureRequestProcessor/Person.Search?clientAction=newsearch&<%=SESSION_BEAN.getAuthUrlParms()%>"> 
-			            Personal Contacts
-			          </a>
-			      </td>
-			      <td width="12%"  valign="top" align="center"> 
-			          <a href="/contacts/unsecureRequestProcessor/Business.Search?clientAction=newsearch&<%=SESSION_BEAN.getAuthUrlParms()%>"> 
-			            Business Contacts
-			          </a>
-			      </td>	  			      
-			      <td width="12%"  valign="top" align="center"> 
-			          <a href="/contacts/unsecureRequestProcessor/Zipcode.Search?clientAction=newsearch&<%=SESSION_BEAN.getAuthUrlParms()%>"> 
-			            Zip Code Search
-			          </a>
-			      </td>	  
-			      <td width="12%"  valign="top" align="center"> 
-			          <a href="/contacts/unsecureRequestProcessor/State.Search?clientAction=newsearch&<%=SESSION_BEAN.getAuthUrlParms()%>"> 
-			            State/Province Search
-			          </a>
-			      </td>	  					      
-			      <td width="12%"  valign="top" align="center"> 
-			          <a href="/contacts/unsecureRequestProcessor/Country.Search?clientAction=list&<%=SESSION_BEAN.getAuthUrlParms()%>"> 
-			            Country Search
-			          </a>
-			      </td>	  					      					      
-			      <td width="28%"  valign="top" align="center">&nbsp;</td>	  
-		        </tr>
-		      </table>
+	  <h1>Contacts Application</h1> 
+	  <br><br>
+	  <table width="50%" border="1" cellpadding="0" cellspacing="0">
+	    <caption align="left">
+	       <font color="blue" size="4">
+	          <strong>Main Menu</strong>
+	       </font>
+	    </caption>
+	    <tr> 
+	      <td>
+	      <table width="100%" border="0">
+	         <tr>
+		      <td width="12%" valign="top" align="center"> 
+		          <a href="/contacts/unsecureRequestProcessor/GeneralCodeGroup.GeneralCodeGroupList.?clientAction=list&<%=SESSION_BEAN.getAuthUrlParms()%>"> 
+		            General Code Maintenance
+		          </a>
 		      </td>
-		    </tr>  
+		      <td width="12%" valign="top" align="center"> 
+		          <a href="/contacts/unsecureRequestProcessor/Person.Search?clientAction=newsearch&<%=SESSION_BEAN.getAuthUrlParms()%>"> 
+		            Personal Contacts
+		          </a>
+		      </td>
+		      <td width="12%"  valign="top" align="center"> 
+		          <a href="/contacts/unsecureRequestProcessor/Business.Search?clientAction=newsearch&<%=SESSION_BEAN.getAuthUrlParms()%>"> 
+		            Business Contacts
+		          </a>
+		      </td>	  			      
+		      <td width="12%"  valign="top" align="center"> 
+		          <a href="/contacts/unsecureRequestProcessor/Zipcode.Search?clientAction=newsearch&<%=SESSION_BEAN.getAuthUrlParms()%>"> 
+		            Zip Code Search
+		          </a>
+		      </td>	  
+		      <td width="12%"  valign="top" align="center"> 
+		          <a href="/contacts/unsecureRequestProcessor/State.Search?clientAction=newsearch&<%=SESSION_BEAN.getAuthUrlParms()%>"> 
+		            State/Province Search
+		          </a>
+		      </td>	  					      
+		      <td width="12%"  valign="top" align="center"> 
+		          <a href="/contacts/unsecureRequestProcessor/Country.Search?clientAction=list&<%=SESSION_BEAN.getAuthUrlParms()%>"> 
+		            Country Search
+		          </a>
+		      </td>	  					      					      
+		      <td width="28%"  valign="top" align="center">&nbsp;</td>	  
+	        </tr>
+	      </table>
+	      </td>
+	    </tr>  
 
-        		 
-	        <tr>
-	           <td>
-	              <table width="100%" border="0">
-	                <tr>
-				        <td width="10%" valign="top" align="left"> 
-					          <a href="/contacts/unsecureRequestProcessor/ContactLoader.Add?clientAction=start&<%=SESSION_BEAN.getAuthUrlParms()%>"> 
-					            Load Contacts
-					          </a>
-					      </td>
-					      <td width="10%" valign="top" align="left"> 
-					          <a href="/contacts/unsecureRequestProcessor/Security.Authentication?clientAction=logoff&<%=SESSION_BEAN.getAuthUrlParms()%>"> 
-						            Log Off
-					          </a>
-					      </td>					                         
-	                </tr>
-	              </table>
-	           </td>
-			 </tr>		    
-		  </table>
+       		 
+        <tr>
+           <td>
+              <table width="100%" border="0">
+                <tr>
+			        <td width="10%" valign="top" align="left"> 
+				          <a href="/contacts/unsecureRequestProcessor/ContactLoader.Add?clientAction=start&<%=SESSION_BEAN.getAuthUrlParms()%>"> 
+				            Load Contacts
+				          </a>
+				      </td>
+				      <td width="10%" valign="top" align="left"> 
+				          <a href="/contacts/unsecureRequestProcessor/Security.Authentication?clientAction=logoff&<%=SESSION_BEAN.getAuthUrlParms()%>"> 
+					            Log Off
+				          </a>
+				      </td>					                         
+                </tr>
+              </table>
+           </td>
+		 </tr>		    
+	  </table>
   </body>
 </html>
