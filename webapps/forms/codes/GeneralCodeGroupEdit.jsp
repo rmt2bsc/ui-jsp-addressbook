@@ -5,7 +5,6 @@
 <%-- <%@ page import="com.bean.GeneralCodesGroup" %> --%>
 
 <gen:InitAppRoot id="APP_ROOT"/>
-<gen:InitSessionBean id="SESSION_BEAN"/>
 
 <html>
   <head>
