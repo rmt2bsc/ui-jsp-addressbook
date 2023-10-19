@@ -26,11 +26,13 @@
 
   <body bgcolor="#FFFFCC">
      <h3><%=pageTitle%></h3>
-	   <font color="blue">
-          <strong>Code Listing for group: <beanlib:InputControl value="#data.Description"/></strong>
+     <font color="black">
+        <strong>Code Group: </strong><beanlib:InputControl value="#data.Description"/>
      </font>
+     
      <form name="DataForm" method="POST" action="<%=APP_ROOT%>/unsecureRequestProcessor/GeneralCode.GeneralCodeList">
-       <beanlib:InputControl name="CodeGrpId" type="hidden" value="#data.CodeGrpId"/>
+         <br>
+         <beanlib:InputControl name="CodeGrpId" type="hidden" value="#data.CodeGrpId"/>
 	     <div style="border-style:groove;border-color:#999999; background-color:buttonface; width:50%; height:690px; overflow: auto; ">                           
 		     <table  width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="white" bordercolor="#999999">
 		       <tr bgcolor="#FFCC00">
