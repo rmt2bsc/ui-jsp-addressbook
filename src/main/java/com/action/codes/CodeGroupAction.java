@@ -185,7 +185,7 @@ public class CodeGroupAction extends AbstractActionHandler implements ICommand {
      * @throws ActionCommandException
      */
     public void add() throws ActionCommandException {
-        // this.grp = CodesFactory.createGeneralGroup();
+        this.rec = GeneralCodesGroupFactory.create();
         this.sendClientData();
     }
 
@@ -338,37 +338,6 @@ public class CodeGroupAction extends AbstractActionHandler implements ICommand {
         temp = this.getInputValue("Description", null);
         data.setDescription(temp);
         this.rec = data;
-
-        // app.setDescription(temp);
-        // temp = this.getInputValue("Status", null);
-        //
-        // String strId[] =
-        // this.request.getParameterValues(CodeGroupAction.GROUP_ID_PROPERTY);
-        // if (strId == null) {
-        // return;
-        // }
-        // // Gather all selected group id's
-        // this.selGroupId = new int[strId.length];
-        // for (int ndx = 0; ndx < strId.length; ndx++) {
-        // try {
-        // this.selGroupId[ndx] = Integer.parseInt(strId[ndx]);
-        // } catch (NumberFormatException e) {
-        // this.msg = "The selecte group contains an invalid value: (row=" + ndx
-        // + ", value=" + strId[ndx];
-        // throw new ActionCommandException(this.msg);
-        // }
-        // }
-        //
-        // // Try to obtain all data for the a single group item, if applicable.
-        // if (this.command.equalsIgnoreCase(CodeGroupAction.COMMAND_SAVE) &&
-        // this.selGroupId.length == 1) {
-        // // try {
-        // // this.grp = CodesFactory.createGeneralGroup();
-        // // CodesFactory.packageBean(this.request, this.grp);
-        // // } catch (SystemException e) {
-        // // throw new ActionCommandException(e.getMessage());
-        // // }
-        // }
     }
 
     /**
@@ -386,13 +355,9 @@ public class CodeGroupAction extends AbstractActionHandler implements ICommand {
         try {
             this.request.setAttribute(GeneralConst.CLIENT_DATA_RECORD, this.rec);
             this.request.setAttribute(GeneralConst.CLIENT_DATA_LIST, this.list);
-            // this.query = new RMT2TagQueryBean();
         } catch (SystemException e) {
             // do nothing
         }
-        // String xml = this.getXmlResults();
-        // this.request.setAttribute(RMT2ServletConst.RESPONSE_NONJSP_DATA,
-        // xml);
     }
 
     // /**

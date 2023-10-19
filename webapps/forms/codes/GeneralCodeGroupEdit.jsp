@@ -52,7 +52,7 @@
 			  <table width="100%" cellpadding="0" cellspacing="0">
 				  <tr>
 							<td colspan="2">     
-								  <input name="<%=GeneralConst.REQ_SAVE%>" type="button" value="Apply" style="width:90" onClick="handleAction('_self', document.DataForm, this.name)">
+								  <input name="<%=GeneralConst.REQ_SAVE%>" type="button" value="Save" style="width:90" onClick="handleAction('_self', document.DataForm, this.name)">
 								  <input name="<%=GeneralConst.REQ_DELETE%>" type="button" value="Delete" style="width:90" onClick="handleAction('_self', document.DataForm, this.name)">
 								  <input name="<%=GeneralConst.REQ_BACK%>" type="button" value="Back" style="width:90" onClick="handleAction('_self', document.DataForm, this.name)">
 							</td>
