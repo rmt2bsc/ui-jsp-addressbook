@@ -29,6 +29,8 @@ import com.entity.GeneralCodesGroupFactory;
 public class CodeGroupAction extends AbstractActionHandler implements ICommand {
     private static final String COMMAND_LIST = "GeneralCodeGroup.GeneralCodeGroupList.list";
 
+    private static final String COMMAND_LIST2 = "GeneralCodeGroup.GeneralCodeGroupEdit.back";
+
     private static final String COMMAND_ADD = "GeneralCodeGroup.GeneralCodeGroupList.add";
 
     private static final String COMMAND_EDIT = "GeneralCodeGroup.GeneralCodeGroupList.edit";
@@ -112,13 +114,14 @@ public class CodeGroupAction extends AbstractActionHandler implements ICommand {
      * @Throws SystemException when an error needs to be reported.
      */
     public void processRequest(Request request, Response response, String command) throws ActionCommandException {
+        super.processRequest(request, response, command);
         try {
             this.init(null, request);
             this.init();
 
             this.command = command;
-            if (command.equalsIgnoreCase(CodeGroupAction.COMMAND_LIST)) {
-                this.showList();
+            if (command.equalsIgnoreCase(CodeGroupAction.COMMAND_LIST) || command.equalsIgnoreCase(CodeGroupAction.COMMAND_LIST2)) {
+                this.doGroupList();
             }
             if (command.equalsIgnoreCase(CodeGroupAction.COMMAND_ADD)) {
                 this.addData();
@@ -130,7 +133,7 @@ public class CodeGroupAction extends AbstractActionHandler implements ICommand {
                 this.editData();
             }
             if (command.equalsIgnoreCase(CodeGroupAction.COMMAND_DETAILS)) {
-                this.getDetails();
+                this.doGroupCodes();
             }
             if (command.equalsIgnoreCase(CodeGroupAction.COMMAND_SAVE)) {
                 this.saveData();
@@ -156,7 +159,7 @@ public class CodeGroupAction extends AbstractActionHandler implements ICommand {
      * 
      * @throws ActionCommandException
      */
-    protected void showList() throws ActionCommandException {
+    protected void doGroupList() throws ActionCommandException {
         // Call SOAP web service to get complete list of code groups
         try {
             LookupCodesResponse response = CodeGroupSoapRequests.callGet();
@@ -193,20 +196,7 @@ public class CodeGroupAction extends AbstractActionHandler implements ICommand {
      * @throws ActionCommandException
      */
     public void edit() throws ActionCommandException {
-        // Get group from database.
-        // DatabaseTransApi tx = DatabaseTransFactory.create();
-        // CodesApi api = CodesFactory.createCodesApi((DatabaseConnectionBean)
-        // tx.getConnector(), this.request);
-        // try {
-        // this.grp = (GeneralCodesGroup) api.findGroupById(this.selGroupId[0]);
-        // } catch (GeneralCodeException e) {
-        // throw new ActionCommandException(e.getMessage());
-        // } finally {
-        // api.close();
-        // tx.close();
-        // api = null;
-        // tx = null;
-        // }
+        this.validate();
     }
 
     /**
@@ -279,7 +269,7 @@ public class CodeGroupAction extends AbstractActionHandler implements ICommand {
      * 
      * @throws ActionCommandException
      */
-    protected void getDetails() throws ActionCommandException {
+    protected void doGroupCodes() throws ActionCommandException {
         this.receiveClientData();
         // Get group record
         this.edit();
@@ -302,30 +292,24 @@ public class CodeGroupAction extends AbstractActionHandler implements ICommand {
         this.sendClientData();
     }
 
-    // /**
-    // * Validates the current General Code Group item. The precondition to
-    // * invoking this method is that this object is properly initialized with
-    // the
-    // * general code group data that is to be validated.
-    // *
-    // * @throws ActionCommandException
-    // * data object was not properly initialized or the general code
-    // * group description property is null.
-    // */
-    // protected void validate() throws ActionCommandException {
-    // if (this.rec == null) {
-    // throw new
-    // ActionCommandException("Validation Error:  General Code Group object is invalid");
-    // }
-    // if (this.rec.getDescription() == null ||
-    // this.rec.getDescription().equals("")) {
-    // throw new
-    // ActionCommandException("Validation Error:  General Code Group's description property is invalid");
-    // }
-    // }
+    /**
+     * Validates the current General Code Group item. The precondition to
+     * invoking this method is that this object is properly initialized with the
+     * general code group data that is to be validated.
+     *
+     * @throws ActionCommandException
+     *             data object was not properly initialized or the general code
+     *             group description property is null.
+     */
+    protected void validate() throws ActionCommandException {
+        String temp = this.getInputValue("CodeGrpId", null);
+        if (temp == null) {
+            throw new ActionCommandException("A group record must be selected for this operation");
+        }
+    }
 
     /**
-     * Actionhandler for returning the user to the home page.
+     * Action handler for returning the user to the home page.
      * 
      * @throws ActionCommandException
      */
@@ -341,30 +325,50 @@ public class CodeGroupAction extends AbstractActionHandler implements ICommand {
      *             when one of the client's group id's a non-numeric value
      */
     protected void receiveClientData() throws ActionCommandException {
-        String strId[] = this.request.getParameterValues(CodeGroupAction.GROUP_ID_PROPERTY);
-        if (strId == null) {
-            return;
-        }
-        // Gather all selected group id's
-        this.selGroupId = new int[strId.length];
-        for (int ndx = 0; ndx < strId.length; ndx++) {
-            try {
-                this.selGroupId[ndx] = Integer.parseInt(strId[ndx]);
-            } catch (NumberFormatException e) {
-                this.msg = "The selecte group contains an invalid value: (row=" + ndx + ", value=" + strId[ndx];
-                throw new ActionCommandException(this.msg);
-            }
+        String temp = null;
+        GeneralCodesGroup data = GeneralCodesGroupFactory.create();
+        try {
+            temp = this.getInputValue("CodeGrpId", null);
+            data.setCodeGrpId(Integer.parseInt(temp));
+        } catch (NumberFormatException e) {
+            this.msg = "The selected group contains an invalid value: " + temp;
+            throw new ActionCommandException(this.msg);
         }
 
-        // Try to obtain all data for the a single group item, if applicable.
-        if (this.command.equalsIgnoreCase(CodeGroupAction.COMMAND_SAVE) && this.selGroupId.length == 1) {
-            // try {
-            // this.grp = CodesFactory.createGeneralGroup();
-            // CodesFactory.packageBean(this.request, this.grp);
-            // } catch (SystemException e) {
-            // throw new ActionCommandException(e.getMessage());
-            // }
-        }
+        temp = this.getInputValue("Description", null);
+        data.setDescription(temp);
+        this.rec = data;
+
+        // app.setDescription(temp);
+        // temp = this.getInputValue("Status", null);
+        //
+        // String strId[] =
+        // this.request.getParameterValues(CodeGroupAction.GROUP_ID_PROPERTY);
+        // if (strId == null) {
+        // return;
+        // }
+        // // Gather all selected group id's
+        // this.selGroupId = new int[strId.length];
+        // for (int ndx = 0; ndx < strId.length; ndx++) {
+        // try {
+        // this.selGroupId[ndx] = Integer.parseInt(strId[ndx]);
+        // } catch (NumberFormatException e) {
+        // this.msg = "The selecte group contains an invalid value: (row=" + ndx
+        // + ", value=" + strId[ndx];
+        // throw new ActionCommandException(this.msg);
+        // }
+        // }
+        //
+        // // Try to obtain all data for the a single group item, if applicable.
+        // if (this.command.equalsIgnoreCase(CodeGroupAction.COMMAND_SAVE) &&
+        // this.selGroupId.length == 1) {
+        // // try {
+        // // this.grp = CodesFactory.createGeneralGroup();
+        // // CodesFactory.packageBean(this.request, this.grp);
+        // // } catch (SystemException e) {
+        // // throw new ActionCommandException(e.getMessage());
+        // // }
+        // }
     }
 
     /**

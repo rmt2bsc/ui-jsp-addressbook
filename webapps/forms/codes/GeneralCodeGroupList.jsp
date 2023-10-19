@@ -34,8 +34,9 @@
 	         <bean:LoopRows bean="item" list="<%=GeneralConst.CLIENT_DATA_LIST%>">
 				 <gen:ColorBarLines evenColor="#CCFFCC" oddColor="#FFFFFF"/>
 	             <td align="center" bgcolor="#FFCC00">
-	                 <bean:InputControl type="radio" name="CodeGrpId" value="#item.CodeGrpId"/>
-	                 <bean:InputControl type="hidden" name="Description" value="#item.Description"/>
+	                 <bean:InputControl type="radio" name="<%=GeneralConst.CLIENTROW_PROPERTY%>" value="rowid"/>
+	                 <bean:InputControl type="hidden" name="CodeGrpId" value="#item.CodeGrpId" uniqueName="yes"/>
+	                 <bean:InputControl type="hidden" name="Description" value="#item.Description" uniqueName="yes"/>
 	             </td>
 	             <td class="clsTableListDataCenter">
 	                 <bean:InputControl value="#item.CodeGrpId"/>
