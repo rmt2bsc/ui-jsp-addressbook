@@ -35,32 +35,32 @@
 	      <table width="100%" border="0">
 	         <tr>
 		      <td width="12%" valign="top" align="center"> 
-		          <a href="/contacts/unsecureRequestProcessor/GeneralCodeGroup.GeneralCodeGroupList.?clientAction=list&<%=SESSION_BEAN.getAuthUrlParms()%>"> 
+		          <a href="/ui-jsp-addressbook/unsecureRequestProcessor/GeneralCodeGroup.GeneralCodeGroupList?clientAction=list&<%=SESSION_BEAN.getAuthUrlParms()%>"> 
 		            General Code Maintenance
 		          </a>
 		      </td>
 		      <td width="12%" valign="top" align="center"> 
-		          <a href="/contacts/unsecureRequestProcessor/Person.Search?clientAction=newsearch&<%=SESSION_BEAN.getAuthUrlParms()%>"> 
+		          <a href="/ui-jsp-addressbook/unsecureRequestProcessor/Person.Search?clientAction=newsearch&<%=SESSION_BEAN.getAuthUrlParms()%>"> 
 		            Personal Contacts
 		          </a>
 		      </td>
 		      <td width="12%"  valign="top" align="center"> 
-		          <a href="/contacts/unsecureRequestProcessor/Business.Search?clientAction=newsearch&<%=SESSION_BEAN.getAuthUrlParms()%>"> 
+		          <a href="/ui-jsp-addressbook/unsecureRequestProcessor/Business.Search?clientAction=newsearch&<%=SESSION_BEAN.getAuthUrlParms()%>"> 
 		            Business Contacts
 		          </a>
 		      </td>	  			      
 		      <td width="12%"  valign="top" align="center"> 
-		          <a href="/contacts/unsecureRequestProcessor/Zipcode.Search?clientAction=newsearch&<%=SESSION_BEAN.getAuthUrlParms()%>"> 
+		          <a href="/ui-jsp-addressbook/unsecureRequestProcessor/Zipcode.Search?clientAction=newsearch&<%=SESSION_BEAN.getAuthUrlParms()%>"> 
 		            Zip Code Search
 		          </a>
 		      </td>	  
 		      <td width="12%"  valign="top" align="center"> 
-		          <a href="/contacts/unsecureRequestProcessor/State.Search?clientAction=newsearch&<%=SESSION_BEAN.getAuthUrlParms()%>"> 
+		          <a href="/ui-jsp-addressbook/unsecureRequestProcessor/State.Search?clientAction=newsearch&<%=SESSION_BEAN.getAuthUrlParms()%>"> 
 		            State/Province Search
 		          </a>
 		      </td>	  					      
 		      <td width="12%"  valign="top" align="center"> 
-		          <a href="/contacts/unsecureRequestProcessor/Country.Search?clientAction=list&<%=SESSION_BEAN.getAuthUrlParms()%>"> 
+		          <a href="/ui-jsp-addressbook/unsecureRequestProcessor/Country.Search?clientAction=list&<%=SESSION_BEAN.getAuthUrlParms()%>"> 
 		            Country Search
 		          </a>
 		      </td>	  					      					      
@@ -76,12 +76,12 @@
               <table width="100%" border="0">
                 <tr>
 			        <td width="10%" valign="top" align="left"> 
-				          <a href="/contacts/unsecureRequestProcessor/ContactLoader.Add?clientAction=start&<%=SESSION_BEAN.getAuthUrlParms()%>"> 
+				          <a href="/ui-jsp-addressbook/unsecureRequestProcessor/ContactLoader.Add?clientAction=start&<%=SESSION_BEAN.getAuthUrlParms()%>"> 
 				            Load Contacts
 				          </a>
 				      </td>
 				      <td width="10%" valign="top" align="left"> 
-				          <a href="/contacts/unsecureRequestProcessor/Security.Authentication?clientAction=logoff&<%=SESSION_BEAN.getAuthUrlParms()%>"> 
+				          <a href="/ui-jsp-addressbook/unsecureRequestProcessor/Security.Authentication?clientAction=logoff&<%=SESSION_BEAN.getAuthUrlParms()%>"> 
 					            Log Off
 				          </a>
 				      </td>					                         
