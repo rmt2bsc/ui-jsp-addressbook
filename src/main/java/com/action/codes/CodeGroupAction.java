@@ -186,7 +186,6 @@ public class CodeGroupAction extends AbstractActionHandler implements ICommand {
      */
     public void add() throws ActionCommandException {
         this.rec = GeneralCodesGroupFactory.create();
-        this.sendClientData();
     }
 
     /**
@@ -217,7 +216,6 @@ public class CodeGroupAction extends AbstractActionHandler implements ICommand {
             }
             List<GeneralCodesGroup> results = GeneralCodesGroupFactory.create(response.getGroupCodes());
             this.rec = results.get(0);
-            this.sendClientData();
         } catch (Exception e) {
             logger.log(Level.ERROR, e.getMessage());
             throw new ActionCommandException(e.getMessage());
@@ -231,31 +229,19 @@ public class CodeGroupAction extends AbstractActionHandler implements ICommand {
      * @throws ActionCommandException
      */
     public void delete() throws ActionCommandException {
-        // DatabaseTransApi tx = DatabaseTransFactory.create();
-        // CodesApi api = CodesFactory.createCodesApi((DatabaseConnectionBean)
-        // tx.getConnector(), this.request);
-        // try {
-        // for (int ndx = 0; ndx < this.selGroupId.length; ndx++) {
-        // try {
-        // this.grp = (GeneralCodesGroup)
-        // api.findGroupById(this.selGroupId[ndx]);
-        // api.deleteGroup(this.grp);
-        // } catch (GeneralCodeException e) {
-        // tx.rollbackUOW();
-        // throw new ActionCommandException(e.getMessage());
-        // }
-        // }
-        // tx.commitUOW();
-        // this.msg = "Group deleted successfully";
-        // } catch (ActionCommandException e) {
-        // this.msg = e.getMessage();
-        // throw e;
-        // } finally {
-        // api.close();
-        // tx.close();
-        // api = null;
-        // tx = null;
-        // }
+        // Call SOAP web service to delete code group
+        try {
+            LookupCodesResponse response = CodeGroupSoapRequests.callDelete((GeneralCodesGroup) this.rec);
+            ReplyStatusType rst = response.getReplyStatus();
+            this.msg = rst.getMessage();
+            if (rst.getReturnCode().intValue() == GeneralConst.RC_FAILURE) {
+                this.msg = rst.getMessage();
+                return;
+            }
+        } catch (Exception e) {
+            logger.log(Level.ERROR, e.getMessage());
+            throw new ActionCommandException(e.getMessage());
+        }
     }
 
     /**
@@ -356,17 +342,4 @@ public class CodeGroupAction extends AbstractActionHandler implements ICommand {
             // do nothing
         }
     }
-
-    // /**
-    // * Sends a update confirmation to client as the XML message,
-    // * RS_common_reply.
-    // *
-    // * @return The XML Message
-    // * @throws ActionCommandException
-    // */
-    // protected String getXmlResults() throws ActionCommandException {
-    // CodeDetailsFetchHandler srvc = new CodeDetailsFetchHandler(null,
-    // this.request);
-    // return srvc.buildCodeGroupResponsePayload(this.grp, this.msg);
-    // }
 }

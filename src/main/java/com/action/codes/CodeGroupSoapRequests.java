@@ -102,4 +102,40 @@ public class CodeGroupSoapRequests {
         }
     }
 
+    /**
+     * SOAP call to save general code group data.
+     * 
+     * @param data
+     *            {@link GeneralCodesGroup}
+     * @return {@link LookupCodesResponse}
+     * @throws AddressbookUIException
+     */
+    public static final LookupCodesResponse callDelete(GeneralCodesGroup data) throws AddressbookUIException {
+        // Delete a code group record from the database
+        ObjectFactory fact = new ObjectFactory();
+        LookupCodesRequest req = fact.createLookupCodesRequest();
+
+        HeaderType head = HeaderTypeBuilder.Builder.create()
+                .withApplication(ApiHeaderNames.APP_NAME_ADDRESSBOOK)
+                .withModule(ApiTransactionCodes.MODULE_ADDRESSBOOK_LOOKUP)
+                .withTransaction(ApiTransactionCodes.LOOKUP_GROUP_DELETE)
+                .withMessageMode(ApiHeaderNames.MESSAGE_MODE_REQUEST)
+                .withDeliveryDate(new Date())
+                .withRouting(ApiTransactionCodes.ROUTE_ADDRESSBOOK)
+                .withDeliveryMode(ApiHeaderNames.DELIVERY_MODE_SYNC)
+                .build();
+
+        LookupCodeCriteriaType criteria = fact.createLookupCodeCriteriaType();
+        criteria.setGroup(BigInteger.valueOf(data.getCodeGrpId()));
+        req.setCriteria(criteria);
+        req.setHeader(head);
+
+        LookupCodesResponse response = null;
+        try {
+            response = SoapJaxbClientWrapper.callSoapRequest(req);
+            return response;
+        } catch (Exception e) {
+            throw new AuthenticationException(CodeGroupSoapRequests.MSG, e);
+        }
+    }
 }
