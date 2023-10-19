@@ -35,7 +35,7 @@ public class CodeGroupAction extends AbstractActionHandler implements ICommand {
 
     private static final String COMMAND_EDIT = "GeneralCodeGroup.GeneralCodeGroupList.edit";
 
-    private static final String COMMAND_DETAILS = "GeneralCodeGroup.GeneralCodeGroupList.details";
+    protected static final String COMMAND_DETAILS = "GeneralCodeGroup.GeneralCodeGroupList.details";
 
     private static final String COMMAND_DELETE = "GeneralCodeGroup.GeneralCodeGroupEdit.delete";
 
@@ -120,7 +120,9 @@ public class CodeGroupAction extends AbstractActionHandler implements ICommand {
             this.init();
 
             this.command = command;
-            if (command.equalsIgnoreCase(CodeGroupAction.COMMAND_LIST) || command.equalsIgnoreCase(CodeGroupAction.COMMAND_LIST2)) {
+            if (command.equalsIgnoreCase(CodeGroupAction.COMMAND_LIST) ||
+                    command.equalsIgnoreCase(CodeGroupAction.COMMAND_LIST2) ||
+                    command.equalsIgnoreCase(CodeAction.COMMAND_BACK)) {
                 this.doGroupList();
             }
             if (command.equalsIgnoreCase(CodeGroupAction.COMMAND_ADD)) {
@@ -253,8 +255,7 @@ public class CodeGroupAction extends AbstractActionHandler implements ICommand {
      */
     protected void doGroupCodes() throws ActionCommandException {
         this.receiveClientData();
-        // Get group record
-        this.edit();
+        this.validate();
 
         // Get group from database.
         // DatabaseTransApi tx = DatabaseTransFactory.create();

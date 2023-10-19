@@ -8,7 +8,7 @@ import org.rmt2.jaxb.CodeGroupType;
 
 
 /**
- * A factory that creates new General Code type related instances.
+ * A factory that creates new General Code Group type related instances.
  * 
  * @author roy.terrell
  * 
