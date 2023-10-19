@@ -206,26 +206,22 @@ public class CodeGroupAction extends AbstractActionHandler implements ICommand {
      * @throws ActionCommandException
      */
     public void save() throws ActionCommandException {
-        // this.validate();
-        // // Save data.
-        // DatabaseTransApi tx = DatabaseTransFactory.create();
-        // CodesApi api = CodesFactory.createCodesApi((DatabaseConnectionBean)
-        // tx.getConnector(), this.request);
-        // try {
-        // api.maintainGroup(this.grp);
-        // tx.commitUOW();
-        // this.msg = "Group saved successfully";
-        // this.request.setAttribute(RMT2ServletConst.REQUEST_MSG_INFO,
-        // this.msg);
-        // } catch (GeneralCodeException e) {
-        // tx.rollbackUOW();
-        // throw new ActionCommandException(e.getMessage());
-        // } finally {
-        // api.close();
-        // tx.close();
-        // api = null;
-        // tx = null;
-        // }
+        // Call SOAP web service to persist code group changes
+        try {
+            LookupCodesResponse response = CodeGroupSoapRequests.callSave((GeneralCodesGroup) this.rec);
+            ReplyStatusType rst = response.getReplyStatus();
+            this.msg = rst.getMessage();
+            if (rst.getReturnCode().intValue() == GeneralConst.RC_FAILURE) {
+                this.msg = rst.getMessage();
+                return;
+            }
+            List<GeneralCodesGroup> results = GeneralCodesGroupFactory.create(response.getGroupCodes());
+            this.rec = results.get(0);
+            this.sendClientData();
+        } catch (Exception e) {
+            logger.log(Level.ERROR, e.getMessage());
+            throw new ActionCommandException(e.getMessage());
+        }
     }
 
     /**
@@ -355,6 +351,7 @@ public class CodeGroupAction extends AbstractActionHandler implements ICommand {
         try {
             this.request.setAttribute(GeneralConst.CLIENT_DATA_RECORD, this.rec);
             this.request.setAttribute(GeneralConst.CLIENT_DATA_LIST, this.list);
+            this.request.setAttribute(RMT2ServletConst.REQUEST_MSG_MESSAGES, this.msg);
         } catch (SystemException e) {
             // do nothing
         }

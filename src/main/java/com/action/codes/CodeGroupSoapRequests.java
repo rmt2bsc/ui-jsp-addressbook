@@ -1,10 +1,12 @@
 package com.action.codes;
 
+import java.math.BigInteger;
 import java.util.Date;
 
 import org.apache.log4j.Logger;
 import org.rmt2.constants.ApiHeaderNames;
 import org.rmt2.constants.ApiTransactionCodes;
+import org.rmt2.jaxb.CodeGroupType;
 import org.rmt2.jaxb.HeaderType;
 import org.rmt2.jaxb.LookupCodeCriteriaType;
 import org.rmt2.jaxb.LookupCodesRequest;
@@ -15,6 +17,7 @@ import org.rmt2.util.HeaderTypeBuilder;
 import com.AddressbookUIException;
 import com.api.messaging.webservice.soap.client.SoapJaxbClientWrapper;
 import com.api.security.authentication.web.AuthenticationException;
+import com.entity.GeneralCodesGroup;
 
 /**
  * Help class for constructing and invoking SOAP calls pertaining to the
@@ -61,5 +64,42 @@ public class CodeGroupSoapRequests {
         }
     }
 
+    /**
+     * SOAP call to save general code group data.
+     * 
+     * @param data
+     *            {@link GeneralCodesGroup}
+     * @return {@link LookupCodesResponse}
+     * @throws AddressbookUIException
+     */
+    public static final LookupCodesResponse callSave(GeneralCodesGroup data) throws AddressbookUIException {
+        // Retrieve all code group records from the database
+        ObjectFactory fact = new ObjectFactory();
+        LookupCodesRequest req = fact.createLookupCodesRequest();
+
+        HeaderType head = HeaderTypeBuilder.Builder.create()
+                .withApplication(ApiHeaderNames.APP_NAME_ADDRESSBOOK)
+                .withModule(ApiTransactionCodes.MODULE_ADDRESSBOOK_LOOKUP)
+                .withTransaction(ApiTransactionCodes.LOOKUP_GROUP_UPDATE)
+                .withMessageMode(ApiHeaderNames.MESSAGE_MODE_REQUEST)
+                .withDeliveryDate(new Date())
+                .withRouting(ApiTransactionCodes.ROUTE_ADDRESSBOOK)
+                .withDeliveryMode(ApiHeaderNames.DELIVERY_MODE_SYNC)
+                .build();
+
+        CodeGroupType cgt = fact.createCodeGroupType();
+        cgt.setGroupId(BigInteger.valueOf(data.getCodeGrpId()));
+        cgt.setGroupDesc(data.getDescription());
+        req.getGroupCodes().add(cgt);
+        req.setHeader(head);
+
+        LookupCodesResponse response = null;
+        try {
+            response = SoapJaxbClientWrapper.callSoapRequest(req);
+            return response;
+        } catch (Exception e) {
+            throw new AuthenticationException(CodeGroupSoapRequests.MSG, e);
+        }
+    }
 
 }

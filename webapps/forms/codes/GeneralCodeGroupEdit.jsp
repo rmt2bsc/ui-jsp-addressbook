@@ -47,6 +47,12 @@
 				</tr>
 		</table>
 
+        <!-- Display messages area -->
+        <br>
+        <font color="red">
+	      <gen:ShowPageMessages dataSource="<%=RMT2ServletConst.REQUEST_MSG_MESSAGES%>"/>
+	    </font>
+   
     <!-- Display command buttons -->
     <div id="ButtonLayer" style="position:relative; top:20px; width:100%; height:30px; z-index:1">
 			  <table width="100%" cellpadding="0" cellspacing="0">
@@ -59,11 +65,8 @@
 					 </tr>		
 			  </table>			   
      </div>
-     <br>
-     <font color="red">
-	     <gen:ShowPageMessages dataSource="<%=RMT2ServletConst.REQUEST_MSG_MESSAGES%>"/>
-	   </font>
-	    <input name="clientAction" type="hidden">
+     
+	 <input name="clientAction" type="hidden">
    </form>
  </body>
 </html>
