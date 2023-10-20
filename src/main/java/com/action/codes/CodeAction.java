@@ -33,6 +33,8 @@ import com.entity.GeneralCodesGroupFactory;
 public class CodeAction extends AbstractActionHandler implements ICommand {
     protected static final String COMMAND_BACK = "GeneralCode.GeneralCodeList.back";
 
+    protected static final String COMMAND_BACK2 = "GeneralCode.GeneralCodeEdit.back";
+
     private static final String COMMAND_ADD = "GeneralCode.GeneralCodeList.add";
 
     private static final String COMMAND_EDIT = "GeneralCode.GeneralCodeList.edit";
@@ -134,7 +136,7 @@ public class CodeAction extends AbstractActionHandler implements ICommand {
             if (command.equalsIgnoreCase(CodeAction.COMMAND_SAVE)) {
                 this.saveData();
             }
-            if (command.equalsIgnoreCase(CodeAction.COMMAND_BACK)) {
+            if (command.equalsIgnoreCase(CodeAction.COMMAND_BACK) || command.equalsIgnoreCase(CodeAction.COMMAND_BACK2)) {
                 this.doBack();
             }
         } catch (Exception e) {
@@ -265,6 +267,27 @@ public class CodeAction extends AbstractActionHandler implements ICommand {
      * @throws ActionCommandException
      */
     protected void doBack() throws ActionCommandException {
+        this.receiveClientData();
+        GeneralCodes code = GeneralCodesFactory.create();
+        code.setCodeGrpId(this.grp.getCodeGrpId());
+
+        // Call SOAP web service to get complete list of codes based on a
+        // particular group
+        try {
+            LookupCodesResponse response = CodeSoapRequests.callGet(code);
+            ReplyStatusType rst = response.getReplyStatus();
+            this.msg = rst.getMessage();
+            if (rst.getReturnCode().intValue() == GeneralConst.RC_FAILURE) {
+                this.msg = rst.getMessage();
+                return;
+            }
+            List<GeneralCodes> results = GeneralCodesFactory.create(response.getDetailCodes());
+            this.codes = results;
+            this.sendClientData();
+        } catch (Exception e) {
+            logger.log(Level.ERROR, e.getMessage());
+            throw new ActionCommandException(e.getMessage());
+        }
         return;
     }
 
