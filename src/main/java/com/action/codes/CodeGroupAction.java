@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import org.rmt2.jaxb.LookupCodesResponse;
 import org.rmt2.jaxb.ReplyStatusType;
 
+import com.AddressbookUIException;
 import com.SystemException;
 import com.api.constants.GeneralConst;
 import com.api.constants.RMT2ServletConst;
@@ -256,22 +257,6 @@ public class CodeGroupAction extends AbstractActionHandler implements ICommand {
     protected void doGroupCodes() throws ActionCommandException {
         this.receiveClientData();
         this.validate();
-
-        // Get group from database.
-        // DatabaseTransApi tx = DatabaseTransFactory.create();
-        // CodesApi api = CodesFactory.createCodesApi((DatabaseConnectionBean)
-        // tx.getConnector(), this.request);
-        // try {
-        // this.codes = (List) api.findCodeByGroup(this.selGroupId[0]);
-        // } catch (GeneralCodeException e) {
-        // throw new ActionCommandException(e.getMessage());
-        // } finally {
-        // api.close();
-        // tx.close();
-        // api = null;
-        // tx = null;
-        // }
-
         this.sendClientData();
     }
 
@@ -280,14 +265,14 @@ public class CodeGroupAction extends AbstractActionHandler implements ICommand {
      * invoking this method is that this object is properly initialized with the
      * general code group data that is to be validated.
      *
-     * @throws ActionCommandException
+     * @throws AddressbookUIException
      *             data object was not properly initialized or the general code
      *             group description property is null.
      */
-    protected void validate() throws ActionCommandException {
+    protected void validate() throws AddressbookUIException {
         String temp = this.getInputValue("CodeGrpId", null);
         if (temp == null) {
-            throw new ActionCommandException("A group record must be selected for this operation");
+            throw new AddressbookUIException("A group record must be selected for this operation");
         }
     }
 
@@ -314,8 +299,10 @@ public class CodeGroupAction extends AbstractActionHandler implements ICommand {
             temp = this.getInputValue("CodeGrpId", null);
             data.setCodeGrpId(Integer.parseInt(temp));
         } catch (NumberFormatException e) {
-            this.msg = "The selected group contains an invalid value: " + temp;
-            throw new ActionCommandException(this.msg);
+            data.setCodeGrpId(-1);
+            // this.msg =
+            // "A row must be selected for this operation or the record contains an invalid value general code group id";
+            // throw new ActionCommandException(this.msg);
         }
 
         temp = this.getInputValue("Description", null);

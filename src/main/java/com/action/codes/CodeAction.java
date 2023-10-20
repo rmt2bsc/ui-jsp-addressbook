@@ -138,7 +138,7 @@ public class CodeAction extends AbstractActionHandler implements ICommand {
                 this.doBack();
             }
         } catch (Exception e) {
-            throw new ActionCommandException("General code client request failed.", e);
+            throw new ActionCommandException(e);
         } finally {
             // Ensure that any updates made to the the query object is set on
             // the session.
@@ -157,6 +157,7 @@ public class CodeAction extends AbstractActionHandler implements ICommand {
      */
     protected void doList() throws ActionCommandException {
         this.receiveClientData();
+        this.validate();
         GeneralCodes code = GeneralCodesFactory.create();
         code.setCodeGrpId(this.grp.getCodeGrpId());
 
@@ -282,8 +283,7 @@ public class CodeAction extends AbstractActionHandler implements ICommand {
             temp = this.getInputValue("CodeGrpId", null);
             data.setCodeGrpId(Integer.parseInt(temp));
         } catch (NumberFormatException e) {
-            this.msg = "The selected group contains an invalid value: " + temp;
-            throw new ActionCommandException(this.msg);
+            data.setCodeGrpId(-1);
         }
 
         temp = this.getInputValue("Description", null);
@@ -318,7 +318,7 @@ public class CodeAction extends AbstractActionHandler implements ICommand {
         this.code = this.getSelectedRecord();
 
         if (this.code == null) {
-            this.msg = "Validation Error:  A General Code record must be selected for this operation";
+            this.msg = "A record must be selected for this operation";
             this.logger.log(Level.ERROR, this.msg);
             throw new ActionCommandException(this.msg);
         }
