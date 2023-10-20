@@ -18,11 +18,10 @@ import com.AddressbookUIException;
 import com.api.messaging.webservice.soap.client.SoapJaxbClientWrapper;
 import com.api.security.authentication.web.AuthenticationException;
 import com.entity.GeneralCodes;
-import com.entity.GeneralCodesGroup;
 
 /**
  * Help class for constructing and invoking SOAP calls pertaining to the
- * Addressbook code groups.
+ * Addressbook general codes.
  * 
  * @author Roy Terrell
  *
@@ -32,7 +31,7 @@ public class CodeSoapRequests {
     private static final String MSG = "SOAP invocation error occurred regarding server-side messaging";
 
     /**
-     * SOAP call to fetch all code groups.
+     * SOAP call to fetch general code(s).
      * 
      * @param parms
      *            {@link GeneralCodes}
@@ -118,22 +117,22 @@ public class CodeSoapRequests {
     }
 
     /**
-     * SOAP call to save general code group data.
+     * SOAP call to save general code data.
      * 
      * @param data
-     *            {@link GeneralCodesGroup}
+     *            {@link GeneralCodes}
      * @return {@link LookupCodesResponse}
      * @throws AddressbookUIException
      */
-    public static final LookupCodesResponse callDelete(GeneralCodesGroup data) throws AddressbookUIException {
-        // Delete a code group record from the database
+    public static final LookupCodesResponse callDelete(GeneralCodes data) throws AddressbookUIException {
+        // Delete a general code record from the database
         ObjectFactory fact = new ObjectFactory();
         LookupCodesRequest req = fact.createLookupCodesRequest();
 
         HeaderType head = HeaderTypeBuilder.Builder.create()
                 .withApplication(ApiHeaderNames.APP_NAME_ADDRESSBOOK)
                 .withModule(ApiTransactionCodes.MODULE_ADDRESSBOOK_LOOKUP)
-                .withTransaction(ApiTransactionCodes.LOOKUP_GROUP_DELETE)
+                .withTransaction(ApiTransactionCodes.LOOKUP_CODE_DELETE)
                 .withMessageMode(ApiHeaderNames.MESSAGE_MODE_REQUEST)
                 .withDeliveryDate(new Date())
                 .withRouting(ApiTransactionCodes.ROUTE_ADDRESSBOOK)
@@ -141,7 +140,7 @@ public class CodeSoapRequests {
                 .build();
 
         LookupCodeCriteriaType criteria = fact.createLookupCodeCriteriaType();
-        criteria.setGroup(BigInteger.valueOf(data.getCodeGrpId()));
+        criteria.setCode(BigInteger.valueOf(data.getCodeId()));
         req.setCriteria(criteria);
         req.setHeader(head);
 
