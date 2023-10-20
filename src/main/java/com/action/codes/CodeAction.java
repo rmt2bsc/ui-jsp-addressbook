@@ -187,6 +187,7 @@ public class CodeAction extends AbstractActionHandler implements ICommand {
      * @throws ActionCommandException
      */
     public void add() throws ActionCommandException {
+        this.receiveClientData();
         this.code = GeneralCodesFactory.create();
     }
 
