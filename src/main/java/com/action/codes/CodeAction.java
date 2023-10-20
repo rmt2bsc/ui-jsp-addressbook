@@ -11,11 +11,13 @@ import com.SystemException;
 import com.api.constants.GeneralConst;
 import com.api.constants.RMT2ServletConst;
 import com.api.jsp.action.AbstractActionHandler;
+import com.api.util.RMT2Money;
 import com.api.web.ActionCommandException;
 import com.api.web.Context;
 import com.api.web.ICommand;
 import com.api.web.Request;
 import com.api.web.Response;
+import com.api.web.util.RMT2WebUtility;
 import com.entity.GeneralCodes;
 import com.entity.GeneralCodesFactory;
 import com.entity.GeneralCodesGroup;
@@ -155,8 +157,6 @@ public class CodeAction extends AbstractActionHandler implements ICommand {
      */
     protected void doList() throws ActionCommandException {
         this.receiveClientData();
-
-        // this.grp = this.getGroupFromRequest();
         GeneralCodes code = GeneralCodesFactory.create();
         code.setCodeGrpId(this.grp.getCodeGrpId());
 
@@ -179,26 +179,6 @@ public class CodeAction extends AbstractActionHandler implements ICommand {
         }
     }
 
-    /**
-     * Retrieve the group record from the database using the group id value
-     * stored in the request.
-     * 
-     * @return {@link GeneralCodesGroup}
-     */
-    private GeneralCodesGroup getGroupFromRequest() throws ActionCommandException {
-        GeneralCodesGroup grp = GeneralCodesGroupFactory.create();
-        Object temp = this.request.getAttribute(GeneralConst.CLIENT_DATA_RECORD);
-        if (temp instanceof GeneralCodes) {
-            grp = (GeneralCodesGroup) temp;
-        }
-        else {
-            this.msg = "Problem occurred obtaining group record for the current general code record";
-            this.logger.log(Level.ERROR, this.msg);
-            throw new ActionCommandException(this.msg);
-        }
-
-        return grp;
-    }
 
     /**
      * Drives the process of invoking the General Code Edit JSP page for adding
@@ -217,21 +197,7 @@ public class CodeAction extends AbstractActionHandler implements ICommand {
      * @throws ActionCommandException
      */
     public void edit() throws ActionCommandException {
-        // this.getGroupFromRequest();
-        // DatabaseTransApi tx = DatabaseTransFactory.create();
-        // CodesApi api = CodesFactory.createCodesApi((DatabaseConnectionBean)
-        // tx.getConnector(), this.request);
-        // try {
-        // // Get group from database.
-        // this.code = (GeneralCodes) api.findCodeById(this.code.getCodeId());
-        // } catch (Exception e) {
-        // throw new ActionCommandException(e.getMessage());
-        // } finally {
-        // api.close();
-        // tx.close();
-        // api = null;
-        // tx = null;
-        // }
+        this.validate();
     }
 
     /**
@@ -241,26 +207,7 @@ public class CodeAction extends AbstractActionHandler implements ICommand {
      * @throws ActionCommandException
      */
     public void save() throws ActionCommandException {
-        // this.validate();
-        // Save data.
-        // DatabaseTransApi tx = DatabaseTransFactory.create();
-        // CodesApi api = CodesFactory.createCodesApi((DatabaseConnectionBean)
-        // tx.getConnector(), this.request);
-        // try {
-        // api.maintainCode(this.code);
-        // tx.commitUOW();
-        // this.msg = "Lookup code saved successfully";
-        // this.request.setAttribute(RMT2ServletConst.REQUEST_MSG_INFO,
-        // this.msg);
-        // } catch (GeneralCodeException e) {
-        // tx.rollbackUOW();
-        // throw new ActionCommandException(e.getMessage());
-        // } finally {
-        // api.close();
-        // tx.close();
-        // api = null;
-        // tx = null;
-        // }
+        this.validate();
     }
 
     /**
@@ -270,51 +217,10 @@ public class CodeAction extends AbstractActionHandler implements ICommand {
      * @throws ActionCommandException
      */
     public void delete() throws ActionCommandException {
-        // DatabaseTransApi tx = DatabaseTransFactory.create();
-        // CodesApi api = CodesFactory.createCodesApi((DatabaseConnectionBean)
-        // tx.getConnector(), this.request);
-        // try {
-        // api.deleteCode(this.code);
-        // tx.commitUOW();
-        // this.msg = "Code was deleted successfully";
-        // this.request.setAttribute(RMT2ServletConst.REQUEST_MSG_INFO,
-        // this.msg);
-        // return;
-        // } catch (GeneralCodeException e) {
-        // tx.rollbackUOW();
-        // this.msg = "Code delete failed.  " + e.getMessage();
-        // this.request.setAttribute(RMT2ServletConst.REQUEST_MSG_INFO,
-        // this.msg);
-        // throw new ActionCommandException(e.getMessage());
-        // } finally {
-        // api.close();
-        // tx.close();
-        // api = null;
-        // tx = null;
-        // }
+
     }
 
-    /**
-     * Validates the current General Code item. The precondition to invoking
-     * this method is that this object is properly initialized with the general
-     * code data that is to be validated.
-     * 
-     * @throws ActionCommandException
-     *             data object was not properly initialized or the general code
-     *             group description property is null.
-     */
-    protected void validate() throws ActionCommandException {
-        if (this.code == null) {
-            this.msg = "Validation Error:  General Code object is invalid";
-            this.logger.log(Level.ERROR, this.msg);
-            throw new ActionCommandException(this.msg);
-        }
-        if (this.code.getLongdesc() == null || this.code.getLongdesc().equals("")) {
-            this.msg = "Validation Error:  General Code's description property is invalid";
-            this.logger.log(Level.ERROR, this.msg);
-            throw new ActionCommandException(this.msg);
-        }
-    }
+
 
     /**
      * Returns the user to the list of groups page.
@@ -333,6 +239,7 @@ public class CodeAction extends AbstractActionHandler implements ICommand {
      *             when one of the client's group id's a non-numeric value
      */
     protected void receiveClientData() throws ActionCommandException {
+        // Get General Code Group data
         String temp = null;
         GeneralCodesGroup data = GeneralCodesGroupFactory.create();
         try {
@@ -346,33 +253,6 @@ public class CodeAction extends AbstractActionHandler implements ICommand {
         temp = this.getInputValue("Description", null);
         data.setDescription(temp);
         this.grp = data;
-
-        String strId[] = this.request.getParameterValues(CodeAction.CODE_ID_PROPERTY);
-        if (strId == null) {
-            return;
-        }
-        // Gather all selected group id's
-        this.selCodeId = new int[strId.length];
-        for (int ndx = 0; ndx < strId.length; ndx++) {
-            try {
-                this.selCodeId[ndx] = Integer.parseInt(strId[ndx]);
-            } catch (NumberFormatException e) {
-                this.msg = "The selected group contains an invalid value: (row=" + ndx + ", value=" + strId[ndx];
-                this.logger.log(Level.ERROR, this.msg);
-                throw new ActionCommandException(this.msg);
-            }
-        }
-
-        // // Try to obtain all data for the a single group item, if applicable.
-        // if (this.selCodeId.length == 1) {
-        // try {
-        // this.code = CodesFactory.createGeneralCodes();
-        // CodesFactory.packageBean(this.request, this.code);
-        // }
-        // catch (Exception e) {
-        // throw new ActionCommandException(e.getMessage());
-        // }
-        // }
     }
 
     /**
@@ -386,22 +266,45 @@ public class CodeAction extends AbstractActionHandler implements ICommand {
         this.request.setAttribute(GeneralConst.CLIENT_DATA_RECORD, this.code);
         this.request.setAttribute(GeneralConst.CLIENT_DATA_LIST, this.codes);
         this.request.setAttribute(GeneralConst.REQ_ATTRIB_DATA, this.grp);
-
-        // String xml = this.getXmlResults();
-        // this.request.setAttribute(RMT2ServletConst.RESPONSE_NONJSP_DATA,
-        // xml);
     }
 
-    // /**
-    // * Sends a update confirmation to client as the XML message,
-    // * RS_common_reply.
-    // *
-    // * @return The XML Message
-    // * @throws ActionCommandException
-    // */
-    // protected String getXmlResults() throws ActionCommandException {
-    // CodeDetailsFetchHandler srvc = new CodeDetailsFetchHandler(null,
-    // this.request);
-    // return srvc.buildCodeDetailsResponsePayload(this.code, this.msg);
-    // }
+    /**
+     * Validates the current General Code item. The precondition to invoking
+     * this method is that this object is properly initialized with the general
+     * code data that is to be validated.
+     * 
+     * @throws ActionCommandException
+     *             data object was not properly initialized or the general code
+     *             group description property is null.
+     */
+    protected void validate() throws ActionCommandException {
+        this.code = this.getSelectedRecord();
+
+        if (this.code == null) {
+            this.msg = "Validation Error:  A General Code record must be selected for this operation";
+            this.logger.log(Level.ERROR, this.msg);
+            throw new ActionCommandException(this.msg);
+        }
+    }
+
+    private GeneralCodes getSelectedRecord() throws ActionCommandException {
+        // Get index of the row that is to be processed from the
+        // HttpServeltRequest object
+        try {
+            String temp = this.request.getParameter(GeneralConst.CLIENTROW_PROPERTY);
+            this.selectedRow = RMT2Money.stringToNumber(temp).intValue();
+        } catch (Exception e) {
+            return null;
+        }
+
+        // Retrieve values from the request object into the User object.
+        try {
+            GeneralCodes selectedRecord = GeneralCodesFactory.create();
+            RMT2WebUtility.packageBean(this.request, selectedRecord, this.selectedRow);
+            return selectedRecord;
+        } catch (Exception e) {
+            logger.log(Level.ERROR, e.getMessage());
+            throw new ActionCommandException(e.getMessage());
+        }
+    }
 }

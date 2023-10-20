@@ -33,6 +33,7 @@
      <form name="DataForm" method="POST" action="<%=APP_ROOT%>/unsecureRequestProcessor/GeneralCode.GeneralCodeList">
          <br>
          <beanlib:InputControl name="CodeGrpId" type="hidden" value="#data.CodeGrpId"/>
+         <beanlib:InputControl name="Description" type="hidden" value="#data.Description"/>
 	     <div style="border-style:groove;border-color:#999999; background-color:buttonface; width:50%; height:690px; overflow: auto; ">                           
 		     <table  width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="white" bordercolor="#999999">
 		       <tr bgcolor="#FFCC00">
@@ -46,7 +47,11 @@
 		       <beanlib:LoopRows bean="item" list="<%=GeneralConst.CLIENT_DATA_LIST %>">
 		         <gen:ColorBarLines evenColor="#CCFFCC" oddColor="#FFFFFF"/>
 		           <td bgcolor="#FFCC00" align="center">
-		             <beanlib:InputControl type="radio" name="CodeId" value="#item.CodeId"/>
+		             <beanlib:InputControl type="radio" name="<%=GeneralConst.CLIENTROW_PROPERTY%>" value="rowid"/>
+		             <beanlib:InputControl type="hidden" name="CodeId" value="#item.CodeId" uniqueName="yes"/>
+		             <beanlib:InputControl type="hidden" name="CodeGrpId" value="#item.CodeGrpId" uniqueName="yes"/>
+		             <beanlib:InputControl type="hidden" name="Shortdesc" value="#item.Shortdesc" uniqueName="yes"/>
+		             <beanlib:InputControl type="hidden" name="Longdesc" value="#item.Longdesc" uniqueName="yes"/>
 		           </td>
 		           <td class="clsTableListDataCenter">
 		             <beanlib:InputControl value="#item.CodeId"/>
