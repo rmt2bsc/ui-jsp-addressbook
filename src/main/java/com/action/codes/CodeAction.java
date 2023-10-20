@@ -198,6 +198,7 @@ public class CodeAction extends AbstractActionHandler implements ICommand {
      * @throws ActionCommandException
      */
     public void edit() throws ActionCommandException {
+        this.msg = null;
         this.validate();
     }
 
@@ -208,7 +209,26 @@ public class CodeAction extends AbstractActionHandler implements ICommand {
      * @throws ActionCommandException
      */
     public void save() throws ActionCommandException {
-        this.validate();
+
+        // Get record from request
+        this.code = this.getRecord();
+
+        // Call SOAP web service to persist general code record changes
+        try {
+            LookupCodesResponse response = CodeSoapRequests.callSave(this.code);
+            ReplyStatusType rst = response.getReplyStatus();
+            this.msg = rst.getMessage();
+            if (rst.getReturnCode().intValue() == GeneralConst.RC_FAILURE) {
+                this.msg = rst.getMessage();
+                return;
+            }
+            List<GeneralCodes> results = GeneralCodesFactory.create(response.getDetailCodes());
+            this.code = results.get(0);
+            this.sendClientData();
+        } catch (Exception e) {
+            logger.log(Level.ERROR, e.getMessage());
+            throw new ActionCommandException(e.getMessage());
+        }
     }
 
     /**
@@ -267,6 +287,7 @@ public class CodeAction extends AbstractActionHandler implements ICommand {
         this.request.setAttribute(GeneralConst.CLIENT_DATA_RECORD, this.code);
         this.request.setAttribute(GeneralConst.CLIENT_DATA_LIST, this.codes);
         this.request.setAttribute(GeneralConst.REQ_ATTRIB_DATA, this.grp);
+        this.request.setAttribute(RMT2ServletConst.REQUEST_MSG_MESSAGES, this.msg);
     }
 
     /**
@@ -302,6 +323,18 @@ public class CodeAction extends AbstractActionHandler implements ICommand {
         try {
             GeneralCodes selectedRecord = GeneralCodesFactory.create();
             RMT2WebUtility.packageBean(this.request, selectedRecord, this.selectedRow);
+            return selectedRecord;
+        } catch (Exception e) {
+            logger.log(Level.ERROR, e.getMessage());
+            throw new ActionCommandException(e.getMessage());
+        }
+    }
+
+    private GeneralCodes getRecord() throws ActionCommandException {
+        // Retrieve values from the request object into the User object.
+        try {
+            GeneralCodes selectedRecord = GeneralCodesFactory.create();
+            RMT2WebUtility.packageBean(this.request, selectedRecord);
             return selectedRecord;
         } catch (Exception e) {
             logger.log(Level.ERROR, e.getMessage());

@@ -6,7 +6,7 @@ import java.util.Date;
 import org.apache.log4j.Logger;
 import org.rmt2.constants.ApiHeaderNames;
 import org.rmt2.constants.ApiTransactionCodes;
-import org.rmt2.jaxb.CodeGroupType;
+import org.rmt2.jaxb.CodeDetailType;
 import org.rmt2.jaxb.HeaderType;
 import org.rmt2.jaxb.LookupCodeCriteriaType;
 import org.rmt2.jaxb.LookupCodesRequest;
@@ -77,32 +77,35 @@ public class CodeSoapRequests {
     }
 
     /**
-     * SOAP call to save general code group data.
+     * SOAP call to save general code data.
      * 
      * @param data
-     *            {@link GeneralCodesGroup}
+     *            {@link GeneralCodes}
      * @return {@link LookupCodesResponse}
      * @throws AddressbookUIException
      */
-    public static final LookupCodesResponse callSave(GeneralCodesGroup data) throws AddressbookUIException {
-        // Retrieve all code group records from the database
+    public static final LookupCodesResponse callSave(GeneralCodes data) throws AddressbookUIException {
+        // Persist general code record changes to the database
         ObjectFactory fact = new ObjectFactory();
         LookupCodesRequest req = fact.createLookupCodesRequest();
 
         HeaderType head = HeaderTypeBuilder.Builder.create()
                 .withApplication(ApiHeaderNames.APP_NAME_ADDRESSBOOK)
                 .withModule(ApiTransactionCodes.MODULE_ADDRESSBOOK_LOOKUP)
-                .withTransaction(ApiTransactionCodes.LOOKUP_GROUP_UPDATE)
+                .withTransaction(ApiTransactionCodes.LOOKUP_CODE_UPDATE)
                 .withMessageMode(ApiHeaderNames.MESSAGE_MODE_REQUEST)
                 .withDeliveryDate(new Date())
                 .withRouting(ApiTransactionCodes.ROUTE_ADDRESSBOOK)
                 .withDeliveryMode(ApiHeaderNames.DELIVERY_MODE_SYNC)
                 .build();
 
-        CodeGroupType cgt = fact.createCodeGroupType();
-        cgt.setGroupId(BigInteger.valueOf(data.getCodeGrpId()));
-        cgt.setGroupDesc(data.getDescription());
-        req.getGroupCodes().add(cgt);
+        CodeDetailType cdt = fact.createCodeDetailType();
+        cdt.setCodeId(BigInteger.valueOf(data.getCodeId()));
+        cdt.setGroupId(BigInteger.valueOf(data.getCodeGrpId()));
+        cdt.setLongdesc(data.getLongdesc());
+        cdt.setShortdesc(data.getShortdesc());
+
+        req.getDetailCodes().add(cdt);
         req.setHeader(head);
 
         LookupCodesResponse response = null;
