@@ -12,6 +12,7 @@ import org.rmt2.jaxb.ReplyStatusType;
 import com.SystemException;
 import com.action.codes.CodeSoapRequests;
 import com.api.constants.GeneralConst;
+import com.api.constants.RMT2ServletConst;
 import com.api.web.ActionCommandException;
 import com.api.web.Context;
 import com.api.web.ICommand;
@@ -212,6 +213,7 @@ public class BusinessContactSearchAction extends AbstractContactSearchAction imp
         this.request.setAttribute(ContactsConst.CLIENT_DATA_BUSTYPE, this.lookupBusType);
         this.request.setAttribute(ContactsConst.CLIENT_DATA_SERVTYPE, this.lookupBusServ);
         this.request.setAttribute(GeneralConst.CLIENT_DATA_LIST, this.vwAddress);
+        this.request.setAttribute(RMT2ServletConst.REQUEST_MSG_INFO, this.msg);
     }
 
     private List<GeneralCodes> getLookupData(int codeGroupId) throws ActionCommandException {
@@ -223,7 +225,6 @@ public class BusinessContactSearchAction extends AbstractContactSearchAction imp
         try {
             LookupCodesResponse response = CodeSoapRequests.callGet(code);
             ReplyStatusType rst = response.getReplyStatus();
-            this.msg = rst.getMessage();
             if (rst.getReturnCode().intValue() == GeneralConst.RC_FAILURE) {
                 this.msg = rst.getMessage();
                 return null;
@@ -248,8 +249,16 @@ public class BusinessContactSearchAction extends AbstractContactSearchAction imp
             // Get message text from reply status
             ReplyStatusType rst = response.getReplyStatus();
             this.msg = rst.getMessage();
+            this.msg += " (" + rst.getRecordCount() + ")";
 
-            List<VwBusinessAddress> results = VwBusinessAddressFactory.create(response.getProfile().getBusinessContacts());
+            List<VwBusinessAddress> results = null;
+            if (response.getProfile() != null) {
+                results = VwBusinessAddressFactory.create(response.getProfile().getBusinessContacts());
+            }
+            else {
+                results = new ArrayList<>();
+            }
+
             this.vwAddress = results;
         } catch (ContactException e) {
 

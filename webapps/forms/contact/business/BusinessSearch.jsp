@@ -203,6 +203,18 @@
 	        </div>
 	        <br>					                	
 
+	         <!-- Display any messages -->
+			 <table>
+				 <tr>
+		  		   <td>
+				     <font color="red">
+					     <gen:ShowPageMessages dataSource="<%=RMT2ServletConst.REQUEST_MSG_MESSAGES%>"/>
+				     </font>
+			 	   </td>
+				 </tr>
+			 </table>
+			 <br>
+		 
 			<input type="button" name="<%=GeneralConst.REQ_SEARCH%>" value="Search" style=width:90  onClick="handleAction('_self', document.DataForm, this.name)">
 			<input type="button" name="<%=GeneralConst.REQ_ADD%>" value="Add" style=width:90  onClick="handleAction('_self', document.DataForm, this.name)">
 			<input type="button" name="<%=GeneralConst.REQ_RESET%>" value="Reset" style=width:90 onClick="handleAction('_self', document.DataForm, this.name)">
