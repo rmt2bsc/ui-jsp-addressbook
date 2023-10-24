@@ -38,6 +38,7 @@ public class ContactCriteria extends AncestorQueryCriteria {
     private String qry_BusContactLastname;
     private String qry_BusContactPhone;
     private String qry_BusContactExt;
+    private String qry_BusContactEmail;
     private String qry_BusTaxId;
     private String qry_BusWebsite;
     private String qry_AddrId;
@@ -833,5 +834,13 @@ public class ContactCriteria extends AncestorQueryCriteria {
      */
     public void setQry_ContactName(String qry_ContactName) {
         this.qry_ContactName = qry_ContactName;
+    }
+
+    public String getQry_BusContactEmail() {
+        return qry_BusContactEmail;
+    }
+
+    public void setQry_BusContactEmail(String qry_BusContactEmail) {
+        this.qry_BusContactEmail = qry_BusContactEmail;
     }
 }

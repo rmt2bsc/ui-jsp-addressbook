@@ -5,41 +5,43 @@
 	<%! int intTemp = 0;%>
 	<%! String brk = null;%>
 	<%! String phoneNums = "";%>
-	<%   VwBusinessAddress address = (VwBusinessAddress) pageContext.getAttribute("item");
-	     temp = address.getAddr1();
+	<%! Object obj = null;%>
+	 
+	<%   
+	     temp = address.getColumnValue("Addr1");
 		 if (temp != null && !temp.equals("")) {
 		   addr = temp;
 		 }
-		 temp = address.getAddr2();
+		 temp = address.getColumnValue("Addr2");
 		 if (temp != null && !temp.equals("")) {
 		   addr += "<br>" + temp;
 		 }
-		 temp = address.getAddr3();
+		 temp = address.getColumnValue("Addr3");
 		 if (temp != null && !temp.equals("")) {
 		   addr += "<br>" + temp;
 		 }
-		 temp = address.getAddr4();
+		 temp = address.getColumnValue("Addr4");
 		 if (temp != null && !temp.equals("")) {
 		   addr += "<br>" + temp;
 		 }
-		 temp = address.getZipCity();
+		 temp = address.getColumnValue("ZipCity");
 		 if (temp != null && !temp.equals("")) {
 		   addr2 =  temp;
 		 }
-		 temp = address.getZipState();
+		 temp = address.getColumnValue("ZipState");
 		 if (temp != null && !temp.equals("")) {
 		   addr2 += ", " + temp;
 		 }
 		 
 		 // Only include zip if previous address components exist
 		 if (!addr2.equals("")) {
-		         intTemp = address.getAddrZip();
-		 		 if (intTemp != 0) {
-		   		  addr2 += " " + intTemp;
+		 		 temp = address.getColumnValue("AddrZip");
+		 		 if (temp != null && !temp.equals("")) {
+		   		  addr2 += " " + temp;
 		 		 }
-		 	 intTemp = address.getAddrZipext();
-		     if (intTemp != 0) {
-		        addr2 +=  "-" + intTemp;
+		     temp = address.getColumnValue("AddrZipext");
+		     if (temp != null && !temp.equals("")) {
+		        addr2 +=  "-" + temp;
 		     }
 		 }
 	
@@ -64,36 +66,36 @@
 
 <td valign="top"> 
     <% 
-	 temp = address.getAddrPhoneHome();
+	 temp = address.getColumnValue("AddrPhoneHome");
 	  if (temp != null && !temp.equals("")) {
 		phoneNums = "Home - " + temp;
 	  }
-	  temp = address.getAddrPhoneWork();
+	  temp = address.getColumnValue("AddrPhoneWork");
 	  if (temp != null && !temp.equals("")) {
 		brk = (phoneNums.length() > 0 ? "<br>" : "");
 		phoneNums += brk + "Work - " + temp;
 	  }
-	  temp = address.getAddrPhoneExt();
+	  temp = address.getColumnValue("AddrPhoneExt");
 	  if (temp != null && !temp.equals("")) {
 		brk = (phoneNums.length() > 0 ? "<br>" : "");
 		phoneNums += brk + "Work Ext. - " + temp;
 	  }
-	  temp = address.getAddrPhoneFax();
+	  temp = address.getColumnValue("AddrPhoneFax");
 	  if (temp != null && !temp.equals("")) {
 		brk = (phoneNums.length() > 0 ? "<br>" : "");
 		phoneNums += brk + "Fax - " + temp;
 	  }
-	  temp = address.getAddrPhonePager();
+	  temp = address.getColumnValue("AddrPhonePager");
 	  if (temp != null && !temp.equals("")) {
 		brk = (phoneNums.length() > 0 ? "<br>" : "");
 		phoneNums += brk + "Pager - " + temp;
 	  }
-	  temp = address.getAddrPhoneCell();
+	  temp = address.getColumnValue("AddrPhoneCell");
 	  if (temp != null && !temp.equals("")) {
 		brk = (phoneNums.length() > 0 ? "<br>" : "");
 		phoneNums += brk + "Cellular - " + temp;
 	  }
-	  temp = address.getAddrPhoneMain();
+	  temp = address.getColumnValue("AddrPhoneMain");
 	  if (temp != null && !temp.equals("")) {
 		brk = (phoneNums.length() > 0 ? "<br>" : "");
 		phoneNums += brk + "Main - " + temp;

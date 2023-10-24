@@ -44,10 +44,10 @@ public abstract class AbstractContactSearchAction extends AbstractActionHandler 
     // protected Contact api;
 
     /** The current contact id */
-    protected String contactId;
+    protected int contactId;
 
     /** The current address id */
-    protected String addressId;
+    protected int addressId;
 
     /** The current contact instance */
     protected Object contact;
@@ -138,20 +138,27 @@ public abstract class AbstractContactSearchAction extends AbstractActionHandler 
     protected void receiveClientData() throws ActionCommandException {
         // Only build selection criteria if not edit command. This will
         // preserve the state of the user's selection criteria for future
-        // queries.
-        // if (this.command.indexOf(".edit") == -1) {
-        // this.buildSearchCriteria();
-        // }
-
-        // Look for common contact id and address id input values from the
-        // client.
-        // These values are used for business and personal contact edit
-        // requests.
-        if (this.contactIdAttr != null) {
-            this.contactId = this.request.getParameter(this.contactIdAttr);
+        // queries. Otherwise fetch the key values from the request in order to
+        // retrieve contact information from some datasource.
+        if (this.command.indexOf(".edit") == -1) {
+            this.buildXMLSearchCriteria();
         }
-        if (this.addrIdAttr != null) {
-            this.addressId = this.request.getParameter(this.addrIdAttr);
+        else {
+            String temp = null;
+            try {
+                temp = this.getInputValue("BusinessId", null);
+                this.contactId = Integer.parseInt(temp);
+            } catch (NumberFormatException e) {
+                this.msg = "A row must be selected for this operation or the selected record contains an invalid contact id value";
+                throw new ActionCommandException(this.msg);
+            }
+            try {
+                temp = this.getInputValue("AddrId", null);
+                this.addressId = Integer.parseInt(temp);
+            } catch (NumberFormatException e) {
+                this.msg = "A row must be selected for this operation or the selected record contains an invalid address id value";
+                throw new ActionCommandException(this.msg);
+            }
         }
     }
 
@@ -331,7 +338,7 @@ public abstract class AbstractContactSearchAction extends AbstractActionHandler 
      * 
      * @return String the addressId
      */
-    public String getAddressId() {
+    public int getAddressId() {
         return addressId;
     }
 
@@ -340,7 +347,7 @@ public abstract class AbstractContactSearchAction extends AbstractActionHandler 
      * 
      * @return String the contactId
      */
-    public String getContactId() {
+    public int getContactId() {
         return contactId;
     }
 

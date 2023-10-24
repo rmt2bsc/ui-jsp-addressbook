@@ -5,21 +5,23 @@ import java.util.List;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.rmt2.jaxb.AddressBookResponse;
 import org.rmt2.jaxb.LookupCodesResponse;
 import org.rmt2.jaxb.ReplyStatusType;
 
 import com.SystemException;
 import com.action.codes.CodeSoapRequests;
 import com.api.constants.GeneralConst;
-import com.api.security.RMT2TagQueryBean;
 import com.api.web.ActionCommandException;
 import com.api.web.Context;
 import com.api.web.ICommand;
 import com.api.web.Request;
 import com.api.web.Response;
+import com.entity.ContactCriteria;
 import com.entity.GeneralCodes;
 import com.entity.GeneralCodesFactory;
 import com.entity.VwBusinessAddress;
+import com.entity.VwBusinessAddressFactory;
 
 /**
  * This action handler provides functionality to service the searching needs of
@@ -140,32 +142,7 @@ public class BusinessContactSearchAction extends AbstractContactSearchAction imp
      */
     protected Object doCustomInitialization() throws ActionCommandException {
         Object criteriaObj = super.doCustomInitialization();
-
-        // // Set data source so that the build-criteria process can discover
-        // field
-        // // names.
-        // this.baseView = "VwBusinessAddressView";
-        // this.logger.log(Level.DEBUG,
-        // "Contact base DataSource view was initialized to " + this.baseView);
         return criteriaObj;
-    }
-
-    /**
-     * Force an empty result set by purposely constructing erroneous selection
-     * criteria. Set database columns, business_id, equal to -1 for the business
-     * contact query.
-     * 
-     * @param queryBean
-     *            The Query Object.
-     * @return The selection criteria.as a String
-     * @throws ActionCommandException
-     */
-    protected String doInitialCriteria(RMT2TagQueryBean queryBean) throws ActionCommandException {
-        // String criteria = null;
-        // super.doInitialCriteria(queryBean);
-        // criteria = "business_id = -1";
-        // return criteria;
-        return null;
     }
 
     /**
@@ -190,25 +167,36 @@ public class BusinessContactSearchAction extends AbstractContactSearchAction imp
         return;
     }
 
-    /**
-     * Build selection criteria for business contact query.
-     * 
-     * @return Selection criteria as a String.
-     */
-    protected String createCotnactCriteria() {
-        // Build selection criteria for person-contact query.
-        StringBuffer criteria = new StringBuffer(100);
-        if (this.getContactId() != null) {
-            criteria.append("business_id = " + this.getContactId());
-        }
-        if (this.getAddressId() != null) {
-            if (criteria.length() > 0) {
-                criteria.append(" and ");
-            }
-            criteria.append(" addr_id = " + this.getAddressId());
-        }
-        return criteria.toString();
-    }
+    // /**
+    // * Build selection criteria for business contact query.
+    // *
+    // * @return Selection criteria as a String.
+    // */
+    // protected String createCotnactCriteria() {
+    // // Build selection criteria for person-contact query.
+    // StringBuffer criteria = new StringBuffer(100);
+    // if (this.getContactId() > 0) {
+    // criteria.append("business_id = " + this.getContactId());
+    // }
+    // if (this.getAddressId() != null) {
+    // if (criteria.length() > 0) {
+    // criteria.append(" and ");
+    // }
+    // criteria.append(" addr_id = " + this.getAddressId());
+    // }
+    //
+    // // TODO: do not delete right now...
+    // // if (this.getContactId() != null) {
+    // // criteria.append("business_id = " + this.getContactId());
+    // // }
+    // // if (this.getAddressId() != null) {
+    // // if (criteria.length() > 0) {
+    // // criteria.append(" and ");
+    // // }
+    // // criteria.append(" addr_id = " + this.getAddressId());
+    // // }
+    // return criteria.toString();
+    // }
 
     /**
      * Sets the results of the business contact query on the request object in
@@ -224,10 +212,6 @@ public class BusinessContactSearchAction extends AbstractContactSearchAction imp
         this.request.setAttribute(ContactsConst.CLIENT_DATA_BUSTYPE, this.lookupBusType);
         this.request.setAttribute(ContactsConst.CLIENT_DATA_SERVTYPE, this.lookupBusServ);
         this.request.setAttribute(GeneralConst.CLIENT_DATA_LIST, this.vwAddress);
-
-        // String xml = this.getXmlResults();
-        // this.request.setAttribute(RMT2ServletConst.RESPONSE_NONJSP_DATA,
-        // xml);
     }
 
     private List<GeneralCodes> getLookupData(int codeGroupId) throws ActionCommandException {
@@ -252,27 +236,30 @@ public class BusinessContactSearchAction extends AbstractContactSearchAction imp
         }
     }
 
-    // /**
-    // * Creates the response message, RS_business_contact_search, from the java
-    // * results obtained from the query which returns a single business contact
-    // * record. Mimics a web service functionality by converting the business
-    // * contact, which is a java object, to XML and appending the results of
-    // the
-    // * conversion to the RS_business_contact_search message.
-    // *
-    // * @return The XML Message
-    // * @throws ActionCommandException
-    // */
-    // protected String getXmlResults() throws ActionCommandException {
-    // VwBusinessAddress busContact = null;
-    // if (this.contact instanceof VwBusinessAddress) {
-    // busContact = (VwBusinessAddress) this.contact;
-    // }
-    // String responseMsgId = "RS_business_contact_search";
-    // BusinessContactFetchHandler srvc = new BusinessContactFetchHandler(null,
-    // this.request);
-    // srvc.setResponseServiceId(responseMsgId);
-    // return srvc.buildSingleItemResponsePayload(busContact, this.msg);
-    // }
+    @Override
+    public void doSearch() throws ActionCommandException {
+        super.doSearch();
+
+        // Fetch business contacts
+        try {
+            ContactCriteria criteria = (ContactCriteria) this.query.getCustomObj();
+            AddressBookResponse response = BusinessContactSoapRequests.callGet(criteria);
+
+            // Get message text from reply status
+            ReplyStatusType rst = response.getReplyStatus();
+            this.msg = rst.getMessage();
+
+            List<VwBusinessAddress> results = VwBusinessAddressFactory.create(response.getProfile().getBusinessContacts());
+            this.vwAddress = results;
+        } catch (ContactException e) {
+
+        }
+
+        this.lookupBusServ = this.getLookupData(ContactsConst.CODEGROUP_KEY_BUS_SERV);
+        this.lookupBusType = this.getLookupData(ContactsConst.CODEGROUP_KEY_BUS_TYPE);
+
+        // Send data to client
+        this.sendClientData();
+    }
 
 }

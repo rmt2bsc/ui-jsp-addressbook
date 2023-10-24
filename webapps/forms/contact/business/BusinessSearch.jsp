@@ -2,6 +2,7 @@
 <%@ taglib uri="/rmt2-generaltaglib" prefix="gen" %>
 <%@ page import="com.api.util.RMT2Utility" %>
 <%@ page import="com.entity.ContactCriteria" %>
+<%@ page import="com.api.jsp.taglib.bean.dao.BeanDao" %>
 <%@ page import="com.entity.VwBusinessAddress" %>
 <%@ page import="com.api.security.RMT2TagQueryBean" %>
 <%@ page import="com.action.contacts.ContactsConst" %>
@@ -95,10 +96,20 @@
 						  <beanlib:InputControl type="text" name="qry_BusContactPhone" value="#QUERY_BEAN.CustomObj.qry_BusContactPhone" size="20"/>
 						</div>
 					</td>
+					
+					<td width="12%" bgcolor="#FFCC00">
+						<div align="right"><b><font size="2">Contact Email:</font></b></div>
+					</td>
+					<td width="24%">
+						<div align="left">
+						  <beanlib:InputControl type="text" name="qry_BusContactEmail" value="#QUERY_BEAN.CustomObj.qry_BusContactEmail" size="20"/>
+						</div>
+					</td>
+					
 					<td width="12%" bgcolor="#FFCC00">
 						<div align="right"><b><font size="2">Business Type:</font></b></div>
 					</td>
-					<td width="24%">
+					<td width="21%">
 						<div id="bus_bus_type" align="left">
 							<beanlib:InputControl dataSource="<%= ContactsConst.CLIENT_DATA_BUSTYPE %>"
 												  type="select"
@@ -106,12 +117,6 @@
 											 	  codeProperty="CodeId"
 												  displayProperty="Longdesc"
 												  selectedValue="#QUERY_BEAN.CustomObj.Qry_BusEntityTypeId"/>
-						</div>
-					</td>
-					<td width="12%">
-						<div align="right"><b></b></div>
-					</td>
-					<td width="21%">
 						</div>
 					</td>
 				</tr>
@@ -167,11 +172,15 @@
                     <beanlib:LoopRows bean="item" list="<%=GeneralConst.CLIENT_DATA_LIST %>">
 						<gen:ColorBarLines evenColor="#CCFFCC" oddColor="#FFFFFF"/>
 							<td valign="top">
+							    <%! BeanDao address = null;%>
 					            <%
-								    String urlTarget = APP_ROOT + "/unsecureRequestProcessor/Business.Search?clientAction=edit&Id=#item.BusinessId&AddrId=#item.AddrId";
+					                address = (BeanDao) pageContext.getAttribute("item");
+								    String urlTarget = APP_ROOT + "/unsecureRequestProcessor/Business.Search?clientAction=edit&Id=" + address.getColumnValue("BusinessId") + "&AddrId=" + address.getColumnValue("AddrId");
 								%>
 							    <a href="<%=urlTarget%>" target='_self'>
 								   <beanlib:InputControl value="#item.BusinessId"/> 
+								   <beanlib:InputControl name="BusinessId" type="hidden" value="#item.BusinessId" uniqueName="yes"/>
+								   <beanlib:InputControl name="AddrId" type="hidden" value="#item.AddrId" uniqueName="yes"/>
 								</a>          
 							</td>
 							<td  valign="top"> 
@@ -182,7 +191,7 @@
                             <%@include file="../address/AddressList.jsp"%>
                       
 	                        <td  valign="top"> 
-<%-- 								<beanlib:InputControl value="#item.BusContactFirstname"/>&nbsp; --%>
+								<beanlib:InputControl value="#item.BusContactFirstname"/>&nbsp;
 								<beanlib:InputControl value="#item.BusContactLastname"/>
 						    </td>
 					        <td  valign="top"> 

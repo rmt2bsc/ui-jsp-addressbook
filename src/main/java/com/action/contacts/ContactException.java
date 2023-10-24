@@ -1,6 +1,6 @@
 package com.action.contacts;
 
-import com.RMT2Exception;
+import com.RMT2RuntimeException;
 
 /**
  * An exception that provides data and information pertaining to general contact
@@ -9,7 +9,7 @@ import com.RMT2Exception;
  * @author RTerrell
  *
  */
-public class ContactException extends RMT2Exception {
+public class ContactException extends RMT2RuntimeException {
     private static final long serialVersionUID = 3776403355177086870L;
 
     /**
@@ -30,16 +30,7 @@ public class ContactException extends RMT2Exception {
         super(msg);
     }
 
-    /**
-     * Creates a ContactException object with a null message and an assigned
-     * error code.
-     * 
-     * @param code
-     *            The error code.
-     */
-    public ContactException(int code) {
-        super(code);
-    }
+
 
     /**
      * Creates a ContactException object with a error message and error code.
@@ -53,22 +44,6 @@ public class ContactException extends RMT2Exception {
         super(msg, code);
     }
 
-    /**
-     * Creates a ContactException object by reporting the error text, error
-     * code, originating object and method name pertaining to the error.
-     * 
-     * @param msg
-     *            Error text
-     * @param code
-     *            Error code
-     * @param objectname
-     *            Class name where error originated.
-     * @param methodname
-     *            The name of the method which error occurred.
-     */
-    public ContactException(String msg, int code, String objectname, String methodname) {
-        super(msg, code, objectname, methodname);
-    }
 
     /**
      * Creates a ContactException object by using data contained in an existing
