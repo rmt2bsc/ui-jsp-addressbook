@@ -32,115 +32,109 @@
  	<body bgcolor="#FFFFFF" text="#000000">
 	    <h2><strong><%=pageTitle%></strong></h2>
 		<form name="DataForm" method="post" action="<%=APP_ROOT%>/unsecureRequestProcessor/Business.Search">
-		    
-			<table width="90%" border="0">
-			    <caption size="4" style="color:blue">Business Contact Criteria</caption>
-				<tr>
-					<td width="10%" bgcolor="#FFCC00">
-						<div align="right"><b><font size="2">Business Id:</font></b></div>
-					</td>
-					<td width="21%">
-						<div id="bus_id" align="left">
-						    <input type="hidden" name="<%= ContactsConst.CLIENT_CONTACT_TYPE%>" value="<%=ContactsConst.CONTACT_TYPE_BUSINESS%>">
-						    <beanlib:InputControl type="text" name="qry_BusinessId" value="#QUERY_BEAN.CustomObj.qry_BusinessId" size="10"/>
-						</div>
-					</td>
-					<td width="12%" bgcolor="#FFCC00">
-						<div align="right"><b><font size="2">Tax Id:</font></b></div>
-					</td>
-					<td width="24%">
-						<div align="left">
-						  <beanlib:InputControl type="text" name="qry_BusTaxId" value="#QUERY_BEAN.CustomObj.qry_BusTaxId" size="10"/>
-						</div>
-					</td>
-					<td width="12%" bgcolor="#FFCC00">
-						<div align="right"><b><font size="2">Name:</font></b></div>
-					</td>
-					<td width="21%">
-						<div align="left">
-						  <beanlib:InputControl type="text" name="qry_BusLongname" value="#QUERY_BEAN.CustomObj.qry_BusLongname" size="20"/>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td width="10%" bgcolor="#FFCC00">
-						<div align="right"><b><font size="2">Contact First Name:</font></b></div>
-					</td>
-					<td width="21%">
-						<div align="left">
-						  <beanlib:InputControl type="text" name="qry_BusContactFirstname" value="#QUERY_BEAN.CustomObj.qry_BusContactFirstname" size="20"/>
-						</div>
-					</td>
-					<td width="12%" bgcolor="#FFCC00">
-						<div align="right"><b><font size="2">Contact Last Name:</font></b></div>
-					</td>
-					<td width="24%">
-						<div align="left">
-						  <beanlib:InputControl type="text" name="qry_BusContactLastname" value="#QUERY_BEAN.CustomObj.qry_BusContactLastname" size="20"/>
-						</div>
-					</td>
-					<td width="12%" bgcolor="#FFCC00">
-						<div align="right"><b><font size="2">Contact Phone:</font></b></div>
-					</td>
-					<td width="21%">
-						<div align="left">
-						  <beanlib:InputControl type="text" name="qry_BusContactPhone" value="#QUERY_BEAN.CustomObj.qry_BusContactPhone" size="20"/>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td width="10%" bgcolor="#FFCC00">
-						<div align="right"><b><font size="2">Contact Email:</font></b></div>
-					</td>
-					<td width="21%">
-						<div align="left">
-						  <beanlib:InputControl type="text" name="qry_BusContactEmail" value="#QUERY_BEAN.CustomObj.qry_BusContactEmail" size="20"/>
-						</div>
-					</td>
-					
-					<td width="12%" bgcolor="#FFCC00">
-						<div align="right"><b><font size="2">Business Type:</font></b></div>
-					</td>
-					<td width="24%">
-						<div id="bus_bus_type" align="left">
-							<beanlib:InputControl dataSource="<%= ContactsConst.CLIENT_DATA_BUSTYPE %>"
-												  type="select"
-											      name="qry_BusEntityTypeId"
-											 	  codeProperty="CodeId"
-												  displayProperty="Longdesc"
-												  selectedValue="#QUERY_BEAN.CustomObj.Qry_BusEntityTypeId"/>
-						</div>
-					</td>
-					
-					<td width="12%" bgcolor="#FFCC00">
-						<div align="right"><b><font size="2">Service Type:</font></b></div>
-					</td>
-					<td width="21%">
-						<div id="bus_bus_type" align="left">
-							<div id="bus_serv_type" align="left">
-							<beanlib:InputControl dataSource="<%= ContactsConst.CLIENT_DATA_SERVTYPE %>"
-												  type="select"
-												  name="qry_BusServTypeId"
-												  codeProperty="CodeId"
-												  displayProperty="Longdesc"
-												  selectedValue="#QUERY_BEAN.CustomObj.Qry_BusServTypeId"/>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td width="10%">&nbsp;</td>
-					<td colspan="2">&nbsp;</td>
-					<td width="24%">&nbsp;</td>
-					<td width="12%">&nbsp;</td>
-					<td width="21%">&nbsp;</td>
-				</tr>
-			</table>
-			<br>
+		    <div style="border-style:groove; border-color:#999999; background-color:buttonface; width:80%; height:180px; overflow:auto">
+				<table width="90%" border="0">
+				    <caption size="4" style="color:blue">Business Entity Criteria</caption>
+					<tr>
+						<td width="10%" bgcolor="#FFCC00">
+							<div align="right"><b><font size="2">Business Id:</font></b></div>
+						</td>
+						<td width="21%">
+							<div id="bus_id" align="left">
+							    <input type="hidden" name="<%= ContactsConst.CLIENT_CONTACT_TYPE%>" value="<%=ContactsConst.CONTACT_TYPE_BUSINESS%>">
+							    <beanlib:InputControl type="text" name="qry_BusinessId" value="#QUERY_BEAN.CustomObj.qry_BusinessId" size="10"/>
+							</div>
+						</td>
+						<td width="12%" bgcolor="#FFCC00">
+							<div align="right"><b><font size="2">Tax Id:</font></b></div>
+						</td>
+						<td width="24%">
+							<div align="left">
+							  <beanlib:InputControl type="text" name="qry_BusTaxId" value="#QUERY_BEAN.CustomObj.qry_BusTaxId" size="10"/>
+							</div>
+						</td>
+						<td width="12%" bgcolor="#FFCC00">
+							<div align="right"><b><font size="2">Name:</font></b></div>
+						</td>
+						<td width="21%">
+							<div align="left">
+							  <beanlib:InputControl type="text" name="qry_BusLongname" value="#QUERY_BEAN.CustomObj.qry_BusLongname" size="20"/>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td width="10%" bgcolor="#FFCC00">
+							<div align="right"><b><font size="2">Contact First Name:</font></b></div>
+						</td>
+						<td width="21%">
+							<div align="left">
+							  <beanlib:InputControl type="text" name="qry_BusContactFirstname" value="#QUERY_BEAN.CustomObj.qry_BusContactFirstname" size="20"/>
+							</div>
+						</td>
+						<td width="12%" bgcolor="#FFCC00">
+							<div align="right"><b><font size="2">Contact Last Name:</font></b></div>
+						</td>
+						<td width="24%">
+							<div align="left">
+							  <beanlib:InputControl type="text" name="qry_BusContactLastname" value="#QUERY_BEAN.CustomObj.qry_BusContactLastname" size="20"/>
+							</div>
+						</td>
+						<td width="12%" bgcolor="#FFCC00">
+							<div align="right"><b><font size="2">Contact Phone:</font></b></div>
+						</td>
+						<td width="21%">
+							<div align="left">
+							  <beanlib:InputControl type="text" name="qry_BusContactPhone" value="#QUERY_BEAN.CustomObj.qry_BusContactPhone" size="20"/>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td width="10%" bgcolor="#FFCC00">
+							<div align="right"><b><font size="2">Contact Email:</font></b></div>
+						</td>
+						<td width="21%">
+							<div align="left">
+							  <beanlib:InputControl type="text" name="qry_BusContactEmail" value="#QUERY_BEAN.CustomObj.qry_BusContactEmail" size="20"/>
+							</div>
+						</td>
+						
+						<td width="12%" bgcolor="#FFCC00">
+							<div align="right"><b><font size="2">Business Type:</font></b></div>
+						</td>
+						<td width="24%">
+							<div id="bus_bus_type" align="left">
+								<beanlib:InputControl dataSource="<%= ContactsConst.CLIENT_DATA_BUSTYPE %>"
+													  type="select"
+												      name="qry_BusEntityTypeId"
+												 	  codeProperty="CodeId"
+													  displayProperty="Longdesc"
+													  selectedValue="#QUERY_BEAN.CustomObj.Qry_BusEntityTypeId"/>
+							</div>
+						</td>
+						
+						<td width="12%" bgcolor="#FFCC00">
+							<div align="right"><b><font size="2">Service Type:</font></b></div>
+						</td>
+						<td width="21%">
+							<div id="bus_bus_type" align="left">
+								<div id="bus_serv_type" align="left">
+								<beanlib:InputControl dataSource="<%= ContactsConst.CLIENT_DATA_SERVTYPE %>"
+													  type="select"
+													  name="qry_BusServTypeId"
+													  codeProperty="CodeId"
+													  displayProperty="Longdesc"
+													  selectedValue="#QUERY_BEAN.CustomObj.Qry_BusServTypeId"/>
+							</div>
+						</td>
+					</tr>
+				</table>
+			    <br>
 
-			<!--  Include address selection criteria section -->
-            <%@include file="../address/AddressCriteria.jsp"%>
-               
+				<!--  Include address selection criteria section -->
+	            <%@include file="../address/AddressCriteria.jsp"%>
+            </div>               
             <br>
+            
 			<font size="4" style="color:blue">Search Results</font>
             <div style="border-style:groove; border-color:#999999; background-color:buttonface; width:80%; height:380px; overflow:auto">
 				<table width="100%" border="0" cellspacing="0">
