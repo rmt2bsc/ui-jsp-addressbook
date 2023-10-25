@@ -22,7 +22,7 @@
   </head>
   
   <body>
-	  <h1>Contacts Application</h1> 
+	  <h1>Addressbook Application</h1> 
 	  <br><br>
 	  <table width="50%" border="1" cellpadding="0" cellspacing="0">
 	    <caption align="left">
@@ -35,33 +35,34 @@
 	      <table width="100%" border="0">
 	         <tr>
 		      <td width="12%" valign="top" align="center"> 
-		          <a href="/ui-jsp-addressbook/unsecureRequestProcessor/GeneralCodeGroup.GeneralCodeGroupList?clientAction=list&<%=SESSION_BEAN.getAuthUrlParms()%>"> 
-		            General Code Maintenance
+		          <a href="/ui-jsp-addressbook/unsecureRequestProcessor/GeneralCodeGroup.GeneralCodeGroupList?clientAction=list&<%=SESSION_BEAN.getAuthUrlParms()%>" title="General Code Maintenance">
+  		             <img name="mm_codes" src="<%=APP_ROOT%>/images/mm_codes.gif"  width="48px" height="48px" style="border: none" alt="General Code Maintenance"> 
 		          </a>
 		      </td>
-		      <td width="12%" valign="top" align="center"> 
-		          <a href="/ui-jsp-addressbook/unsecureRequestProcessor/Person.Search?clientAction=newsearch&<%=SESSION_BEAN.getAuthUrlParms()%>"> 
-		            Personal Contacts
-		          </a>
+		      <td width="12%" valign="top" align="center">
+	              <img name="mm_person" src="<%=APP_ROOT%>/images/mm_person.gif"  width="48px" height="48px" style="border: none" alt="Personal Contacts"> 
+<%-- 		          <a disabled href="/ui-jsp-addressbook/unsecureRequestProcessor/Person.Search?clientAction=newsearch&<%=SESSION_BEAN.getAuthUrlParms()%>" title="Personal Contacts Maintenance"> 
+		             <img name="mm_person" src="<%=APP_ROOT%>/images/mm_person.gif"  width="48px" height="48px" style="border: none" alt="Personal Contacts">
+		          </a> --%>
 		      </td>
 		      <td width="12%"  valign="top" align="center"> 
-		          <a href="/ui-jsp-addressbook/unsecureRequestProcessor/Business.Search?clientAction=newsearch&<%=SESSION_BEAN.getAuthUrlParms()%>"> 
-		            Business Contacts
+		          <a href="/ui-jsp-addressbook/unsecureRequestProcessor/Business.Search?clientAction=newsearch&<%=SESSION_BEAN.getAuthUrlParms()%>" title="Business Contacts Maintenance"> 
+		            <img name="mm_business" src="<%=APP_ROOT%>/images/mm_business.gif"  width="48px" height="48px" style="border: none" alt="Business Contacts">
 		          </a>
 		      </td>	  			      
 		      <td width="12%"  valign="top" align="center"> 
-		          <a href="/ui-jsp-addressbook/unsecureRequestProcessor/Zipcode.Search?clientAction=newsearch&<%=SESSION_BEAN.getAuthUrlParms()%>"> 
-		            Zip Code Search
-		          </a>
-		      </td>	  
-		      <td width="12%"  valign="top" align="center"> 
-		          <a href="/ui-jsp-addressbook/unsecureRequestProcessor/State.Search?clientAction=newsearch&<%=SESSION_BEAN.getAuthUrlParms()%>"> 
-		            State/Province Search
+		          <a href="/ui-jsp-addressbook/unsecureRequestProcessor/State.Search?clientAction=newsearch&<%=SESSION_BEAN.getAuthUrlParms()%>" title="State/Province Maintenance"> 
+                     <img name="mm_state" src="<%=APP_ROOT%>/images/mm_state.gif"  width="48px" height="48px" style="border: none" alt="State/Province Maintenance">		            
 		          </a>
 		      </td>	  					      
 		      <td width="12%"  valign="top" align="center"> 
-		          <a href="/ui-jsp-addressbook/unsecureRequestProcessor/Country.Search?clientAction=list&<%=SESSION_BEAN.getAuthUrlParms()%>"> 
-		            Country Search
+		          <a href="/ui-jsp-addressbook/unsecureRequestProcessor/Country.Search?clientAction=list&<%=SESSION_BEAN.getAuthUrlParms()%>" title="Country Maintenance">
+		             <img name="mm_country" src="<%=APP_ROOT%>/images/mm_country.gif"  width="48px" height="48px" style="border: none" alt="Country Maintenance"> 
+		          </a>
+		      </td>
+		      <td width="12%"  valign="top" align="center"> 
+		          <a href="/ui-jsp-addressbook/unsecureRequestProcessor/Zipcode.Search?clientAction=newsearch&<%=SESSION_BEAN.getAuthUrlParms()%>" title="Zip Code Search">
+		            <img name="mm_zipcode" src="<%=APP_ROOT%>/images/mm_zipcode.gif"  width="48px" height="48px" style="border: none" alt="Zip Code Search"> 
 		          </a>
 		      </td>	  					      					      
 		      <td width="28%"  valign="top" align="center">&nbsp;</td>	  
