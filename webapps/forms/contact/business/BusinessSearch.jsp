@@ -32,8 +32,9 @@
  	<body bgcolor="#FFFFFF" text="#000000">
 	    <h2><strong><%=pageTitle%></strong></h2>
 		<form name="DataForm" method="post" action="<%=APP_ROOT%>/unsecureRequestProcessor/Business.Search">
-		    <font size="4" style="color:blue">Search Criteria</font>
+		    
 			<table width="90%" border="0">
+			    <caption size="4" style="color:blue">Business Contact Criteria</caption>
 				<tr>
 					<td width="10%" bgcolor="#FFCC00">
 						<div align="right"><b><font size="2">Business Id:</font></b></div>
@@ -53,16 +54,6 @@
 						</div>
 					</td>
 					<td width="12%" bgcolor="#FFCC00">
-						<div align="right"><b><font size="2">Web Site:</font></b></div>
-					</td>
-					<td width="21%">
-						<div align="left">
-						  <beanlib:InputControl type="text" name="qry_BusWebsite" value="#QUERY_BEAN.CustomObj.qry_BusWebsite" size="20"/>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td width="10%" bgcolor="#FFCC00">
 						<div align="right"><b><font size="2">Name:</font></b></div>
 					</td>
 					<td width="21%">
@@ -70,10 +61,12 @@
 						  <beanlib:InputControl type="text" name="qry_BusLongname" value="#QUERY_BEAN.CustomObj.qry_BusLongname" size="20"/>
 						</div>
 					</td>
-					<td width="12%" bgcolor="#FFCC00">
+				</tr>
+				<tr>
+					<td width="10%" bgcolor="#FFCC00">
 						<div align="right"><b><font size="2">Contact First Name:</font></b></div>
 					</td>
-					<td width="24%">
+					<td width="21%">
 						<div align="left">
 						  <beanlib:InputControl type="text" name="qry_BusContactFirstname" value="#QUERY_BEAN.CustomObj.qry_BusContactFirstname" size="20"/>
 						</div>
@@ -81,14 +74,12 @@
 					<td width="12%" bgcolor="#FFCC00">
 						<div align="right"><b><font size="2">Contact Last Name:</font></b></div>
 					</td>
-					<td width="21%">
+					<td width="24%">
 						<div align="left">
 						  <beanlib:InputControl type="text" name="qry_BusContactLastname" value="#QUERY_BEAN.CustomObj.qry_BusContactLastname" size="20"/>
 						</div>
 					</td>
-				</tr>
-				<tr>
-					<td width="10%" bgcolor="#FFCC00">
+					<td width="12%" bgcolor="#FFCC00">
 						<div align="right"><b><font size="2">Contact Phone:</font></b></div>
 					</td>
 					<td width="21%">
@@ -96,11 +87,12 @@
 						  <beanlib:InputControl type="text" name="qry_BusContactPhone" value="#QUERY_BEAN.CustomObj.qry_BusContactPhone" size="20"/>
 						</div>
 					</td>
-					
-					<td width="12%" bgcolor="#FFCC00">
+				</tr>
+				<tr>
+					<td width="10%" bgcolor="#FFCC00">
 						<div align="right"><b><font size="2">Contact Email:</font></b></div>
 					</td>
-					<td width="24%">
+					<td width="21%">
 						<div align="left">
 						  <beanlib:InputControl type="text" name="qry_BusContactEmail" value="#QUERY_BEAN.CustomObj.qry_BusContactEmail" size="20"/>
 						</div>
@@ -109,7 +101,7 @@
 					<td width="12%" bgcolor="#FFCC00">
 						<div align="right"><b><font size="2">Business Type:</font></b></div>
 					</td>
-					<td width="21%">
+					<td width="24%">
 						<div id="bus_bus_type" align="left">
 							<beanlib:InputControl dataSource="<%= ContactsConst.CLIENT_DATA_BUSTYPE %>"
 												  type="select"
@@ -119,20 +111,25 @@
 												  selectedValue="#QUERY_BEAN.CustomObj.Qry_BusEntityTypeId"/>
 						</div>
 					</td>
-				</tr>
-				<tr>
-					<td width="10%" bgcolor="#FFCC00">
+					
+					<td width="12%" bgcolor="#FFCC00">
 						<div align="right"><b><font size="2">Service Type:</font></b></div>
 					</td>
-					<td colspan="2">
-						<div id="bus_serv_type" align="left">
+					<td width="21%">
+						<div id="bus_bus_type" align="left">
+							<div id="bus_serv_type" align="left">
 							<beanlib:InputControl dataSource="<%= ContactsConst.CLIENT_DATA_SERVTYPE %>"
 												  type="select"
 												  name="qry_BusServTypeId"
 												  codeProperty="CodeId"
 												  displayProperty="Longdesc"
 												  selectedValue="#QUERY_BEAN.CustomObj.Qry_BusServTypeId"/>
+						</div>
 					</td>
+				</tr>
+				<tr>
+					<td width="10%">&nbsp;</td>
+					<td colspan="2">&nbsp;</td>
 					<td width="24%">&nbsp;</td>
 					<td width="12%">&nbsp;</td>
 					<td width="21%">&nbsp;</td>
