@@ -61,7 +61,12 @@ public class VwBusinessAddressFactory {
                 o.setAddr2(a.getAddr2());
                 o.setAddr3(a.getAddr3());
                 o.setAddr4(a.getAddr4());
-                o.setAddrZip(a.getZip() == null || a.getZip().getZipcode() == null ? 0 : a.getZip().getZipcode().intValue());
+
+                if (a.getZip() != null) {
+                    o.setZipCity(a.getZip().getCity());
+                    o.setZipState(a.getZip().getState());
+                    o.setAddrZip(a.getZip().getZipcode() == null ? 0 : a.getZip().getZipcode().intValue());
+                }
                 o.setAddrZipext(a.getZipExt() == null ? 0 : a.getZipExt().intValue());
                 o.setAddrPhoneHome(a.getPhoneHome());
                 o.setAddrPhoneWork(a.getPhoneWork());
