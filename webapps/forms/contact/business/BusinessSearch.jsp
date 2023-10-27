@@ -166,7 +166,7 @@
 							    <%! BeanDao address = null;%>
 					            <%
 					                address = (BeanDao) pageContext.getAttribute("item");
-								    String urlTarget = APP_ROOT + "/unsecureRequestProcessor/Business.Search?clientAction=edit&Id=" + address.getColumnValue("BusinessId") + "&AddrId=" + address.getColumnValue("AddrId");
+								    String urlTarget = APP_ROOT + "/unsecureRequestProcessor/Business.Search?clientAction=edit&ContactId=" + address.getColumnValue("BusinessId") + "&AddrId=" + address.getColumnValue("AddrId");
 								%>
 							    <a href="<%=urlTarget%>" target='_self'>
 								   <beanlib:InputControl value="#item.BusinessId"/> 

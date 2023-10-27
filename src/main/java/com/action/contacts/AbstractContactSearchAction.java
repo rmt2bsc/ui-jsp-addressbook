@@ -1,5 +1,7 @@
 package com.action.contacts;
 
+import java.util.List;
+
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
@@ -13,6 +15,7 @@ import com.api.web.Request;
 import com.api.web.Response;
 import com.api.web.util.RMT2WebUtility;
 import com.entity.ContactCriteria;
+import com.entity.VwBusinessAddress;
 
 /**
  * This abstract action handler provides common functionality to respond to the
@@ -39,10 +42,6 @@ public abstract class AbstractContactSearchAction extends AbstractContactAction 
     protected static final String COMMAND_EDIT = "Contact.Search.edit";
 
     private Logger logger;
-
-    // private String contactIdAttr;
-    //
-    // private String addrIdAttr;
 
     /**
      * Default class constructor responsible for initializing the logger.
@@ -73,8 +72,6 @@ public abstract class AbstractContactSearchAction extends AbstractContactAction 
     protected void init(Context context, Request request) throws SystemException {
         super.init(context, request);
         logger.log(Level.INFO, "Initializing Common Contact Api's");
-        // this.setAddrIdAttr(AbstractContactSearchAction.COMMONATTR_ADDRID);
-        // this.setContactIdAttr(AbstractContactSearchAction.COMMONATTR_CONTACTID);
     }
 
     /**
@@ -130,7 +127,7 @@ public abstract class AbstractContactSearchAction extends AbstractContactAction 
         else {
             String temp = null;
             try {
-                temp = this.getInputValue("BusinessId", null);
+                temp = this.getInputValue("ContactId", null);
                 this.contactId = Integer.parseInt(temp);
             } catch (NumberFormatException e) {
                 this.msg = "A row must be selected for this operation or the selected record contains an invalid contact id value";
@@ -154,7 +151,8 @@ public abstract class AbstractContactSearchAction extends AbstractContactAction 
      * @throws ActionCommandException
      */
     protected void sendClientData() throws ActionCommandException {
-        this.request.setAttribute(GeneralConst.CLIENT_DATA_RECORD, this.contact);
+        super.sendClientData();
+        this.request.setAttribute(GeneralConst.CLIENT_DATA_RECORD, this.vwContactAddress);
     }
 
     /**
@@ -220,7 +218,6 @@ public abstract class AbstractContactSearchAction extends AbstractContactAction 
             this.logger.log(Level.ERROR, this.msg);
             throw new ActionCommandException(this.msg);
         }
-
         return;
     }
 
@@ -235,10 +232,11 @@ public abstract class AbstractContactSearchAction extends AbstractContactAction 
     }
 
     /**
-     * Queries the database for a single contact using custom selection criteria
-     * from the descendant, if available. The custom criteria should be managed
-     * by an instance of class, {@link com.bean.criteria.ContactCriteria
-     * ContactCriteria}.
+     * Retrieves a single business contact using custom selection criteria from
+     * the descendant, if available.
+     * <p>
+     * The custom criteria should be managed by an instance of class,
+     * {@link com.bean.criteria.ContactCriteria ContactCriteria}.
      * <p>
      * Upon successfully fetching the contact, the contact data instance will be
      * of one of two types: {@link com.bean.VwPersonAddress VwPersonAddress} or
@@ -252,37 +250,27 @@ public abstract class AbstractContactSearchAction extends AbstractContactAction 
      * @throws ActionCommandException
      */
     public void edit() throws ActionCommandException {
-        // No need to contiune if api is not initialized
-        // if (this.api == null) {
-        // this.msg = "Edit contact failed.  Contact api is not initialized";
-        // this.logger.log(Level.ERROR, this.msg);
-        // throw new ActionCommandException(this.msg);
-        // }
-        //
-        // // Build custom selection criteria.
-        // String criteria = this.createCotnactCriteria();
-        // // Query the database in order to create a contact object.
-        // try {
-        // List<Object> contactList = (List<Object>)
-        // this.api.findContact(criteria);
-        // if (contactList != null && contactList.size() > 0) {
-        // this.contact = contactList.get(0);
-        // }
-        // }
-        // catch (ContactException e) {
-        // throw new ActionCommandException(e);
-        // }
+        // Create a separate instance of ContactCriteria so to not interfere
+        // with the instance that exists in the session.
+        ContactCriteria criteria = ContactCriteria.getInstance();
+        criteria.setQry_ContactId(String.valueOf(this.contactId));
+
+        // Fetch business contacts
+        try {
+            List<VwBusinessAddress> results = this.getContacts(criteria);
+            if (results != null && results.size() == 1) {
+                this.vwContactAddress = results.get(0);
+            }
+            else {
+                String errMsg = "The edit business contact operation's result set is either null or too many business contacts were returned";
+                throw new ActionCommandException(errMsg);
+            }
+        } catch (ContactException e) {
+            throw new ActionCommandException(e);
+        }
         return;
     }
 
-    /**
-     * Stub implementation for descendant.
-     * 
-     * @throws ActionCommandException
-     */
-    protected void doBack() throws ActionCommandException {
-        return;
-    }
 
     /**
      * Stub implementation for descendant.
@@ -335,25 +323,4 @@ public abstract class AbstractContactSearchAction extends AbstractContactAction 
         return contactId;
     }
 
-    // /**
-    // * Set the attribute name regarding the address id which is used to obtain
-    // * data from the client.
-    // *
-    // * @param attrName
-    // * the name of the address id attribute to set
-    // */
-    // public void setAddrIdAttr(String attrName) {
-    // this.addrIdAttr = attrName;
-    // }
-    //
-    // /**
-    // * Set the attribute name regarding the contact id which is used to obtain
-    // * data from the client.
-    // *
-    // * @param attrName
-    // * the name of the contact id attribute to set.
-    // */
-    // public void setContactIdAttr(String attrName) {
-    // this.contactIdAttr = attrName;
-    // }
 }

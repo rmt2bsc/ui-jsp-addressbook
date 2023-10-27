@@ -73,6 +73,16 @@ public class BusinessContactSoapRequests {
         ObjectFactory fact = new ObjectFactory();
         BusinessContactCriteria jaxbCriteria = fact.createBusinessContactCriteria();
 
+        // Get Contact ID
+        try {
+            Verifier.verifyNotEmpty(reqCriteria.getQry_ContactId());
+            if (RMT2Money.isNumeric(reqCriteria.getQry_ContactId())) {
+                jaxbCriteria.setContactId(BigInteger.valueOf(Integer.valueOf(reqCriteria.getQry_ContactId()).intValue()));
+            }
+        } catch (VerifyException e) {
+
+        }
+
         // Get Business ID
         try {
             Verifier.verifyNotEmpty(reqCriteria.getQry_BusinessId());

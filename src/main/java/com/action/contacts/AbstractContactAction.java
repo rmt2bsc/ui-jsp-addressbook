@@ -1,9 +1,11 @@
 package com.action.contacts;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.rmt2.jaxb.AddressBookResponse;
 import org.rmt2.jaxb.LookupCodesResponse;
 import org.rmt2.jaxb.ReplyStatusType;
 
@@ -12,12 +14,17 @@ import com.action.codes.CodeSoapRequests;
 import com.api.constants.GeneralConst;
 import com.api.constants.RMT2ServletConst;
 import com.api.jsp.action.AbstractActionHandler;
+import com.api.util.assistants.Verifier;
+import com.api.util.assistants.VerifyException;
 import com.api.web.ActionCommandException;
 import com.api.web.Context;
 import com.api.web.ICommand;
 import com.api.web.Request;
+import com.entity.ContactCriteria;
 import com.entity.GeneralCodes;
 import com.entity.GeneralCodesFactory;
+import com.entity.VwBusinessAddress;
+import com.entity.VwBusinessAddressFactory;
 
 /**
  * This abstract action handler provides common functionality to respond to the
@@ -28,9 +35,9 @@ import com.entity.GeneralCodesFactory;
  */
 public abstract class AbstractContactAction extends AbstractActionHandler implements ICommand {
 
-    protected Object contact;
 
-    protected Object vwAddress;
+
+    protected Object vwContactAddress;
 
     protected Object lookupBusType;
 
@@ -71,26 +78,9 @@ public abstract class AbstractContactAction extends AbstractActionHandler implem
      * @throws ActionCommandException
      */
     protected void sendClientData() throws ActionCommandException {
+        this.request.setAttribute(ContactsConst.CLIENT_DATA_BUSTYPE, this.lookupBusType);
+        this.request.setAttribute(ContactsConst.CLIENT_DATA_SERVTYPE, this.lookupBusServ);
         this.request.setAttribute(RMT2ServletConst.REQUEST_MSG_INFO, this.msg);
-    }
-
-    /**
-     * Sets the target contact.
-     * 
-     * @param contact
-     *            the contact to set
-     */
-    public void setContact(Object contact) {
-        this.contact = contact;
-    }
-
-    /**
-     * Get the target contact.
-     * 
-     * @return An arbitrary object representing the contact.
-     */
-    public Object getContact() {
-        return this.contact;
     }
 
     public int getContactId() {
@@ -102,9 +92,48 @@ public abstract class AbstractContactAction extends AbstractActionHandler implem
     }
 
     /**
+     * Retrieves one or more business contact profiles.
+     * 
+     * @param criteria
+     *            instance of {@link ContactCriteria}
+     * @return List<{@link VwBusinessAddress}>
+     * @throws {@link ContactException}
+     */
+    protected List<VwBusinessAddress> getContacts(ContactCriteria criteria) throws ContactException {
+        try {
+            Verifier.verifyNotNull(criteria);
+        } catch (VerifyException e) {
+            throw new ContactException("Contact retrieval requires a valid criteria object");
+        }
+
+        // Fetch contact information
+        try {
+            AddressBookResponse response = BusinessContactSoapRequests.callGet(criteria);
+
+            // Get message text from reply status
+            ReplyStatusType rst = response.getReplyStatus();
+            this.msg = rst.getMessage();
+            this.msg += " (" + rst.getRecordCount() + ")";
+
+            List<VwBusinessAddress> results = null;
+            if (response.getProfile() != null) {
+                results = VwBusinessAddressFactory.create(response.getProfile().getBusinessContacts());
+            }
+            else {
+                results = new ArrayList<>();
+            }
+            return results;
+        } catch (ContactException e) {
+            throw e;
+        }
+    }
+
+    /**
+     * Retrieves a list of General Code records based on general code group.
      * 
      * @param codeGroupId
-     * @return
+     *            the id of the group to gather general codes.
+     * @return List<{@link GeneralCodes}>
      * @throws ActionCommandException
      */
     protected List<GeneralCodes> getLookupData(int codeGroupId) throws ActionCommandException {
