@@ -70,12 +70,12 @@
 							</td>
 							<td width="24%"> 
 								<div align="left"> 
-									<db:InputControl dataSource="busTypeDso"
-															   type="select"
-															   name="EntityTypeId"
-															   codeProperty="CodeId"
-															   displayProperty="Longdesc"
-															   selectedValue="#record.BusEntityTypeId"/>
+									 <beanlib:InputControl dataSource="<%=ContactsConst.CLIENT_DATA_BUSTYPE %>"
+														   type="select"
+														   name="EntityTypeId"
+														   codeProperty="CodeId"
+														   displayProperty="Longdesc"
+														   selectedValue="#record.BusEntityTypeId"/>
 								</div>
 							</td>
 							<td width="10%" bgcolor="#FFCC00"> 
@@ -93,12 +93,12 @@
 							</td>
 							<td width="30%">
 								<div align="left"> 
-									 <db:InputControl dataSource="busServTypeDso"
-															   type="select"
-															   name="ServTypeId"
-															   codeProperty="CodeId"
-															   displayProperty="Longdesc"
-															   selectedValue="#record.BusServTypeId"/>								
+									 <beanlib:InputControl dataSource="<%=ContactsConst.CLIENT_DATA_SERVTYPE %>"
+														   type="select"
+														   name="ServTypeId"
+														   codeProperty="CodeId"
+														   displayProperty="Longdesc"
+														   selectedValue="#record.BusServTypeId"/>								
 								</div>
 							</td>
 							<td width="12%" bgcolor="#FFCC00"> 
