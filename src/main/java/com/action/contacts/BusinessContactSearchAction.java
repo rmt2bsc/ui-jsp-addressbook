@@ -6,11 +6,9 @@ import java.util.List;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.rmt2.jaxb.AddressBookResponse;
-import org.rmt2.jaxb.LookupCodesResponse;
 import org.rmt2.jaxb.ReplyStatusType;
 
 import com.SystemException;
-import com.action.codes.CodeSoapRequests;
 import com.api.constants.GeneralConst;
 import com.api.constants.RMT2ServletConst;
 import com.api.web.ActionCommandException;
@@ -19,8 +17,6 @@ import com.api.web.ICommand;
 import com.api.web.Request;
 import com.api.web.Response;
 import com.entity.ContactCriteria;
-import com.entity.GeneralCodes;
-import com.entity.GeneralCodesFactory;
 import com.entity.VwBusinessAddress;
 import com.entity.VwBusinessAddressFactory;
 
@@ -52,11 +48,7 @@ public class BusinessContactSearchAction extends AbstractContactSearchAction imp
 
     private Logger logger;
 
-    private Object lookupBusType;
-
-    private Object lookupBusServ;
-
-    private Object data;
+    // private Object data;
 
     /**
      * Default class constructor responsible for initializing the logger.
@@ -214,27 +206,6 @@ public class BusinessContactSearchAction extends AbstractContactSearchAction imp
         this.request.setAttribute(ContactsConst.CLIENT_DATA_SERVTYPE, this.lookupBusServ);
         this.request.setAttribute(GeneralConst.CLIENT_DATA_LIST, this.vwAddress);
         this.request.setAttribute(RMT2ServletConst.REQUEST_MSG_INFO, this.msg);
-    }
-
-    private List<GeneralCodes> getLookupData(int codeGroupId) throws ActionCommandException {
-        GeneralCodes code = GeneralCodesFactory.create();
-        code.setCodeGrpId(codeGroupId);
-
-        // Call SOAP web service to get complete list of codes based on a
-        // particular group
-        try {
-            LookupCodesResponse response = CodeSoapRequests.callGet(code);
-            ReplyStatusType rst = response.getReplyStatus();
-            if (rst.getReturnCode().intValue() == GeneralConst.RC_FAILURE) {
-                this.msg = rst.getMessage();
-                return null;
-            }
-            List<GeneralCodes> results = GeneralCodesFactory.create(response.getDetailCodes());
-            return results;
-        } catch (Exception e) {
-            logger.log(Level.ERROR, e.getMessage());
-            throw new ActionCommandException(e.getMessage());
-        }
     }
 
     @Override

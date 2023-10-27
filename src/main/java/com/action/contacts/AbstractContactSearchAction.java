@@ -6,11 +6,9 @@ import org.apache.log4j.Logger;
 import com.SystemException;
 import com.api.constants.GeneralConst;
 import com.api.constants.RMT2ServletConst;
-import com.api.jsp.action.AbstractActionHandler;
 import com.api.security.RMT2TagQueryBean;
 import com.api.web.ActionCommandException;
 import com.api.web.Context;
-import com.api.web.ICommand;
 import com.api.web.Request;
 import com.api.web.Response;
 import com.api.web.util.RMT2WebUtility;
@@ -23,7 +21,7 @@ import com.entity.ContactCriteria;
  * @author Roy Terrell
  * 
  */
-public abstract class AbstractContactSearchAction extends AbstractActionHandler implements ICommand {
+public abstract class AbstractContactSearchAction extends AbstractContactAction {
     protected static final String COMMONATTR_CONTACTID = "Id";
 
     protected static final String COMMONATTR_ADDRID = "AddrId";
@@ -40,25 +38,11 @@ public abstract class AbstractContactSearchAction extends AbstractActionHandler 
     /** Command name for edit contact */
     protected static final String COMMAND_EDIT = "Contact.Search.edit";
 
-    /** Contact api */
-    // protected Contact api;
-
-    /** The current contact id */
-    protected int contactId;
-
-    /** The current address id */
-    protected int addressId;
-
-    /** The current contact instance */
-    protected Object contact;
-
-    protected Object vwAddress;
-
     private Logger logger;
 
-    private String contactIdAttr;
-
-    private String addrIdAttr;
+    // private String contactIdAttr;
+    //
+    // private String addrIdAttr;
 
     /**
      * Default class constructor responsible for initializing the logger.
@@ -81,7 +65,7 @@ public abstract class AbstractContactSearchAction extends AbstractActionHandler 
      * instantiated using the default constructor.
      * 
      * @param context
-     *            the servet context.
+     *            the servlet context.
      * @param request
      *            the http servlet request.
      * @throws SystemException
@@ -89,8 +73,8 @@ public abstract class AbstractContactSearchAction extends AbstractActionHandler 
     protected void init(Context context, Request request) throws SystemException {
         super.init(context, request);
         logger.log(Level.INFO, "Initializing Common Contact Api's");
-        this.setAddrIdAttr(AbstractContactSearchAction.COMMONATTR_ADDRID);
-        this.setContactIdAttr(AbstractContactSearchAction.COMMONATTR_CONTACTID);
+        // this.setAddrIdAttr(AbstractContactSearchAction.COMMONATTR_ADDRID);
+        // this.setContactIdAttr(AbstractContactSearchAction.COMMONATTR_CONTACTID);
     }
 
     /**
@@ -351,25 +335,25 @@ public abstract class AbstractContactSearchAction extends AbstractActionHandler 
         return contactId;
     }
 
-    /**
-     * Set the attribute name regarding the address id which is used to obtain
-     * data from the client.
-     * 
-     * @param attrName
-     *            the name of the address id attribute to set
-     */
-    public void setAddrIdAttr(String attrName) {
-        this.addrIdAttr = attrName;
-    }
-
-    /**
-     * Set the attribute name regarding the contact id which is used to obtain
-     * data from the client.
-     * 
-     * @param attrName
-     *            the name of the contact id attribute to set.
-     */
-    public void setContactIdAttr(String attrName) {
-        this.contactIdAttr = attrName;
-    }
+    // /**
+    // * Set the attribute name regarding the address id which is used to obtain
+    // * data from the client.
+    // *
+    // * @param attrName
+    // * the name of the address id attribute to set
+    // */
+    // public void setAddrIdAttr(String attrName) {
+    // this.addrIdAttr = attrName;
+    // }
+    //
+    // /**
+    // * Set the attribute name regarding the contact id which is used to obtain
+    // * data from the client.
+    // *
+    // * @param attrName
+    // * the name of the contact id attribute to set.
+    // */
+    // public void setContactIdAttr(String attrName) {
+    // this.contactIdAttr = attrName;
+    // }
 }
