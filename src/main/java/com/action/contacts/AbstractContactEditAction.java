@@ -16,8 +16,6 @@ import com.api.web.ActionCommandException;
 import com.api.web.Context;
 import com.api.web.Request;
 import com.api.web.Response;
-import com.entity.Address;
-import com.entity.Business;
 import com.entity.GeneralCodes;
 import com.entity.GeneralCodesFactory;
 
@@ -43,10 +41,6 @@ public abstract class AbstractContactEditAction extends AbstractContactAction {
 
     /** The current command */
     protected String command;
-
-    private Business contact;
-
-    private Address address;
 
     private Logger logger;
 
@@ -112,84 +106,25 @@ public abstract class AbstractContactEditAction extends AbstractContactAction {
         }
     }
 
-    /**
-     * Contains generic logic that can persist the changes made to a
-     * {@link com.api.Contact Contact}. THe update process involves validating
-     * the contact and its address, saving the contact, ensuring theat the
-     * contact and address are associated, and saving the contact's address.
-     * 
-     * @throws ActionCommandException
-     *             General database errors.
-     */
-    public void save() throws ActionCommandException {
-        // try {
-        // this.validateContact(this.contact, this.addrObj);
-        // this.api.maintainContact(this.contact);
-        // this.preAddressUpdate(this.addrObj, this.contact);
-        // this.addrApi.maintainContact(this.addrObj);
-        // this.msg = "Contact update completed successfully";
-        // }
-        // catch (Exception e) {
-        // this.msg = "Contact update completed with errors";
-        // throw new ActionCommandException(e);
-        // }
+    protected List<GeneralCodes> getLookupData(int codeGroupId) throws ActionCommandException {
+        GeneralCodes code = GeneralCodesFactory.create();
+        code.setCodeGrpId(codeGroupId);
 
-    }
-
-    /**
-     * Queries the database for a single contact using the primary keys of the
-     * internal contact and address data members as selection criteria, if
-     * available. It is of the developer's responsibility to code the logic
-     * needed to build custom selection criteria at the descendent via the
-     * {@link com.action.contacts.AbstractContactEditAction#createCotnactCriteria()
-     * createCotnactCriteria()} method.
-     * <p>
-     * For contact modifications it is safe to assume that this refresh logic
-     * will guarantee that the contact will be retrieved from the database as a
-     * confirmation. For situations when deleting a contact, the confirmation is
-     * dependent on the contact data stored internally which was initially used
-     * to display the page before invoking the delete operation.
-     * 
-     * @throws ActionCommandException
-     *             When the contact api is invalid or general database error
-     *             when attempting to retrieve the contact.
-     */
-    protected void refreshContact() throws ActionCommandException {
-        // No need to contiune if api is not initialized
-        // if (this.api == null) {
-        // this.msg =
-        // "Refresh of contact failed.  Contact api is not initialized";
-        // this.logger.log(Level.ERROR, this.msg);
-        // throw new ActionCommandException(this.msg);
-        // }
-        //
-        // // Get custom selection criteria.
-        // String criteria = this.createRefreshCriteria();
-        //
-        // // Query the database in order to create a contact object.
-        // try {
-        // List<Object> contactList = (List<Object>)
-        // this.api.findContact(criteria);
-        // if (contactList != null && contactList.size() > 0) {
-        // this.contact = contactList.get(0);
-        // }
-        // else {
-        // this.contact = null;
-        // }
-        // }
-        // catch (ContactException e) {
-        // throw new ActionCommandException(e);
-        // }
-    }
-
-    /**
-     * Override this method to provide custom selection criteria for retrieving
-     * a single contact from an external data source.
-     * 
-     * @return null.
-     */
-    protected String createRefreshCriteria() {
-        return null;
+        // Call SOAP web service to get complete list of codes based on a
+        // particular group
+        try {
+            LookupCodesResponse response = CodeSoapRequests.callGet(code);
+            ReplyStatusType rst = response.getReplyStatus();
+            if (rst.getReturnCode().intValue() == GeneralConst.RC_FAILURE) {
+                this.msg = rst.getMessage();
+                return null;
+            }
+            List<GeneralCodes> results = GeneralCodesFactory.create(response.getDetailCodes());
+            return results;
+        } catch (Exception e) {
+            logger.log(Level.ERROR, e.getMessage());
+            throw new ActionCommandException(e.getMessage());
+        }
     }
 
     /**
@@ -217,56 +152,6 @@ public abstract class AbstractContactEditAction extends AbstractContactAction {
         super.sendClientData();
         this.request.setAttribute(GeneralConst.CLIENT_DATA_RECORD, this.vwBusinessAddress);
     }
-
-
-    /**
-     * Stub implementation for responding to the <i>back</i> request.
-     *
-     */
-    protected void doBack() {
-        return;
-    }
-
-    /**
-     * Get target address object.
-     * 
-     * @return the addrObj
-     */
-    public Address getAddrObj() {
-        return address;
-    }
-
-    /**
-     * Set the target address object.
-     * 
-     * @param addrObj
-     *            the addrObj to set
-     */
-    public void setAddrObj(Address addrObj) {
-        this.address = addrObj;
-    }
-
-    /**
-     * Validate the contact and its address.
-     * 
-     * @param contact
-     *            The contact.
-     * @param address
-     *            The contact's address.
-     * @throws ContactException
-     *             validation error.
-     */
-    protected abstract void validateContact(Object contact, Address address) throws ContactException;
-
-    /**
-     * This method is triggered just before the address instance is updated.
-     * 
-     * @param address
-     *            The address instance to update
-     * @param contact
-     *            The contact that is to be associated with the address.
-     */
-    protected abstract void preAddressUpdate(Address address, Object contact);
 
     /**
      * Stub implementation for descendant.
@@ -301,45 +186,5 @@ public abstract class AbstractContactEditAction extends AbstractContactAction {
 
     public void setContactId(int contactId) {
         this.contactId = contactId;
-    }
-
-    /**
-     * Sets the target contact.
-     * 
-     * @param contact
-     *            the contact to set
-     */
-    public void setContact(Business contact) {
-        this.contact = contact;
-    }
-
-    /**
-     * Get the target contact.
-     * 
-     * @return An arbitrary object representing the contact.
-     */
-    public Business getContact() {
-        return this.contact;
-    }
-
-    protected List<GeneralCodes> getLookupData(int codeGroupId) throws ActionCommandException {
-        GeneralCodes code = GeneralCodesFactory.create();
-        code.setCodeGrpId(codeGroupId);
-
-        // Call SOAP web service to get complete list of codes based on a
-        // particular group
-        try {
-            LookupCodesResponse response = CodeSoapRequests.callGet(code);
-            ReplyStatusType rst = response.getReplyStatus();
-            if (rst.getReturnCode().intValue() == GeneralConst.RC_FAILURE) {
-                this.msg = rst.getMessage();
-                return null;
-            }
-            List<GeneralCodes> results = GeneralCodesFactory.create(response.getDetailCodes());
-            return results;
-        } catch (Exception e) {
-            logger.log(Level.ERROR, e.getMessage());
-            throw new ActionCommandException(e.getMessage());
-        }
     }
 }

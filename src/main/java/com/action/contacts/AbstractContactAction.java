@@ -35,8 +35,6 @@ import com.entity.VwBusinessAddressFactory;
  */
 public abstract class AbstractContactAction extends AbstractActionHandler implements ICommand {
 
-
-
     protected Object vwBusinessAddress;
 
     protected Object lookupBusType;

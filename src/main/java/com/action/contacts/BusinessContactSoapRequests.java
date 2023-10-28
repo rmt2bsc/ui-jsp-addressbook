@@ -3,7 +3,6 @@ package com.action.contacts;
 import java.math.BigInteger;
 import java.util.Date;
 
-import org.apache.log4j.Logger;
 import org.rmt2.constants.ApiHeaderNames;
 import org.rmt2.constants.ApiTransactionCodes;
 import org.rmt2.jaxb.AddressBookRequest;
@@ -34,7 +33,6 @@ import com.entity.VwBusinessAddress;
  *
  */
 public class BusinessContactSoapRequests {
-    private static final Logger logger = Logger.getLogger(BusinessContactSoapRequests.class);
     private static final String MSG = "SOAP invocation error occurred regarding server-side messaging for business contact operation";
 
     /**
@@ -265,4 +263,39 @@ public class BusinessContactSoapRequests {
         }
     }
 
+    /**
+     * SOAP call to delete Business contacts.
+     * 
+     * @return {@link AddressBookResponse}
+     * @throws ContactException
+     */
+    public static final AddressBookResponse callDelete(VwBusinessAddress parms) throws ContactException {
+        ObjectFactory fact = new ObjectFactory();
+        AddressBookRequest req = fact.createAddressBookRequest();
+
+        HeaderType head = HeaderTypeBuilder.Builder.create()
+                .withApplication(ApiHeaderNames.APP_NAME_ADDRESSBOOK)
+                .withModule(ApiTransactionCodes.MODULE_ADDRESSBOOK_PROFILE)
+                .withTransaction(ApiTransactionCodes.CONTACTS_DELETE)
+                .withMessageMode(ApiHeaderNames.MESSAGE_MODE_REQUEST)
+                .withDeliveryDate(new Date())
+                .withRouting(ApiTransactionCodes.ROUTE_ADDRESSBOOK)
+                .withDeliveryMode(ApiHeaderNames.DELIVERY_MODE_SYNC)
+                .build();
+
+        ContactCriteriaGroup ccg = fact.createContactCriteriaGroup();
+        BusinessContactCriteria criteria = fact.createBusinessContactCriteria();
+        criteria.setContactId(BigInteger.valueOf(parms.getBusinessId()));
+        ccg.setBusinessCriteria(criteria);
+        req.setCriteria(ccg);
+        req.setHeader(head);
+
+        AddressBookResponse response = null;
+        try {
+            response = SoapJaxbClientWrapper.callSoapRequest(req);
+            return response;
+        } catch (Exception e) {
+            throw new ContactException(BusinessContactSoapRequests.MSG, e);
+        }
+    }
 }
