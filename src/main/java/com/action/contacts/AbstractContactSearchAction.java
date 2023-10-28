@@ -16,6 +16,7 @@ import com.api.web.Response;
 import com.api.web.util.RMT2WebUtility;
 import com.entity.ContactCriteria;
 import com.entity.VwBusinessAddress;
+import com.entity.VwBusinessAddressFactory;
 
 /**
  * This abstract action handler provides common functionality to respond to the
@@ -227,8 +228,7 @@ public abstract class AbstractContactSearchAction extends AbstractContactAction 
      * @throws ActionCommandException
      */
     public void add() throws ActionCommandException {
-        this.receiveClientData();
-        return;
+        this.vwBusinessAddress = VwBusinessAddressFactory.create();
     }
 
     /**

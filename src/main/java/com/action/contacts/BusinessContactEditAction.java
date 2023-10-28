@@ -192,7 +192,7 @@ public class BusinessContactEditAction extends AbstractContactEditAction {
      * @param address
      *            The address instance to update
      * @param contact
-     *            The cotnact that is to be assoicated with the address.
+     *            The contact that is to be associated with the address.
      */
     protected void preAddressUpdate(Address address, Object contact) {
         Business contactObj = null;

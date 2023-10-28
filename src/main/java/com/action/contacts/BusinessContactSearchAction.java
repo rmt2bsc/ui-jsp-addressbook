@@ -157,8 +157,9 @@ public class BusinessContactSearchAction extends AbstractContactSearchAction imp
      * @throws ActionCommandException
      */
     public void add() throws ActionCommandException {
-        // super.add();
-        // this.contact = BusinessFactory.createBusinessAddress();
+        super.add();
+        this.lookupBusServ = this.getLookupData(ContactsConst.CODEGROUP_KEY_BUS_SERV);
+        this.lookupBusType = this.getLookupData(ContactsConst.CODEGROUP_KEY_BUS_TYPE);
         return;
     }
 
