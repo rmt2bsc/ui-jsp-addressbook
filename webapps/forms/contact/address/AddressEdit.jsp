@@ -38,7 +38,7 @@
 			<div align="right"><b><font size="2">Main Phone:</font></b></div>
 		</td>
 		<td width="24%">
-			<beanlib:InputControl type="text" size="20"  tabIndex="15" name="PhoneMain" value="#record.AddrPhoneMain"/>
+			<beanlib:InputControl type="text" size="20"  tabIndex="15" name="AddrPhoneMain" value="#record.AddrPhoneMain"/>
 		</td>
 	</tr>              
 	<tr> 
@@ -52,7 +52,7 @@
 			<div align="right"><b><font size="2">Fax Phone:</font></b></div>
 		</td>
 		<td width="24%">
-			<beanlib:InputControl type="text" size="20"  tabIndex="16" name="PhoneFax" value="#record.AddrPhoneFax"/>
+			<beanlib:InputControl type="text" size="20"  tabIndex="16" name="AddrPhoneFax" value="#record.AddrPhoneFax"/>
 		</td>
 	</tr>
 	<tr> 
@@ -60,8 +60,8 @@
 			<div align="right"><b><font size="2">Zip:</font></b></div>
 		</td>
 		<td width="24%">
-			<beanlib:InputControl type="text" size="10"  tabIndex="13" name="Zip" value="#record.AddrZip"/>
-			<beanlib:InputControl type="text" size="5"  tabIndex="14" name="Zipext" value="#record.AddrZipext"/>
+			<beanlib:InputControl type="text" size="10"  tabIndex="13" name="AddrZip" value="#record.AddrZip"/>
+			<beanlib:InputControl type="text" size="5"  tabIndex="14" name="ddrZipext" value="#record.AddrZipext"/>
 		</td>
 		<td width="10%">&nbsp; </td>
 		<td width="24%">&nbsp;</td>

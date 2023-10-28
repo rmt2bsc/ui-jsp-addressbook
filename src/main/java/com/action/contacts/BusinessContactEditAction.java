@@ -2,6 +2,8 @@ package com.action.contacts;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.rmt2.jaxb.AddressBookResponse;
+import org.rmt2.jaxb.ReplyStatusType;
 
 import com.SystemException;
 import com.api.constants.GeneralConst;
@@ -9,9 +11,12 @@ import com.api.web.ActionCommandException;
 import com.api.web.Context;
 import com.api.web.Request;
 import com.api.web.Response;
+import com.api.web.util.RMT2WebUtility;
 import com.entity.Address;
 import com.entity.Business;
 import com.entity.ContactCriteria;
+import com.entity.VwBusinessAddress;
+import com.entity.VwBusinessAddressFactory;
 
 /**
  * @author RTerrell
@@ -51,8 +56,6 @@ public class BusinessContactEditAction extends AbstractContactEditAction {
     protected void init(Context _context, Request _request) throws SystemException {
         super.init(_context, _request);
         logger.log(Level.INFO, "Initializing Business Contact Edit Action handler");
-        // this.api = BusinessFactory.createBusinessApi(this.dbConn,
-        // this.request);
     }
 
     /**
@@ -90,38 +93,38 @@ public class BusinessContactEditAction extends AbstractContactEditAction {
 
     /**
      * Saves the modifications of a business contact which are persisted to the
-     * database. After successfully saving the data, the model contact object,
+     * database.
+     * <p>
+     * After successfully saving the data, the model contact object,
      * {@link com.bean.VwPersonAddress VwPersonAddress} is refreshed from the
      * database so that it may be sent to the client for presentation.
      * 
      * @throws ActionCommandException
      */
     public void save() throws ActionCommandException {
-        // DatabaseTransApi tx = DatabaseTransFactory.create();
-        // this.addrApi =
-        // AddressFactory.createAddressApi((DatabaseConnectionBean)
-        // tx.getConnector(), this.request);
-        // this.api = BusinessFactory.createBusinessApi((DatabaseConnectionBean)
-        // tx.getConnector(), this.request);
-        // try {
-        // super.save();
-        // tx.commitUOW();
-        // this.refreshContact();
-        // this.msg = "Business Contact was saved successfully";
-        // }
-        // catch (Exception e) {
-        // tx.rollbackUOW();
-        // this.msg = e.getMessage();
-        // throw new ActionCommandException(e);
-        // }
-        // finally {
-        // this.addrApi.close();
-        // this.api.close();
-        // tx.close();
-        // this.addrApi = null;
-        // this.api = null;
-        // tx = null;
-        // }
+
+        // Call SOAP web service to persist Business contact record changes
+        try {
+            AddressBookResponse response = BusinessContactSoapRequests.callSave((VwBusinessAddress) this.vwBusinessAddress);
+            ReplyStatusType rst = response.getReplyStatus();
+            this.msg = rst.getMessage() + ": " + rst.getExtMessage();
+            if (rst.getReturnCode().intValue() == GeneralConst.RC_FAILURE) {
+                this.msg = rst.getMessage();
+                return;
+            }
+
+            // In the event this is a contact, update the view object's business
+            // id for display purposes.
+            if (response.getProfile() != null && response.getProfile().getCommonContacts() != null) {
+                int contactId = response.getProfile().getCommonContacts().get(0).getContactId().intValue();
+                ((VwBusinessAddress) this.vwBusinessAddress).setBusinessId(contactId);
+            }
+            this.lookupBusServ = this.getLookupData(ContactsConst.CODEGROUP_KEY_BUS_SERV);
+            this.lookupBusType = this.getLookupData(ContactsConst.CODEGROUP_KEY_BUS_TYPE);
+        } catch (Exception e) {
+            logger.log(Level.ERROR, e.getMessage());
+            throw new ActionCommandException(e.getMessage());
+        }
     }
 
     /**
@@ -163,7 +166,14 @@ public class BusinessContactEditAction extends AbstractContactEditAction {
      */
     protected void receiveClientData() throws ActionCommandException {
         super.receiveClientData();
-        // TODO: consider using the packageBean approach here...
+        try {
+            // Retrieve values from the request object into the User object.
+            this.vwBusinessAddress = VwBusinessAddressFactory.create();
+            RMT2WebUtility.packageBean(this.request, this.vwBusinessAddress);
+        } catch (SystemException e) {
+            logger.log(Level.ERROR, e.getMessage());
+            throw new ActionCommandException(e.getMessage());
+        }
     }
 
     /**
@@ -269,7 +279,7 @@ public class BusinessContactEditAction extends AbstractContactEditAction {
         // Fetch business contacts
         try {
             ContactCriteria criteria = (ContactCriteria) this.query.getCustomObj();
-            this.vwContactAddress = this.getContacts(criteria);
+            this.vwBusinessAddress = this.getContacts(criteria);
         } catch (ContactException e) {
 
         }
@@ -287,7 +297,7 @@ public class BusinessContactEditAction extends AbstractContactEditAction {
 
     @Override
     protected void sendClientData() throws ActionCommandException {
-        this.request.setAttribute(GeneralConst.CLIENT_DATA_LIST, this.vwContactAddress);
         super.sendClientData();
+        this.request.setAttribute(GeneralConst.CLIENT_DATA_LIST, this.vwBusinessAddress);
     }
 }

@@ -114,7 +114,7 @@ public class BusinessContactSearchAction extends AbstractContactSearchAction imp
         // Get Lookup data
         this.lookupBusServ = this.getLookupData(ContactsConst.CODEGROUP_KEY_BUS_SERV);
         this.lookupBusType = this.getLookupData(ContactsConst.CODEGROUP_KEY_BUS_TYPE);
-        this.vwContactAddress = new ArrayList<VwBusinessAddress>();
+        this.vwBusinessAddress = new ArrayList<VwBusinessAddress>();
         this.sendClientData();
     }
 
@@ -125,7 +125,7 @@ public class BusinessContactSearchAction extends AbstractContactSearchAction imp
         // Fetch business contacts
         try {
             ContactCriteria criteria = (ContactCriteria) this.query.getCustomObj();
-            this.vwContactAddress = this.getContacts(criteria);
+            this.vwBusinessAddress = this.getContacts(criteria);
         } catch (ContactException e) {
 
         }
@@ -191,7 +191,7 @@ public class BusinessContactSearchAction extends AbstractContactSearchAction imp
      */
     protected void sendClientData() throws ActionCommandException {
         super.sendClientData();
-        this.request.setAttribute(GeneralConst.CLIENT_DATA_LIST, this.vwContactAddress);
+        this.request.setAttribute(GeneralConst.CLIENT_DATA_LIST, this.vwBusinessAddress);
     }
 
 }

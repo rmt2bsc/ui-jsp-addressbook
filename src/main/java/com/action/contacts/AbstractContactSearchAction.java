@@ -152,7 +152,7 @@ public abstract class AbstractContactSearchAction extends AbstractContactAction 
      */
     protected void sendClientData() throws ActionCommandException {
         super.sendClientData();
-        this.request.setAttribute(GeneralConst.CLIENT_DATA_RECORD, this.vwContactAddress);
+        this.request.setAttribute(GeneralConst.CLIENT_DATA_RECORD, this.vwBusinessAddress);
     }
 
     /**
@@ -259,7 +259,7 @@ public abstract class AbstractContactSearchAction extends AbstractContactAction 
         try {
             List<VwBusinessAddress> results = this.getContacts(criteria);
             if (results != null && results.size() == 1) {
-                this.vwContactAddress = results.get(0);
+                this.vwBusinessAddress = results.get(0);
             }
             else {
                 String errMsg = "The edit business contact operation's result set is either null or too many business contacts were returned";

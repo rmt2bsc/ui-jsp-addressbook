@@ -37,7 +37,7 @@ public abstract class AbstractContactAction extends AbstractActionHandler implem
 
 
 
-    protected Object vwContactAddress;
+    protected Object vwBusinessAddress;
 
     protected Object lookupBusType;
 

@@ -215,8 +215,7 @@ public abstract class AbstractContactEditAction extends AbstractContactAction {
      */
     protected void sendClientData() throws ActionCommandException {
         super.sendClientData();
-        this.request.setAttribute(ContactsConst.CLIENT_DATA, this.contact);
-        this.request.setAttribute(ContactsConst.CLIENT_DATA_ADDRESS, this.address);
+        this.request.setAttribute(GeneralConst.CLIENT_DATA_RECORD, this.vwBusinessAddress);
     }
 
 

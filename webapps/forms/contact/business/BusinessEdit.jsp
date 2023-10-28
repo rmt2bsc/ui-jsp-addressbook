@@ -42,7 +42,7 @@
 							</td>
 							<td width="24%"> 
 								<div align="left"> 
-									<beanlib:InputControl type="text" size="20" tabIndex="5" name="ContactFirstname" value="#record.BusContactFirstname"/>
+									<beanlib:InputControl type="text" size="20" tabIndex="5" name="BusContactFirstname" value="#record.BusContactFirstname"/>
 								</div>
 							</td>
 						</tr>	
@@ -52,7 +52,7 @@
 							</td>
 							<td width="21%"> 
 								<div align="left"> 
-									<beanlib:InputControl type="text" size="60" tabIndex= "1" name="Longname" value="#record.BusLongname"/>
+									<beanlib:InputControl type="text" size="60" tabIndex= "1" name="BusLongname" value="#record.BusLongname"/>
 								</div>
 							</td>
 							<td width="12%" bgcolor="#FFCC00"> 
@@ -60,7 +60,7 @@
 							</td>
 							<td width="21%"> 
 								<div align="left"> 
-									<beanlib:InputControl type="text" size="20" tabIndex= "6" name="ContactLastname" value="#record.BusContactLastname"/>
+									<beanlib:InputControl type="text" size="20" tabIndex= "6" name="BusContactLastname" value="#record.BusContactLastname"/>
 								</div>
 							</td>
 						</tr>
@@ -72,7 +72,7 @@
 								<div align="left"> 
 									 <beanlib:InputControl dataSource="<%=ContactsConst.CLIENT_DATA_BUSTYPE %>"
 														   type="select"
-														   name="EntityTypeId"
+														   name="BusEntityTypeId"
 														   codeProperty="CodeId"
 														   displayProperty="Longdesc"
 														   selectedValue="#record.BusEntityTypeId"/>
@@ -83,7 +83,7 @@
 							</td>
 							<td width="21%"> 
 								<div align="left"> 
-									<beanlib:InputControl type="text" size="20" tabIndex= "7" name="ContactPhone" value="#record.BusContactPhone"/>
+									<beanlib:InputControl type="text" size="20" tabIndex= "7" name="BusContactPhone" value="#record.BusContactPhone"/>
 								</div>
 							</td>							
 						</tr>
@@ -95,7 +95,7 @@
 								<div align="left"> 
 									 <beanlib:InputControl dataSource="<%=ContactsConst.CLIENT_DATA_SERVTYPE %>"
 														   type="select"
-														   name="ServTypeId"
+														   name="BusServTypeId"
 														   codeProperty="CodeId"
 														   displayProperty="Longdesc"
 														   selectedValue="#record.BusServTypeId"/>								
@@ -106,7 +106,7 @@
 							</td>
 							<td width="24%"> 
 								<div align="left"> 
-									<beanlib:InputControl type="text" size="20" tabIndex="8" name="ContactExt" value="#record.BusContactExt"/>
+									<beanlib:InputControl type="text" size="20" tabIndex="8" name="BusContactExt" value="#record.BusContactExt"/>
 								</div>
 							</td>
 						</tr>
@@ -116,7 +116,7 @@
 							</td>
 							<td width="21%"> 
 								<div align="left"> 
-									<beanlib:InputControl type="text" size="50" tabIndex="4" name="Website" value="#record.BusWebsite"/>
+									<beanlib:InputControl type="text" size="50" tabIndex="4" name="BusWebsite" value="#record.BusWebsite"/>
 								</div>
 							</td>
 							<td width="12%" bgcolor="#FFCC00"> 
@@ -124,7 +124,7 @@
 							</td>
 							<td width="24%"> 
 								<div align="left"> 
-									<beanlib:InputControl type="text" size="20" tabIndex="9" name="TaxId" value="#record.BusTaxId"/>
+									<beanlib:InputControl type="text" size="20" tabIndex="9" name="BusTaxId" value="#record.BusTaxId"/>
 								</div>
 							</td>
 						</tr>

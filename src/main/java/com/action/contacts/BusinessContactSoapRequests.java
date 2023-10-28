@@ -8,10 +8,15 @@ import org.rmt2.constants.ApiHeaderNames;
 import org.rmt2.constants.ApiTransactionCodes;
 import org.rmt2.jaxb.AddressBookRequest;
 import org.rmt2.jaxb.AddressBookResponse;
+import org.rmt2.jaxb.AddressType;
 import org.rmt2.jaxb.BusinessContactCriteria;
+import org.rmt2.jaxb.BusinessType;
+import org.rmt2.jaxb.CodeDetailType;
 import org.rmt2.jaxb.ContactCriteriaGroup;
+import org.rmt2.jaxb.ContactDetailGroup;
 import org.rmt2.jaxb.HeaderType;
 import org.rmt2.jaxb.ObjectFactory;
+import org.rmt2.jaxb.ZipcodeType;
 import org.rmt2.util.HeaderTypeBuilder;
 
 import com.api.messaging.webservice.soap.client.SoapJaxbClientWrapper;
@@ -19,6 +24,7 @@ import com.api.util.RMT2Money;
 import com.api.util.assistants.Verifier;
 import com.api.util.assistants.VerifyException;
 import com.entity.ContactCriteria;
+import com.entity.VwBusinessAddress;
 
 /**
  * Help class for constructing and invoking SOAP calls pertaining to business
@@ -32,7 +38,7 @@ public class BusinessContactSoapRequests {
     private static final String MSG = "SOAP invocation error occurred regarding server-side messaging for business contact operation";
 
     /**
-     * SOAP call to fetch all users.
+     * SOAP call to fetch Business contacts.
      * 
      * @return {@link AddressBookResponse}
      * @throws ContactException
@@ -181,9 +187,82 @@ public class BusinessContactSoapRequests {
 
         }
         return jaxbCriteria;
-
     }
 
 
+    /**
+     * SOAP call to save Business contact data changes.
+     * 
+     * @param data
+     *            {@link VwBusinessAddress}
+     * @return {@link AddressBookResponse}
+     * @throws ContactException
+     */
+    public static final AddressBookResponse callSave(VwBusinessAddress data) throws ContactException {
+        ObjectFactory fact = new ObjectFactory();
+        AddressBookRequest req = fact.createAddressBookRequest();
+
+        HeaderType head = HeaderTypeBuilder.Builder.create()
+                .withApplication(ApiHeaderNames.APP_NAME_ADDRESSBOOK)
+                .withModule(ApiTransactionCodes.MODULE_ADDRESSBOOK_PROFILE)
+                .withTransaction(ApiTransactionCodes.CONTACTS_UPDATE)
+                .withMessageMode(ApiHeaderNames.MESSAGE_MODE_REQUEST)
+                .withDeliveryDate(new Date())
+                .withRouting(ApiTransactionCodes.ROUTE_ADDRESSBOOK)
+                .withDeliveryMode(ApiHeaderNames.DELIVERY_MODE_SYNC)
+                .build();
+
+        ContactDetailGroup cdg = fact.createContactDetailGroup();
+
+        CodeDetailType cdtEntityType = fact.createCodeDetailType();
+        cdtEntityType.setCodeId(BigInteger.valueOf(data.getBusEntityTypeId()));
+        
+        CodeDetailType cdtServType = fact.createCodeDetailType();
+        cdtServType.setCodeId(BigInteger.valueOf(data.getBusServTypeId()));
+        
+        BusinessType obj = fact.createBusinessType();
+        obj.setBusinessId(BigInteger.valueOf(data.getBusinessId()));
+        obj.setLongName(data.getBusLongname());
+        obj.setShortName(data.getBusShortname());
+        obj.setContactFirstname(data.getBusContactFirstname());
+        obj.setContactLastname(data.getBusContactLastname());
+        obj.setContactEmail(data.getContactEmail());
+        obj.setContactPhone(data.getBusContactPhone());
+        obj.setContactExt(data.getBusContactExt());
+        obj.setTaxId(data.getBusTaxId());
+        obj.setEntityType(cdtEntityType);
+        obj.setServiceType(cdtServType);
+        obj.setWebsite(data.getBusWebsite());
+
+        AddressType addr = fact.createAddressType();
+        addr.setAddrId(BigInteger.valueOf(data.getAddrId()));
+        addr.setAddr1(data.getAddr1());
+        addr.setAddr2(data.getAddr2());
+        addr.setAddr3(data.getAddr3());
+        addr.setAddr4(data.getAddr4());
+        addr.setPhoneMain(data.getAddrPhoneMain());
+        addr.setPhoneFax(data.getAddrPhoneFax());
+
+        ZipcodeType zip = fact.createZipcodeType();
+        zip.setCity(data.getZipCity());
+        zip.setState(data.getZipState());
+        zip.setZipcode(BigInteger.valueOf(data.getAddrZip()));
+
+        addr.setZip(zip);
+        obj.setAddress(addr);
+
+        cdg.getBusinessContacts().add(obj);
+
+        req.setProfile(cdg);
+        req.setHeader(head);
+
+        AddressBookResponse response = null;
+        try {
+            response = SoapJaxbClientWrapper.callSoapRequest(req);
+            return response;
+        } catch (Exception e) {
+            throw new ContactException(BusinessContactSoapRequests.MSG, e);
+        }
+    }
 
 }
