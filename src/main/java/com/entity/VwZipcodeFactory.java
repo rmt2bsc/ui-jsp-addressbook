@@ -48,6 +48,7 @@ public class VwZipcodeFactory {
             o.setCountyName(item.getCountyName());
             o.setCountyFips(item.getCountyFips());
             o.setTimeZone(item.getTimeZoneId().getTimezoneId().intValue());
+            o.setTimezoneDescr(item.getTimeZoneId().getTimeszoneDesc());
             o.setDayLightSaving(item.getDayLightSaving());
             o.setLatitude(item.getLatitude());
             o.setLongitude(item.getLongitude());

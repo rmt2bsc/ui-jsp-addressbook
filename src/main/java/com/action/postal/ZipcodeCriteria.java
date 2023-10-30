@@ -15,6 +15,7 @@ import com.api.jsp.action.AncestorQueryCriteria;
 public class ZipcodeCriteria extends AncestorQueryCriteria {
     private static final long serialVersionUID = -9194934472559574966L;
 
+    private String qry_ZipId;
     private String qry_Zip;
     private String qry_City;
     private String qry_State;
@@ -55,6 +56,7 @@ public class ZipcodeCriteria extends AncestorQueryCriteria {
      * and TimeZone.
      */
     public void initBean() throws SystemException {
+        this.qry_ZipId = "";
         this.qry_Zip = "";
         this.qry_City = "";
         this.qry_State = "";
@@ -161,5 +163,13 @@ public class ZipcodeCriteria extends AncestorQueryCriteria {
      */
     public void setQry_CityAliasName(String qry_CityAliasName) {
         this.qry_CityAliasName = qry_CityAliasName;
+    }
+
+    public String getQry_ZipId() {
+        return qry_ZipId;
+    }
+
+    public void setQry_ZipId(String qry_ZipId) {
+        this.qry_ZipId = qry_ZipId;
     }
 }

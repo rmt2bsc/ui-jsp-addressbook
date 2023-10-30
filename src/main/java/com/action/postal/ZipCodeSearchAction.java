@@ -59,29 +59,23 @@ public class ZipCodeSearchAction extends AbstractActionHandler implements IComma
     /** Command name for view zip code record */
     protected static final String COMMAND_VIEW = "Zipcode.Search.view";
 
-    /** Command name for fetch single zip code record */
-    protected static final String COMMAND_FETCHZIPCODE = "Zipcode.Search.fetchzip";
-
-    /** Command name for fetch all timezone records */
-    protected static final String COMMAND_FETCHTIMEZONES = "Zipcode.Search.fetchtimezones";
-
     /** Command name for navigating to previous page */
     protected static final String COMMAND_BACK = "Zipcode.Search.back";
 
     /** Command name for resetting the zip code search page */
     protected static final String COMMAND_RESET = "Zipcode.Search.reset";
 
-    // private ZipcodeApi api;
-
     private Object zipList;
 
     private List<TimeZone> tzList;
 
+    private Object tz;
+
     private VwZipcode zip;
 
-    // private String zipIdStr;
-    //
-    // private String zipCodeStr;
+    private int selectedZipId;
+
+    private ZipcodeCriteria criteria;
 
     private Logger logger;
 
@@ -143,19 +137,11 @@ public class ZipCodeSearchAction extends AbstractActionHandler implements IComma
         if (command.equalsIgnoreCase(ZipCodeSearchAction.COMMAND_VIEW)) {
             this.editData();
         }
-        // if
-        // (command.equalsIgnoreCase(ZipCodeSearchAction.COMMAND_FETCHZIPCODE))
-        // {
-        // this.editZipcodeByCode();
-        // }
         if (command.equalsIgnoreCase(ZipCodeSearchAction.COMMAND_BACK)) {
             this.doBack();
         }
         if (command.equalsIgnoreCase(ZipCodeSearchAction.COMMAND_RESET)) {
             this.doReset();
-        }
-        if (command.equalsIgnoreCase(ZipCodeSearchAction.COMMAND_FETCHTIMEZONES)) {
-            this.doFetchTimezones();
         }
         return;
     }
@@ -194,7 +180,6 @@ public class ZipCodeSearchAction extends AbstractActionHandler implements IComma
         }
         // this.doList(pageNo);
         this.doList();
-        this.sendClientData();
         return;
     }
 
@@ -226,6 +211,7 @@ public class ZipCodeSearchAction extends AbstractActionHandler implements IComma
             }
             this.zipList = results;
             this.tzList = this.getLookupData();
+            this.sendClientData();
         } catch (ContactException e) {
             throw e;
         }
@@ -239,113 +225,31 @@ public class ZipCodeSearchAction extends AbstractActionHandler implements IComma
      * 
      * @throws ActionCommandException
      *             When target zip code id is null or contains an invalid value.
+     * @deprecated no longer needed since recieveClientData does all the work.
      */
     public void edit() throws ActionCommandException {
-        // // Convert value to number
-        // int zipId;
-        // this.pageResults = null;
-        // try {
-        // if (this.zipIdStr == null) {
-        // this.msg = "Zip code id must selected for the \"View\" command";
-        // this.logger.log(Level.ERROR, this.msg);
-        // throw new ActionCommandException(this.msg);
-        // }
-        // zipId = Integer.parseInt(this.zipIdStr);
-        // } catch (NumberFormatException e) {
-        // this.msg = this.zipIdStr + " is invalid zip code identifier";
-        // this.logger.log(Level.ERROR, this.msg);
-        // throw new ActionCommandException(this.msg);
-        // }
-        //
-        // // Get data for a single zip code instance.
-        // DatabaseTransApi tx = DatabaseTransFactory.create();
-        // this.api =
-        // AddressComponentsFactory.createZipcodeApi((DatabaseConnectionBean)
-        // tx.getConnector(), this.request);
-        // try {
-        // this.zip = (VwZipcode) this.api.findZipExtById(zipId);
-        // if (this.zip == null) {
-        // this.zip = AddressComponentsFactory.createZipcodeExt();
-        // }
-        // return;
-        // } catch (ZipcodeException e) {
-        // throw new ActionCommandException(e);
-        // } finally {
-        // this.api.close();
-        // tx.close();
-        // this.api = null;
-        // tx = null;
-        // }
-    }
+        // Fetch contact information
+        try {
+            PostalResponse response = ZipcodeSoapRequests.callGet(this.criteria);
 
+            // Get message text from reply status
+            ReplyStatusType rst = response.getReplyStatus();
+            this.msg = rst.getMessage();
+            this.msg += " (" + rst.getRecordCount() + ")";
 
-
-    protected void doList(int pageNo) throws ActionCommandException {
-        // DatabaseTransApi tx = DatabaseTransFactory.create();
-        // this.api =
-        // AddressComponentsFactory.createZipcodeApi((DatabaseConnectionBean)
-        // tx.getConnector(), this.request);
-        // this.pageResults = null;
-        // this.zipList = null;
-        // try {
-        // String criteria = this.query.getWhereClause();
-        // if (pageNo > 0) {
-        // this.pageResults = this.api.findZip(criteria, pageNo);
-        // if (this.pageResults == null) {
-        // this.msg = "Pagination API return invalid results";
-        // logger.error(this.msg);
-        // throw new ActionCommandException(this.msg);
-        // }
-        // this.zipList = this.pageResults.getResults();
-        // }
-        // else {
-        // this.zipList = this.api.findZip(criteria);
-        // }
-        //
-        // if (this.zipList == null) {
-        // this.zipList = new ArrayList<VwZipcode>();
-        // }
-        // this.msg = ((List<VwZipcode>) this.zipList).size() + " rows found";
-        // this.setError(false);
-        // this.sendClientData();
-        // } catch (ZipcodeException e) {
-        // this.setError(true);
-        // this.msg = e.getMessage();
-        // this.sendClientData();
-        // throw new ActionCommandException(e);
-        // } finally {
-        // this.api.close();
-        // tx.close();
-        // this.api = null;
-        // tx = null;
-        // }
-    }
-
-
-    private void doFetchTimezones() throws ActionCommandException {
-        // DatabaseTransApi tx = DatabaseTransFactory.create();
-        // TimezoneApi tzApi =
-        // AddressComponentsFactory.createTimezoneApi((DatabaseConnectionBean)
-        // tx.getConnector(), this.request);
-        // try {
-        // this.tzList = (List<TimeZone>) tzApi.findAllTimeZones();
-        // if (this.tzList == null) {
-        // this.tzList = new ArrayList<TimeZone>();
-        // }
-        // this.msg = this.tzList.size() + " rows found";
-        // this.setError(false);
-        // this.sendClientData();
-        // } catch (TimezoneException e) {
-        // this.setError(true);
-        // this.msg = e.getMessage();
-        // this.sendClientData();
-        // throw new ActionCommandException(e);
-        // } finally {
-        // tzApi.close();
-        // tx.close();
-        // tzApi = null;
-        // tx = null;
-        // }
+            List<VwZipcode> results = null;
+            if (response.getZipFull() != null) {
+                results = VwZipcodeFactory.create(response.getZipFull());
+            }
+            else {
+                results = new ArrayList<>();
+            }
+            this.zip = results.get(0);
+            this.tz = this.getTimezone(this.zip.getTimeZone());
+            this.sendClientData();
+        } catch (ContactException e) {
+            throw e;
+        }
     }
 
     /**
@@ -372,24 +276,65 @@ public class ZipCodeSearchAction extends AbstractActionHandler implements IComma
         }
     }
 
+    protected TimeZone getTimezone(int timezoneId) throws ActionCommandException {
+        // Call SOAP web service to get complete list of codes based on a
+        // particular group
+        try {
+            TimeZone criteria = TimezoneFactory.create();
+            criteria.setTimeZoneId(timezoneId);
+            PostalResponse response = TimezoneSoapRequests.callGet(criteria);
+            ReplyStatusType rst = response.getReplyStatus();
+            if (rst.getReturnCode().intValue() == GeneralConst.RC_FAILURE) {
+                this.msg = rst.getMessage();
+                return null;
+            }
+            TimeZone results = TimezoneFactory.create(response.getTimezones().get(0));
+            return results;
+        } catch (Exception e) {
+            logger.log(Level.ERROR, e.getMessage());
+            throw new ActionCommandException(e.getMessage());
+        }
+    }
+
     /**
      * Gathers zip code input data from the client's request.
      * 
      * @throws ActionCommandException
      */
     protected void receiveClientData() throws ActionCommandException {
-        if (!this.isFirstTime()) {
-            try {
-                // Get zip code data from the selected row.
-                this.zip = VwZipcodeFactory.create();
-                RMT2WebUtility.packageBean(this.request, this.zip);
-            } catch (Exception e) {
-                logger.log(Level.ERROR, e.getMessage());
-                throw new ActionCommandException(e.getMessage());
-            }
+        String temp = this.getInputValue("ZipId", null);
+        this.criteria = ZipcodeCriteria.getInstance();
+        criteria.setQry_ZipId(temp);
+        try {
+            this.selectedZipId = Integer.parseInt(temp);
+        } catch (NumberFormatException e) {
+            this.selectedZipId = 0;
         }
-        // this.zipIdStr = this.getInputValue("ZipId", null);
-        // this.zipCodeStr = this.getInputValue("ZipCode", null);
+        // if (!this.isFirstTime()) {
+        // String rowStr =
+        // this.request.getParameter(GeneralConst.CLIENTROW_PROPERTY);
+        //
+        // // Client must select a row to edit.
+        // if (rowStr == null) {
+        // logger.log(Level.ERROR,
+        // RMT2SystemExceptionConst.MSG_ITEM_NOT_SELECTED);
+        // throw new
+        // ActionCommandException(RMT2SystemExceptionConst.MSG_ITEM_NOT_SELECTED,
+        // RMT2SystemExceptionConst.RC_ITEM_NOT_SELECTED);
+        // }
+        // // Get index of the row that is to be processed from the
+        // // HttpServeltRequest object
+        // int selectedRow = RMT2Money.stringToNumber(rowStr).intValue();
+        //
+        // try {
+        // // Get zip code data from the selected row.
+        // this.zip = VwZipcodeFactory.create();
+        // RMT2WebUtility.packageBean(this.request, this.zip, selectedRow);
+        // } catch (Exception e) {
+        // logger.log(Level.ERROR, e.getMessage());
+        // throw new ActionCommandException(e.getMessage());
+        // }
+        // }
     }
 
     /**
@@ -406,6 +351,7 @@ public class ZipCodeSearchAction extends AbstractActionHandler implements IComma
         this.request.setAttribute(GeneralConst.CLIENT_DATA_RECORD, this.zip);
         this.request.setAttribute(GeneralConst.CLIENT_DATA_LIST, this.zipList);
         this.request.setAttribute(PostalConst.CLIENT_DATA_TIMEZONES, this.tzList);
+        this.request.setAttribute(PostalConst.CLIENT_DATA_TIMEZONE, this.tz);
         this.request.setAttribute(RMT2ServletConst.REQUEST_MSG_INFO, this.msg);
     }
 
@@ -476,134 +422,45 @@ public class ZipCodeSearchAction extends AbstractActionHandler implements IComma
         return;
     }
 
-    // /**
-    // * Retrieves a single {@link com.bean.VwZipcode VwZipcode} instance from
-    // the
-    // * database using the zip code id obtain from
-    // * {@link com.action.postal.ZipCodeSearchAction#receiveClientData()
-    // * receiveClientData()} method.
-    // *
-    // * @throws ActionCommandException
-    // * When target zip code id is null or contains an invalid value.
-    // */
-    // public void editZipcodeByCode() throws ActionCommandException {
-    // this.receiveClientData();
-    //
-    // // Convert value to number
-    // if (this.zipCodeStr == null) {
-    // this.msg = "A zip code must selected for the \"View\" command";
-    // this.logger.log(Level.ERROR, this.msg);
-    // throw new ActionCommandException(this.msg);
-    // }
-    //
-    // // Get data for a single zip code instance.
-    // DatabaseTransApi tx = DatabaseTransFactory.create();
-    // this.api =
-    // AddressComponentsFactory.createZipcodeApi((DatabaseConnectionBean)
-    // tx.getConnector(), this.request);
-    // try {
-    // this.zipList = this.api.findZipExtByCode(this.zipCodeStr);
-    // if (this.zipList == null) {
-    // this.zipList = new ArrayList<VwZipcode>();
-    // }
-    // this.sendClientData();
-    // return;
-    // } catch (ZipcodeException e) {
-    // throw new ActionCommandException(e);
-    // } finally {
-    // this.api.close();
-    // tx.close();
-    // this.api = null;
-    // tx = null;
-    // }
-    // }
-
-    // /**
-    // * Creates the response message, RS_postal_search, from the java results
-    // * obtained from the query. When the client action code is <i>list</i>,
-    // the
-    // * body will contain one or more zip code records in short format. When
-    // the
-    // * client action code is <i>view</i>, the body will contain a single zip
-    // * code record in full format. This method mimics a web service
-    // * functionality by converting the personal contact, which is a java
-    // object,
-    // * to XML and appending the results of the conversion to the
-    // * RS_postal_search message.
-    // *
-    // * @return The XML Message
-    // * @throws ActionCommandException
-    // */
-    // protected String getXmlResults() throws ActionCommandException {
-    // // Mimic web service to return response as XML!
-    // if (this.isError()) {
-    // RMT2SessionBean userSession = (RMT2SessionBean)
-    // this.request.getSession().getAttribute(RMT2ServletConst.SESSION_BEAN);
-    // return PayloadFactory.buildCommonErrorPayload(-1, this.msg,
-    // userSession.getLoginId());
-    // }
-    //
-    // String xml = null;
-    // String responseId = "RS_postal_search";
-    // PostalSearchHandler srvc = new PostalSearchHandler(null, this.request);
-    // srvc.setResponseServiceId(responseId);
-    // List<VwZipcode> results = new ArrayList<VwZipcode>();
-    // if (this.command.equalsIgnoreCase(ZipCodeSearchAction.COMMAND_SEARCH)
-    // ||
-    // this.command.equalsIgnoreCase(ZipCodeSearchAction.COMMAND_FETCHZIPCODE))
-    // {
-    // if (this.zipList != null && this.pageResults == null) {
-    // results = (List<VwZipcode>) this.zipList;
-    // xml = srvc.buildZipShortResponsePayload(results, this.msg);
-    // }
-    // else {
-    // xml = srvc.buildZipShortResponsePayload(this.pageResults, this.msg);
-    // }
-    // }
-    // else if (this.command.equalsIgnoreCase(ZipCodeSearchAction.COMMAND_VIEW))
-    // {
-    // if (this.zip != null) {
-    // results.add(this.zip);
-    // }
-    // xml = srvc.buildZipFullResponsePayload(results, this.msg);
-    // }
-    // else if
-    // (command.equalsIgnoreCase(ZipCodeSearchAction.COMMAND_FETCHTIMEZONES)) {
-    // xml = srvc.buildTimezoneResponsePayload(this.tzList, this.msg);
-    // }
-    // return xml;
-    // }
-
-    // /**
-    // * Adds custom selection criteria for a particular database column using
-    // one
-    // * or more UI query fields mapped to
-    // * {@link com.bean.criteria.ZipcodeCriteria ZipcodeCriteria}. Each
-    // criteria
-    // * field is mapped to its corresponding database column in order to build
-    // * the SQL predicate. The UI criteria field(s) that are applied for the
-    // * Zipcode search page are: <i>qry_AreaCode</i>.
-    // *
-    // * @param queryField
-    // * The name of the field that is to be represented by customized
-    // * selection criteria.
-    // * @return String as the selection criteria or null when custom criteria
-    // is
-    // * not required.
-    // */
-    // protected String buildCustomClientCriteria(String queryField) {
-    // StringBuffer sql = new StringBuffer(20);
-    // if ("qry_AreaCode".equalsIgnoreCase(queryField)) {
-    // String value = this.request.getParameter(queryField);
-    // sql.append(" area_code like '%");
-    // sql.append(value);
-    // sql.append("%' ");
-    // }
-    //
-    // if (sql.length() > 0) {
-    // return sql.toString();
-    // }
-    // return null;
-    // }
+    protected void doList(int pageNo) throws ActionCommandException {
+        // DatabaseTransApi tx = DatabaseTransFactory.create();
+        // this.api =
+        // AddressComponentsFactory.createZipcodeApi((DatabaseConnectionBean)
+        // tx.getConnector(), this.request);
+        // this.pageResults = null;
+        // this.zipList = null;
+        // try {
+        // String criteria = this.query.getWhereClause();
+        // if (pageNo > 0) {
+        // this.pageResults = this.api.findZip(criteria, pageNo);
+        // if (this.pageResults == null) {
+        // this.msg = "Pagination API return invalid results";
+        // logger.error(this.msg);
+        // throw new ActionCommandException(this.msg);
+        // }
+        // this.zipList = this.pageResults.getResults();
+        // }
+        // else {
+        // this.zipList = this.api.findZip(criteria);
+        // }
+        //
+        // if (this.zipList == null) {
+        // this.zipList = new ArrayList<VwZipcode>();
+        // }
+        // this.msg = ((List<VwZipcode>) this.zipList).size() + " rows found";
+        // this.setError(false);
+        // this.sendClientData();
+        // } catch (ZipcodeException e) {
+        // this.setError(true);
+        // this.msg = e.getMessage();
+        // this.sendClientData();
+        // throw new ActionCommandException(e);
+        // } finally {
+        // this.api.close();
+        // tx.close();
+        // this.api = null;
+        // tx = null;
+        // }
+    }
 
 }

@@ -54,6 +54,9 @@ public class ZipcodeSoapRequests {
         PostalCriteria postalCriteria = fact.createPostalRequestPostalCriteria();
         ZipcodeCriteriaType criteria = fact.createZipcodeCriteriaType();
         if (parms != null) {
+            if (RMT2String2.isNotEmpty(parms.getQry_ZipId()) && RMT2Money.isNumeric(parms.getQry_ZipId())) {
+                criteria.setZipId(BigInteger.valueOf((Integer.valueOf(parms.getQry_ZipId()))));
+            }
             if (RMT2String2.isNotEmpty(parms.getQry_Zip()) && RMT2Money.isNumeric(parms.getQry_Zip())) {
                 criteria.setZipcode(BigInteger.valueOf((Integer.valueOf(parms.getQry_Zip()))));
             }
