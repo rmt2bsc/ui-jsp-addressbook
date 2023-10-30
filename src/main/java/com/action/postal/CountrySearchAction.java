@@ -3,6 +3,7 @@ package com.action.postal;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.rmt2.jaxb.PostalResponse;
 import org.rmt2.jaxb.ReplyStatusType;
@@ -11,13 +12,16 @@ import com.SystemException;
 import com.action.contacts.ContactException;
 import com.api.constants.GeneralConst;
 import com.api.constants.RMT2ServletConst;
+import com.api.constants.RMT2SystemExceptionConst;
 import com.api.jsp.action.AbstractActionHandler;
 import com.api.security.RMT2TagQueryBean;
+import com.api.util.RMT2Money;
 import com.api.web.ActionCommandException;
 import com.api.web.Context;
 import com.api.web.ICommand;
 import com.api.web.Request;
 import com.api.web.Response;
+import com.api.web.util.RMT2WebUtility;
 import com.entity.Country;
 import com.entity.CountryFactory;
 
@@ -195,15 +199,36 @@ public class CountrySearchAction extends AbstractActionHandler implements IComma
      * @throws ActionCommandException
      */
     protected void receiveClientData() throws ActionCommandException {
-        String temp = this.getInputValue("CountryId", null);
-        int id;
-        this.country = CountryFactory.create();
-        try {
-            id = Integer.parseInt(temp);
-            this.country.setCountryId(id);
-        } catch (NumberFormatException e) {
-            this.country = null;
+        String rowStr = this.request.getParameter(GeneralConst.CLIENTROW_PROPERTY);
+
+        // Client must select a row to edit.
+        if (rowStr == null) {
+            logger.log(Level.ERROR, RMT2SystemExceptionConst.MSG_ITEM_NOT_SELECTED);
+            throw new ActionCommandException(RMT2SystemExceptionConst.MSG_ITEM_NOT_SELECTED,
+                    RMT2SystemExceptionConst.RC_ITEM_NOT_SELECTED);
         }
+        // Get index of the row that is to be processed from the
+        // HttpServeltRequest object
+        int selectedRow = RMT2Money.stringToNumber(rowStr).intValue();
+
+        try {
+            // Get country data from the selected row.
+            this.country = CountryFactory.create();
+            RMT2WebUtility.packageBean(this.request, this.country, selectedRow);
+        } catch (Exception e) {
+            logger.log(Level.ERROR, e.getMessage());
+            throw new ActionCommandException(e.getMessage());
+        }
+
+        // String temp = this.getInputValue("CountryId", null);
+        // int id;
+        // this.country = CountryFactory.create();
+        // try {
+        // id = Integer.parseInt(temp);
+        // this.country.setCountryId(id);
+        // } catch (NumberFormatException e) {
+        // this.country = null;
+        // }
     }
 
     /**
