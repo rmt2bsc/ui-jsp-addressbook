@@ -3,7 +3,7 @@ package com.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.rmt2.jaxb.ZipcodeType;
+import org.rmt2.jaxb.ZipcodeFullType;
 
 
 
@@ -32,10 +32,10 @@ public class VwZipcodeFactory {
      * Create a new instance of a VwZipcode class.
      * 
      * @param item
-     *            {@link ZipcodeType}
+     *            {@link ZipcodeFullType}
      * @return {@link VwZipcode}
      */
-    public static VwZipcode create(ZipcodeType item) {
+    public static VwZipcode create(ZipcodeFullType item) {
         try {
             VwZipcode o = VwZipcodeFactory.create();
             o.setZipId(item.getZipId() == null ? 0 : item.getZipId().intValue());
@@ -46,6 +46,25 @@ public class VwZipcodeFactory {
             o.setCityAliasName(item.getCityAliasName());
             o.setCityAliasAbbr(item.getCityAliasAbbr());
             o.setCountyName(item.getCountyName());
+            o.setCountyFips(item.getCountyFips());
+            o.setTimeZone(item.getTimeZoneId().getTimezoneId().intValue());
+            o.setDayLightSaving(item.getDayLightSaving());
+            o.setLatitude(item.getLatitude());
+            o.setLongitude(item.getLongitude());
+            o.setElevation(item.getElevation());
+            o.setMsa(item.getMsa());
+            o.setPmsa(item.getPmsa());
+            o.setCbsa(item.getCbsa());
+            o.setCbsaDiv(item.getCbsaDiv());
+            o.setPersonsPerHousehold(item.getPersonsPerHousehold());
+            o.setZipcodePopulation(item.getZipcodePopulation());
+            o.setCountiesArea(item.getCountiesArea());
+            o.setHouseholdsPerZipcode(item.getHouseholdsPerZipcode());
+            o.setWhitePopulation(item.getWhitePopulation());
+            o.setBlackPopulation(item.getBlackPopulation());
+            o.setHispanicPopulation(item.getHispanicPopulation());
+            o.setIncomePerHousehold(item.getIncomePerHousehold());
+            o.setAverageHouseValue(item.getAverageHouseValue());
             return o;
         } catch (Exception e) {
             return null;
@@ -57,18 +76,18 @@ public class VwZipcodeFactory {
      * Create a List of new VwZipcode instances.
      * 
      * @param items
-     *            List of {@link ZipcodeType}
+     *            List of {@link ZipcodeFullType}
      * @return List<{@link VwZipcode}>} or null when <I>items</i> is found to be
      *         null or when an error occurs.
      */
-    public static List<VwZipcode> create(List<ZipcodeType> items) {
+    public static List<VwZipcode> create(List<ZipcodeFullType> items) {
         if (items == null) {
             return null;
         }
 
         try {
             List<VwZipcode> obj = new ArrayList<>();
-            for (ZipcodeType item : items) {
+            for (ZipcodeFullType item : items) {
                 obj.add(VwZipcodeFactory.create(item));
             }
             return obj;

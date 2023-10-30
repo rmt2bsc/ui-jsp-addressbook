@@ -9,6 +9,7 @@ import org.rmt2.jaxb.PostalResponse;
 import org.rmt2.jaxb.ReplyStatusType;
 
 import com.SystemException;
+import com.action.contacts.ContactException;
 import com.api.constants.GeneralConst;
 import com.api.constants.RMT2ServletConst;
 import com.api.jsp.action.AbstractActionHandler;
@@ -191,8 +192,43 @@ public class ZipCodeSearchAction extends AbstractActionHandler implements IComma
         } catch (NumberFormatException e) {
             pageNo = 0;
         }
-        this.doList(pageNo);
+        // this.doList(pageNo);
+        this.doList();
+        this.sendClientData();
         return;
+    }
+
+    /**
+     * Gathers the list of zip code records from the database based on the
+     * user's selection criteria. After the data is fetched, the data is stored
+     * onto the request in order to be sent to the client for processing.
+     * 
+     * @throws ActionCommandException
+     *             General database errors.
+     */
+    protected void doList() throws ActionCommandException {
+        // Fetch contact information
+        try {
+            ZipcodeCriteria criteria = (ZipcodeCriteria) this.query.getCustomObj();
+            PostalResponse response = ZipcodeSoapRequests.callGet(criteria);
+
+            // Get message text from reply status
+            ReplyStatusType rst = response.getReplyStatus();
+            this.msg = rst.getMessage();
+            this.msg += " (" + rst.getRecordCount() + ")";
+
+            List<VwZipcode> results = null;
+            if (response.getZipFull() != null) {
+                results = VwZipcodeFactory.create(response.getZipFull());
+            }
+            else {
+                results = new ArrayList<>();
+            }
+            this.zipList = results;
+            this.tzList = this.getLookupData();
+        } catch (ContactException e) {
+            throw e;
+        }
     }
 
     /**
@@ -242,40 +278,7 @@ public class ZipCodeSearchAction extends AbstractActionHandler implements IComma
         // }
     }
 
-    /**
-     * Gathers the list of zip code records from the database based on the
-     * user's selection criteria. After the data is fetched, the data is stored
-     * onto the request in order to be sent to the client for processing.
-     * 
-     * @throws ActionCommandException
-     *             General database errors.
-     */
-    protected void doList() throws ActionCommandException {
-        // DatabaseTransApi tx = DatabaseTransFactory.create();
-        // this.api =
-        // AddressComponentsFactory.createZipcodeApi((DatabaseConnectionBean)
-        // tx.getConnector(), this.request);
-        // try {
-        // String criteria = this.query.getWhereClause();
-        // this.zipList = this.api.findZip(criteria);
-        // if (this.zipList == null) {
-        // this.zipList = new ArrayList<VwZipcode>();
-        // }
-        // this.msg = ((List<VwZipcode>) this.zipList).size() + " rows found";
-        // this.setError(false);
-        // this.sendClientData();
-        // } catch (ZipcodeException e) {
-        // this.setError(true);
-        // this.msg = e.getMessage();
-        // this.sendClientData();
-        // throw new ActionCommandException(e);
-        // } finally {
-        // this.api.close();
-        // tx.close();
-        // this.api = null;
-        // tx = null;
-        // }
-    }
+
 
     protected void doList(int pageNo) throws ActionCommandException {
         // DatabaseTransApi tx = DatabaseTransFactory.create();
