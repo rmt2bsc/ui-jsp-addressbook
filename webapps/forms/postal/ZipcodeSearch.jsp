@@ -43,38 +43,29 @@
 						    <beanlib:InputControl type="text" name="qry_City" value="#QUERY_BEAN.CustomObj.qry_City" size="10"/>
 						</td>
 						<td bgcolor="#FFCC00" width="12%">
-							<div align="right"><b><font size="2">City Alias::</font></b></div>
+							<div align="right"><font size="2"><b>State (Abbreviated):</b></font></div>
 						</td>
 						<td width="21%">
-						    <beanlib:InputControl type="text" name="qry_CityAliasName" value="#QUERY_BEAN.CustomObj.qry_CityAliasName" size="10"/>
+						    <beanlib:InputControl type="text" name="qry_State" value="#QUERY_BEAN.CustomObj.qry_State" size="10"/>
 						</td>
 					</tr>
 					<tr>
 						<td bgcolor="#FFCC00" width="12%">
-							<div align="right"><font size="2"><b>State (Abbreviated):</b></font></div>
-						</td>
-						<td width="19%">
-						    <beanlib:InputControl type="text" name="qry_State" value="#QUERY_BEAN.CustomObj.qry_State" size="10"/>
-						</td>
-						<td bgcolor="#FFCC00" width="12%">
 							<div align="right"><font size="2"><b>Area Code:</b></font></div>
 						</td>
-						<td width="24%">
+						<td width="19%">
 						    <beanlib:InputControl type="text" name="qry_AreaCode" value="#QUERY_BEAN.CustomObj.qry_AreaCode" size="10"/>
 						</td>
 						<td bgcolor="#FFCC00" width="12%">
 							<div align="right"><b><font size="2">County Name:</font></b></div>
 						</td>
-						<td width="21%">
+						<td width="24%">
 							<beanlib:InputControl type="text" name="qry_CountyName" value="#QUERY_BEAN.CustomObj.qry_CountyName" size="10"/>
 						</td>
-					</tr>
-					
-					<tr>
 						<td bgcolor="#FFCC00" width="12%">
 							<div align="right"><font size="2"><b>Time Zone:</b></font></div>
 						</td>
-						<td width="19%">
+						<td width="21%">
 						    <beanlib:InputControl dataSource="<%=PostalConst.CLIENT_DATA_TIMEZONES %>"
 												  type="select"
 												  name="qry_TimeZone"
@@ -82,7 +73,6 @@
 											 	  displayProperty="Descr"
 												  selectedValue="#QUERY_BEAN.CustomObj.Qry_TimeZone"/>			
 						</td>
-						<td colspan="4">&nbsp;</td>
 					</tr>
 				</table>
 				<br>
