@@ -140,6 +140,30 @@
 									<td valign="top" align="center" bgcolor="#FFCC00">
 									 	<beanlib:InputControl type="radio" name="<%=GeneralConst.CLIENTROW_PROPERTY%>" value="rowid"/>
 									 	<beanlib:InputControl type="hidden" name="ZipId" value="#zipitem.ZipId" uniqueName="yes"/>
+									 	<beanlib:InputControl type="hidden" name="Zip" value="#zipitem.Zip" uniqueName="yes"/>
+									 	<beanlib:InputControl type="hidden" name="State" value="#zipitem.State" uniqueName="yes"/>
+									 	<beanlib:InputControl type="hidden" name="CountyName" value="#zipitem.CountyName" uniqueName="yes"/>
+									 	<beanlib:InputControl type="hidden" name="City" value="#zipitem.City" uniqueName="yes"/>
+									 	<beanlib:InputControl type="hidden" name="CityAliasName" value="#zipitem.CityAliasName" uniqueName="yes"/>
+									 	<beanlib:InputControl type="hidden" name="AreaCode" value="#zipitem.AreaCode" uniqueName="yes"/>
+									 	<beanlib:InputControl type="hidden" name="TimezoneDescr" value="#zipitem.TimezoneDescr" uniqueName="yes"/>
+									 	<beanlib:InputControl type="hidden" name="Elevation" value="#zipitem.Elevation" uniqueName="yes"/>
+									 	<beanlib:InputControl type="hidden" name="CitytypeDescr" value="#zipitem.CitytypeDescr" uniqueName="yes"/>
+									 	<beanlib:InputControl type="hidden" name="DayLightSaving" value="#zipitem.DayLightSaving" uniqueName="yes"/>
+									 	<beanlib:InputControl type="hidden" name="Latitude" value="#zipitem.Latitude" uniqueName="yes"/>
+									 	<beanlib:InputControl type="hidden" name="Longitude" value="#zipitem.Longitude" uniqueName="yes"/>
+									 	<beanlib:InputControl type="hidden" name="Msa" value="#zipitem.Msa" uniqueName="yes"/>
+									 	<beanlib:InputControl type="hidden" name="Pmsa" value="#zipitem.Pmsa" uniqueName="yes"/>
+									 	<beanlib:InputControl type="hidden" name="Cbsa" value="#zipitem.Cbsa" uniqueName="yes"/>
+									 	<beanlib:InputControl type="hidden" name="CbsaDiv" value="#zipitem.CbsaDiv" uniqueName="yes"/>
+									 	<beanlib:InputControl type="hidden" name="PersonsPerHousehold" value="#zipitem.PersonsPerHousehold" uniqueName="yes"/>
+									 	<beanlib:InputControl type="hidden" name="ZipcodePopulation" value="#zipitem.ZipcodePopulation" uniqueName="yes"/>
+									 	<beanlib:InputControl type="hidden" name="HouseholdsPerZipcode" value="#zipitem.HouseholdsPerZipcode" uniqueName="yes"/>
+									 	<beanlib:InputControl type="hidden" name="WhitePopulation" value="#zipitem.WhitePopulation" uniqueName="yes"/>
+									 	<beanlib:InputControl type="hidden" name="BlackPopulation" value="#zipitem.BlackPopulation" uniqueName="yes"/>
+									 	<beanlib:InputControl type="hidden" name="HispanicPopulation" value="#zipitem.HispanicPopulation" uniqueName="yes"/>
+									 	<beanlib:InputControl type="hidden" name="IncomePerHousehold" value="#zipitem.IncomePerHousehold" uniqueName="yes"/>
+									 	<beanlib:InputControl type="hidden" name="AverageHouseValue" value="#zipitem.AverageHouseValue" uniqueName="yes"/>
 									</td>
 								    <td valign="top"> 
 									   <beanlib:InputControl value="#zipitem.ZipId"/> 
