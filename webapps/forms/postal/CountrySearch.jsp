@@ -80,8 +80,8 @@
 					   </tr>
 				  </table>				
 				  <br>
-			  	<input type="button" name="<%=GeneralConst.REQ_ADD%>" value="Add" style=width:90  onClick="handleAction('_self', document.DataForm, this.name)">
-				  <input type="button" name="<%=GeneralConst.REQ_EDIT%>" value="Edit" style=width:90  onClick="handleAction('_self', document.DataForm, this.name)">
+			  	<input type="button" disabled name="<%=GeneralConst.REQ_ADD%>" value="Add" style=width:90  onClick="handleAction('_self', document.DataForm, this.name)">
+				  <input type="button" name="<%=GeneralConst.REQ_EDIT%>" value="View" style=width:90  onClick="handleAction('_self', document.DataForm, this.name)">
 				  <input type="button" name="<%=GeneralConst.REQ_BACK%>" value="Back" style=width:90 onClick="handleAction('_self', document.DataForm, this.name)">
    	      <input name="clientAction" type="hidden">
 			</form>
