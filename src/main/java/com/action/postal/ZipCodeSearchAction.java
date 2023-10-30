@@ -310,31 +310,6 @@ public class ZipCodeSearchAction extends AbstractActionHandler implements IComma
         } catch (NumberFormatException e) {
             this.selectedZipId = 0;
         }
-        // if (!this.isFirstTime()) {
-        // String rowStr =
-        // this.request.getParameter(GeneralConst.CLIENTROW_PROPERTY);
-        //
-        // // Client must select a row to edit.
-        // if (rowStr == null) {
-        // logger.log(Level.ERROR,
-        // RMT2SystemExceptionConst.MSG_ITEM_NOT_SELECTED);
-        // throw new
-        // ActionCommandException(RMT2SystemExceptionConst.MSG_ITEM_NOT_SELECTED,
-        // RMT2SystemExceptionConst.RC_ITEM_NOT_SELECTED);
-        // }
-        // // Get index of the row that is to be processed from the
-        // // HttpServeltRequest object
-        // int selectedRow = RMT2Money.stringToNumber(rowStr).intValue();
-        //
-        // try {
-        // // Get zip code data from the selected row.
-        // this.zip = VwZipcodeFactory.create();
-        // RMT2WebUtility.packageBean(this.request, this.zip, selectedRow);
-        // } catch (Exception e) {
-        // logger.log(Level.ERROR, e.getMessage());
-        // throw new ActionCommandException(e.getMessage());
-        // }
-        // }
     }
 
     /**
