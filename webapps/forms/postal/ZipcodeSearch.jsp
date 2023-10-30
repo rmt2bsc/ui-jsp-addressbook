@@ -139,14 +139,6 @@
 							    <gen:ColorBarLines evenColor="#CCFFCC" oddColor="#FFFFFF"/>
 									<td valign="top" align="center" bgcolor="#FFCC00">
 									 	<beanlib:InputControl type="radio" name="<%=GeneralConst.CLIENTROW_PROPERTY%>" value="rowid"/>
-									 	<beanlib:InputControl type="hidden" name="ZipId" value="#zipitem.ZipId" uniqueName="yes"/>
-									 	<beanlib:InputControl type="hidden" name="Zip" value="#zipitem.Zip" uniqueName="yes"/>
-									 	<beanlib:InputControl type="hidden" name="State" value="#zipitem.State" uniqueName="yes"/>
-									 	<beanlib:InputControl type="hidden" name="CountyName" value="#zipitem.CountyName" uniqueName="yes"/>
-									 	<beanlib:InputControl type="hidden" name="City" value="#zipitem.City" uniqueName="yes"/>
-									 	<beanlib:InputControl type="hidden" name="CityAliasName" value="#zipitem.CityAliasName" uniqueName="yes"/>
-									 	<beanlib:InputControl type="hidden" name="AreaCode" value="#zipitem.AreaCode" uniqueName="yes"/>
-									 	<beanlib:InputControl type="hidden" name="TimezoneDescr" value="#zipitem.TimezoneDescr" uniqueName="yes"/>
 									 	<beanlib:InputControl type="hidden" name="Elevation" value="#zipitem.Elevation" uniqueName="yes"/>
 									 	<beanlib:InputControl type="hidden" name="CitytypeDescr" value="#zipitem.CitytypeDescr" uniqueName="yes"/>
 									 	<beanlib:InputControl type="hidden" name="DayLightSaving" value="#zipitem.DayLightSaving" uniqueName="yes"/>
@@ -167,27 +159,35 @@
 									</td>
 								    <td valign="top"> 
 									   <beanlib:InputControl value="#zipitem.ZipId"/> 
+									   <beanlib:InputControl type="hidden" name="ZipId" value="#zipitem.ZipId" uniqueName="yes"/>
 								    </td>
 								    <td valign="top"> 
 									   <beanlib:InputControl value="#zipitem.Zip"/> 
+									   <beanlib:InputControl type="hidden" name="Zip" value="#zipitem.Zip" uniqueName="yes"/>
 								    </td>
 								    <td valign="top"> 
 									   <beanlib:InputControl value="#zipitem.State"/> 
+									   <beanlib:InputControl type="hidden" name="State" value="#zipitem.State" uniqueName="yes"/>
 								    </td>
 								    <td valign="top"> 
 									   <beanlib:InputControl value="#zipitem.CountyName"/> 
+									   <beanlib:InputControl type="hidden" name="CountyName" value="#zipitem.CountyName" uniqueName="yes"/>
 								    </td>
 								    <td valign="top"> 
 									   <beanlib:InputControl value="#zipitem.City"/> 
+									   <beanlib:InputControl type="hidden" name="City" value="#zipitem.City" uniqueName="yes"/>
 								    </td>
 								    <td valign="top"> 
-									   <beanlib:InputControl value="#zipitem.CityAliasName"/> 
+									   <beanlib:InputControl value="#zipitem.CityAliasName"/>
+									   <beanlib:InputControl type="hidden" name="CityAliasName" value="#zipitem.CityAliasName" uniqueName="yes"/> 
 								    </td>							    
 								    <td valign="top"> 
 									   <beanlib:InputControl value="#zipitem.AreaCode"/> 
+									   <beanlib:InputControl type="hidden" name="AreaCode" value="#zipitem.AreaCode" uniqueName="yes"/>
 								    </td>							    
 								    <td valign="top"> 
 									   <beanlib:InputControl value="#zipitem.TimezoneDescr"/> 
+									   <beanlib:InputControl type="hidden" name="TimezoneDescr" value="#zipitem.TimezoneDescr" uniqueName="yes"/>
 								    </td>							    							    							    							    							    
 							    </tr>
 			          </beanlib:LoopRows>
