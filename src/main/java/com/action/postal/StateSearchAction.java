@@ -12,8 +12,10 @@ import com.SystemException;
 import com.action.contacts.ContactException;
 import com.api.constants.GeneralConst;
 import com.api.constants.RMT2ServletConst;
+import com.api.constants.RMT2SystemExceptionConst;
 import com.api.jsp.action.AbstractActionHandler;
 import com.api.security.RMT2TagQueryBean;
+import com.api.util.RMT2Money;
 import com.api.web.ActionCommandException;
 import com.api.web.Context;
 import com.api.web.ICommand;
@@ -173,7 +175,6 @@ public class StateSearchAction extends AbstractActionHandler implements ICommand
      */
     protected void doNewSearch() throws ActionCommandException {
         this.setFirstTime(true);
-        this.receiveClientData();
         this.startSearchConsole();
         this.list = new ArrayList<VwStateCountry>();
         this.lookup = this.getLookupData();
@@ -271,7 +272,8 @@ public class StateSearchAction extends AbstractActionHandler implements ICommand
      *             N/A
      */
     public void add() throws ActionCommandException {
-        // this.state = AddressComponentsFactory.createState();
+        this.state = VwStateCountryFactory.create();
+        this.lookup = this.getLookupData();
         this.msg = "A new State instance was created for an Add operation";
         return;
     }
@@ -286,42 +288,7 @@ public class StateSearchAction extends AbstractActionHandler implements ICommand
      *             When target zip code id is null or contains an invalid value.
      */
     public void edit() throws ActionCommandException {
-        // // Convert value to number
-        // int stateId;
-        // try {
-        // if (this.stateIdStr == null) {
-        // this.msg =
-        // "A state/province ide must selected for the \"Edit\" command";
-        // this.logger.log(Level.ERROR, this.msg);
-        // throw new ActionCommandException(this.msg);
-        // }
-        // stateId = Integer.parseInt(this.stateIdStr);
-        // } catch (NumberFormatException e) {
-        // this.msg = this.stateIdStr + " is invalid state identifier";
-        // this.logger.log(Level.ERROR, this.msg);
-        // throw new ActionCommandException(this.msg);
-        // }
-        //
-        // // Get data for a single state/province instance.
-        // DatabaseTransApi tx = DatabaseTransFactory.create();
-        // this.api =
-        // AddressComponentsFactory.createStatesApi((DatabaseConnectionBean)
-        // tx.getConnector(), this.request);
-        // try {
-        // this.state = (State) this.api.findStateById(stateId);
-        // if (this.state == null) {
-        // this.state = AddressComponentsFactory.createState();
-        // }
-        // this.msg = "A State instance was obtained for an Edit operation";
-        // return;
-        // } catch (StatesException e) {
-        // throw new ActionCommandException(e);
-        // } finally {
-        // this.api.close();
-        // tx.close();
-        // this.api = null;
-        // tx = null;
-        // }
+        this.lookup = this.getLookupData();
     }
 
     /**
@@ -352,7 +319,26 @@ public class StateSearchAction extends AbstractActionHandler implements ICommand
      * @throws ActionCommandException
      */
     protected void receiveClientData() throws ActionCommandException {
-        this.stateIdStr = this.getInputValue("StateId", null);
+        String rowStr = this.request.getParameter(GeneralConst.CLIENTROW_PROPERTY);
+
+        // Client must select a row to edit.
+        if (rowStr == null) {
+            logger.log(Level.ERROR, RMT2SystemExceptionConst.MSG_ITEM_NOT_SELECTED);
+            throw new ActionCommandException(RMT2SystemExceptionConst.MSG_ITEM_NOT_SELECTED,
+                    RMT2SystemExceptionConst.RC_ITEM_NOT_SELECTED);
+        }
+        // Get index of the row that is to be processed from the
+        // HttpServeltRequest object
+        int selectedRow = RMT2Money.stringToNumber(rowStr).intValue();
+
+        this.state = VwStateCountryFactory.create();
+        try {
+            // Update criteria object with user input.
+            RMT2WebUtility.packageBean(this.request, this.state, selectedRow);
+        } catch (Exception e) {
+            logger.log(Level.ERROR, e.getMessage());
+            throw new ActionCommandException(e.getMessage());
+        }
     }
 
     /**

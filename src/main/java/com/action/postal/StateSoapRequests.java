@@ -17,6 +17,7 @@ import com.action.contacts.ContactException;
 import com.api.messaging.webservice.soap.client.SoapJaxbClientWrapper;
 import com.api.util.RMT2Money;
 import com.api.util.RMT2String2;
+import com.entity.VwStateCountry;
 
 /**
  * Help class for constructing and invoking SOAP calls pertaining to
@@ -80,5 +81,57 @@ public class StateSoapRequests {
         }
     }
 
+    /**
+     * SOAP call to save state/province record changes.
+     * 
+     * @param data
+     *            {@link VwStateCountry}
+     * @return {@link PostalResponse}
+     * @throws ContactException
+     */
+    public static final PostalResponse callSave(VwStateCountry data) throws ContactException {
+        // Retrieve one or more State/Province records from the database
+        ObjectFactory fact = new ObjectFactory();
+        PostalRequest req = fact.createPostalRequest();
 
+        HeaderType head = HeaderTypeBuilder.Builder.create()
+                .withApplication(ApiHeaderNames.APP_NAME_ADDRESSBOOK)
+                .withModule(ApiTransactionCodes.MODULE_ADDRESSBOOK_POSTAL)
+                .withTransaction(ApiTransactionCodes.REGION_GET)
+                .withMessageMode(ApiHeaderNames.MESSAGE_MODE_REQUEST)
+                .withDeliveryDate(new Date())
+                .withRouting(ApiTransactionCodes.ROUTE_ADDRESSBOOK)
+                .withDeliveryMode(ApiHeaderNames.DELIVERY_MODE_SYNC)
+                .build();
+
+        PostalCriteria postalCriteria = fact.createPostalRequestPostalCriteria();
+        StatesCriteriaType criteria = fact.createStatesCriteriaType();
+        // if (data != null) {
+        // if (RMT2String2.isNotEmpty(data.getQry_StateId()) &&
+        // RMT2Money.isNumeric(data.getQry_StateId())) {
+        // criteria.setStateId(BigInteger.valueOf(Integer.valueOf(data.getQry_StateId())));
+        // }
+        // if (RMT2String2.isNotEmpty(data.getQry_CountryId()) &&
+        // RMT2Money.isNumeric(data.getQry_CountryId())) {
+        // criteria.setCountryId(BigInteger.valueOf(Integer.valueOf(data.getQry_CountryId())));
+        // }
+        // if (RMT2String2.isNotEmpty(data.getQry_StateName())) {
+        // criteria.setStateName(data.getQry_StateName());
+        // }
+        // if (RMT2String2.isNotEmpty(data.getQry_StateCode())) {
+        // criteria.setStateCode(data.getQry_StateCode());
+        // }
+        // }
+        postalCriteria.setProvince(criteria);
+        req.setPostalCriteria(postalCriteria);
+        req.setHeader(head);
+
+        PostalResponse response = null;
+        try {
+            response = SoapJaxbClientWrapper.callSoapRequest(req);
+            return response;
+        } catch (Exception e) {
+            throw new ContactException(StateSoapRequests.MSG, e);
+        }
+    }
 }
