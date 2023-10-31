@@ -210,9 +210,12 @@ public class StateSearchAction extends AbstractActionHandler implements ICommand
 
             // Get message text from reply status
             ReplyStatusType rst = response.getReplyStatus();
+            this.msg = rst.getMessage();
             if (rst.getReturnCode().intValue() == GeneralConst.RC_FAILURE) {
-                this.msg = rst.getMessage();
                 return;
+            }
+            else {
+                this.msg += " (" + rst.getRecordCount() + ")";
             }
 
             List<VwStateCountry> results = null;
