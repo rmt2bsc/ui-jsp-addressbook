@@ -165,32 +165,7 @@ public class CountrySearchAction extends AbstractActionHandler implements IComma
      *             When target zip code id is null or contains an invalid value.
      */
     public void edit() throws ActionCommandException {
-        // if (this.country == null) {
-        // this.msg = "A country must be selected for the \"Edit\" command";
-        // this.logger.log(Level.ERROR, this.msg);
-        // throw new ActionCommandException(this.msg);
-        // }
-        //
-        // // Get data for a single country instance.
-        // DatabaseTransApi tx = DatabaseTransFactory.create();
-        // this.api =
-        // AddressComponentsFactory.createCountryApi((DatabaseConnectionBean)
-        // tx.getConnector(), this.request);
-        // try {
-        // this.country = (Country)
-        // this.api.findCountryById(this.country.getCountryId());
-        // if (this.country == null) {
-        // this.country = AddressComponentsFactory.createCountry();
-        // }
-        // return;
-        // } catch (CountryException e) {
-        // throw new ActionCommandException(e);
-        // } finally {
-        // this.api.close();
-        // tx.close();
-        // this.api = null;
-        // tx = null;
-        // }
+        return;
     }
 
     /**
@@ -219,16 +194,6 @@ public class CountrySearchAction extends AbstractActionHandler implements IComma
             logger.log(Level.ERROR, e.getMessage());
             throw new ActionCommandException(e.getMessage());
         }
-
-        // String temp = this.getInputValue("CountryId", null);
-        // int id;
-        // this.country = CountryFactory.create();
-        // try {
-        // id = Integer.parseInt(temp);
-        // this.country.setCountryId(id);
-        // } catch (NumberFormatException e) {
-        // this.country = null;
-        // }
     }
 
     /**
