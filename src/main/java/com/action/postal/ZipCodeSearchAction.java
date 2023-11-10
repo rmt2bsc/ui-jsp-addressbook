@@ -195,7 +195,10 @@ public class ZipCodeSearchAction extends AbstractActionHandler implements IComma
         // Fetch contact information
         try {
             ZipcodeCriteria criteria = (ZipcodeCriteria) this.query.getCustomObj();
-            PostalResponse response = ZipcodeSoapRequests.callGet(criteria);
+
+            // UI-37: added login id and session id parameters to the callSave
+            // method invocation
+            PostalResponse response = ZipcodeSoapRequests.callGet(criteria, this.loginId, this.session.getId());
 
             // Get message text from reply status
             ReplyStatusType rst = response.getReplyStatus();
@@ -225,12 +228,14 @@ public class ZipCodeSearchAction extends AbstractActionHandler implements IComma
      * 
      * @throws ActionCommandException
      *             When target zip code id is null or contains an invalid value.
-     * @deprecated no longer needed since recieveClientData does all the work.
      */
     public void edit() throws ActionCommandException {
         // Fetch contact information
         try {
-            PostalResponse response = ZipcodeSoapRequests.callGet(this.criteria);
+
+            // UI-37: added login id and session id parameters to the callSave
+            // method invocation
+            PostalResponse response = ZipcodeSoapRequests.callGet(this.criteria, this.loginId, this.session.getId());
 
             // Get message text from reply status
             ReplyStatusType rst = response.getReplyStatus();
@@ -262,7 +267,9 @@ public class ZipCodeSearchAction extends AbstractActionHandler implements IComma
         // Call SOAP web service to get complete list of codes based on a
         // particular group
         try {
-            PostalResponse response = TimezoneSoapRequests.callGet(null);
+            // UI-37: added login id and session id parameters to the callSave
+            // method invocation
+            PostalResponse response = TimezoneSoapRequests.callGet(null, this.loginId, this.session.getId());
             ReplyStatusType rst = response.getReplyStatus();
             if (rst.getReturnCode().intValue() == GeneralConst.RC_FAILURE) {
                 this.msg = rst.getMessage();
@@ -282,7 +289,10 @@ public class ZipCodeSearchAction extends AbstractActionHandler implements IComma
         try {
             TimeZone criteria = TimezoneFactory.create();
             criteria.setTimeZoneId(timezoneId);
-            PostalResponse response = TimezoneSoapRequests.callGet(criteria);
+
+            // UI-37: added login id and session id parameters to the callSave
+            // method invocation
+            PostalResponse response = TimezoneSoapRequests.callGet(criteria, this.loginId, this.session.getId());
             ReplyStatusType rst = response.getReplyStatus();
             if (rst.getReturnCode().intValue() == GeneralConst.RC_FAILURE) {
                 this.msg = rst.getMessage();

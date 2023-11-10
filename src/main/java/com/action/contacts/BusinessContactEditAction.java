@@ -103,7 +103,11 @@ public class BusinessContactEditAction extends AbstractContactEditAction {
 
         // Call SOAP web service to persist Business contact record changes
         try {
-            AddressBookResponse response = BusinessContactSoapRequests.callSave((VwBusinessAddress) this.vwBusinessAddress);
+            // UI-37: added login id and session id parameters to the callSave
+            // method invocation
+            AddressBookResponse response = BusinessContactSoapRequests.callSave((VwBusinessAddress) this.vwBusinessAddress,
+                    this.loginId,
+                    this.session.getId());
             ReplyStatusType rst = response.getReplyStatus();
             this.msg = rst.getMessage() + ": " + rst.getExtMessage();
             if (rst.getReturnCode().intValue() == GeneralConst.RC_FAILURE) {
@@ -133,7 +137,10 @@ public class BusinessContactEditAction extends AbstractContactEditAction {
     public void delete() throws ActionCommandException {
         // Call SOAP web service to delete Business contact record changes
         try {
-            AddressBookResponse response = BusinessContactSoapRequests.callDelete((VwBusinessAddress) this.vwBusinessAddress);
+            // UI-37: added login id and session id parameters to the callSave
+            // method invocation
+            AddressBookResponse response = BusinessContactSoapRequests.callDelete((VwBusinessAddress) this.vwBusinessAddress,
+                    this.loginId, this.session.getId());
             ReplyStatusType rst = response.getReplyStatus();
             this.msg = rst.getMessage() + ": " + rst.getExtMessage();
             if (rst.getReturnCode().intValue() == GeneralConst.RC_FAILURE) {

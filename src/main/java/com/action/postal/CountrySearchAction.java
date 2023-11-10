@@ -123,7 +123,9 @@ public class CountrySearchAction extends AbstractActionHandler implements IComma
     public void doList() throws ActionCommandException {
         // Fetch contact information
         try {
-            PostalResponse response = CountrySoapRequests.callGet(null);
+            // UI-37: added login id and session id parameters to the callSave
+            // method invocation
+            PostalResponse response = CountrySoapRequests.callGet(null, this.loginId, this.session.getId());
 
             // Get message text from reply status
             ReplyStatusType rst = response.getReplyStatus();

@@ -106,7 +106,9 @@ public abstract class AbstractContactAction extends AbstractActionHandler implem
 
         // Fetch contact information
         try {
-            AddressBookResponse response = BusinessContactSoapRequests.callGet(criteria);
+            // UI-37: added login id and session id parameters to the callSave
+            // method invocation
+            AddressBookResponse response = BusinessContactSoapRequests.callGet(criteria, this.loginId, this.session.getId());
 
             // Get message text from reply status
             ReplyStatusType rst = response.getReplyStatus();
@@ -141,7 +143,9 @@ public abstract class AbstractContactAction extends AbstractActionHandler implem
         // Call SOAP web service to get complete list of codes based on a
         // particular group
         try {
-            LookupCodesResponse response = CodeSoapRequests.callGet(code);
+            // UI-37: added login id and session id parameters to the callSave
+            // method invocation
+            LookupCodesResponse response = CodeSoapRequests.callGet(code, this.loginId, this.session.getId());
             ReplyStatusType rst = response.getReplyStatus();
             if (rst.getReturnCode().intValue() == GeneralConst.RC_FAILURE) {
                 this.msg = rst.getMessage();

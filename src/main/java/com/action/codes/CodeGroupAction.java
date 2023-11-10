@@ -165,7 +165,9 @@ public class CodeGroupAction extends AbstractActionHandler implements ICommand {
     protected void doGroupList() throws ActionCommandException {
         // Call SOAP web service to get complete list of code groups
         try {
-            LookupCodesResponse response = CodeGroupSoapRequests.callGet();
+            // UI-37: added login id and session id parameters to the callSave
+            // method invocation
+            LookupCodesResponse response = CodeGroupSoapRequests.callGet(this.loginId, this.session.getId());
             ReplyStatusType rst = response.getReplyStatus();
             this.msg = rst.getMessage();
             if (rst.getReturnCode().intValue() == GeneralConst.RC_FAILURE) {
@@ -210,7 +212,10 @@ public class CodeGroupAction extends AbstractActionHandler implements ICommand {
     public void save() throws ActionCommandException {
         // Call SOAP web service to persist code group changes
         try {
-            LookupCodesResponse response = CodeGroupSoapRequests.callSave((GeneralCodesGroup) this.rec);
+            // UI-37: added login id and session id parameters to the callSave
+            // method invocation
+            LookupCodesResponse response = CodeGroupSoapRequests.callSave((GeneralCodesGroup) this.rec, this.loginId,
+                    this.session.getId());
             ReplyStatusType rst = response.getReplyStatus();
             this.msg = rst.getMessage();
             if (rst.getReturnCode().intValue() == GeneralConst.RC_FAILURE) {
@@ -234,7 +239,10 @@ public class CodeGroupAction extends AbstractActionHandler implements ICommand {
     public void delete() throws ActionCommandException {
         // Call SOAP web service to delete code group
         try {
-            LookupCodesResponse response = CodeGroupSoapRequests.callDelete((GeneralCodesGroup) this.rec);
+            // UI-37: added login id and session id parameters to the callSave
+            // method invocation
+            LookupCodesResponse response = CodeGroupSoapRequests.callDelete((GeneralCodesGroup) this.rec, this.loginId,
+                    this.session.getId());
             ReplyStatusType rst = response.getReplyStatus();
             this.msg = rst.getMessage();
             if (rst.getReturnCode().intValue() == GeneralConst.RC_FAILURE) {
@@ -300,9 +308,6 @@ public class CodeGroupAction extends AbstractActionHandler implements ICommand {
             data.setCodeGrpId(Integer.parseInt(temp));
         } catch (NumberFormatException e) {
             data.setCodeGrpId(-1);
-            // this.msg =
-            // "A row must be selected for this operation or the record contains an invalid value general code group id";
-            // throw new ActionCommandException(this.msg);
         }
 
         temp = this.getInputValue("Description", null);

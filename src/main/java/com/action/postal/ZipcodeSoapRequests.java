@@ -33,10 +33,17 @@ public class ZipcodeSoapRequests {
      * 
      * @param parms
      *            {@link ZipcodeCriteria}
+     * @param loginId
+     *            the id of logged in user
+     * @param sessionId
+     *            the web session id of the logged in user.
      * @return {@link PostalResponse}
      * @throws ContactException
+     * 
+     *             UI-37: Added loginId and sessionId parameters to method
+     *             signature.
      */
-    public static final PostalResponse callGet(ZipcodeCriteria parms) throws ContactException {
+    public static final PostalResponse callGet(ZipcodeCriteria parms, String loginId, String sessionId) throws ContactException {
         // Retrieve all user group records from the database
         ObjectFactory fact = new ObjectFactory();
         PostalRequest req = fact.createPostalRequest();
@@ -49,6 +56,9 @@ public class ZipcodeSoapRequests {
                 .withDeliveryDate(new Date())
                 .withRouting(ApiTransactionCodes.ROUTE_ADDRESSBOOK)
                 .withDeliveryMode(ApiHeaderNames.DELIVERY_MODE_SYNC)
+                // UI-37: Added login id and session id to the request
+                .withUserId(loginId)
+                .withSessionId(sessionId)
                 .build();
 
         PostalCriteria postalCriteria = fact.createPostalRequestPostalCriteria();

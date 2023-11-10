@@ -33,10 +33,17 @@ public class CodeGroupSoapRequests {
     /**
      * SOAP call to fetch all code groups.
      * 
+     * @param loginId
+     *            the id of logged in user
+     * @param sessionId
+     *            the web session id of the logged in user.
      * @return {@link LookupCodesResponse}
      * @throws AddressbookUIException
+     * 
+     *             UI-37: Added loginId and sessionId parameters to method
+     *             signature.
      */
-    public static final LookupCodesResponse callGet() throws AddressbookUIException {
+    public static final LookupCodesResponse callGet(String loginId, String sessionId) throws AddressbookUIException {
         // Retrieve all code group records from the database
         ObjectFactory fact = new ObjectFactory();
         LookupCodesRequest req = fact.createLookupCodesRequest();
@@ -49,6 +56,9 @@ public class CodeGroupSoapRequests {
                 .withDeliveryDate(new Date())
                 .withRouting(ApiTransactionCodes.ROUTE_ADDRESSBOOK)
                 .withDeliveryMode(ApiHeaderNames.DELIVERY_MODE_SYNC)
+                // UI-37: Added login id and session id to the request
+                .withUserId(loginId)
+                .withSessionId(sessionId)
                 .build();
 
         LookupCodeCriteriaType criteria = fact.createLookupCodeCriteriaType();
@@ -69,10 +79,18 @@ public class CodeGroupSoapRequests {
      * 
      * @param data
      *            {@link GeneralCodesGroup}
+     * @param loginId
+     *            the id of logged in user
+     * @param sessionId
+     *            the web session id of the logged in user.
      * @return {@link LookupCodesResponse}
      * @throws AddressbookUIException
+     * 
+     *             UI-37: Added loginId and sessionId parameters to method
+     *             signature.
      */
-    public static final LookupCodesResponse callSave(GeneralCodesGroup data) throws AddressbookUIException {
+    public static final LookupCodesResponse callSave(GeneralCodesGroup data, String loginId, String sessionId)
+            throws AddressbookUIException {
         // Retrieve all code group records from the database
         ObjectFactory fact = new ObjectFactory();
         LookupCodesRequest req = fact.createLookupCodesRequest();
@@ -85,6 +103,9 @@ public class CodeGroupSoapRequests {
                 .withDeliveryDate(new Date())
                 .withRouting(ApiTransactionCodes.ROUTE_ADDRESSBOOK)
                 .withDeliveryMode(ApiHeaderNames.DELIVERY_MODE_SYNC)
+                // UI-37: Added login id and session id to the request
+                .withUserId(loginId)
+                .withSessionId(sessionId)
                 .build();
 
         CodeGroupType cgt = fact.createCodeGroupType();
@@ -107,10 +128,18 @@ public class CodeGroupSoapRequests {
      * 
      * @param data
      *            {@link GeneralCodesGroup}
+     * @param loginId
+     *            the id of logged in user
+     * @param sessionId
+     *            the web session id of the logged in user.
      * @return {@link LookupCodesResponse}
      * @throws AddressbookUIException
+     * 
+     *             UI-37: Added loginId and sessionId parameters to method
+     *             signature.
      */
-    public static final LookupCodesResponse callDelete(GeneralCodesGroup data) throws AddressbookUIException {
+    public static final LookupCodesResponse callDelete(GeneralCodesGroup data, String loginId, String sessionId)
+            throws AddressbookUIException {
         // Delete a code group record from the database
         ObjectFactory fact = new ObjectFactory();
         LookupCodesRequest req = fact.createLookupCodesRequest();
@@ -123,6 +152,9 @@ public class CodeGroupSoapRequests {
                 .withDeliveryDate(new Date())
                 .withRouting(ApiTransactionCodes.ROUTE_ADDRESSBOOK)
                 .withDeliveryMode(ApiHeaderNames.DELIVERY_MODE_SYNC)
+                // UI-37: Added login id and session id to the request
+                .withUserId(loginId)
+                .withSessionId(sessionId)
                 .build();
 
         LookupCodeCriteriaType criteria = fact.createLookupCodeCriteriaType();

@@ -31,8 +31,11 @@ public class TimezoneSoapRequests {
      * 
      * @return {@link PostalResponse}
      * @throws ContactException
+     * 
+     *             UI-37: Added loginId and sessionId parameters to method
+     *             signature.
      */
-    public static final PostalResponse callGet(TimeZone parms) throws ContactException {
+    public static final PostalResponse callGet(TimeZone parms, String loginId, String sessionId) throws ContactException {
         // Retrieve all user group records from the database
         ObjectFactory fact = new ObjectFactory();
         PostalRequest req = fact.createPostalRequest();
@@ -45,6 +48,9 @@ public class TimezoneSoapRequests {
                 .withDeliveryDate(new Date())
                 .withRouting(ApiTransactionCodes.ROUTE_ADDRESSBOOK)
                 .withDeliveryMode(ApiHeaderNames.DELIVERY_MODE_SYNC)
+                // UI-37: Added login id and session id to the request
+                .withUserId(loginId)
+                .withSessionId(sessionId)
                 .build();
 
         PostalCriteria postalCriteria = fact.createPostalRequestPostalCriteria();

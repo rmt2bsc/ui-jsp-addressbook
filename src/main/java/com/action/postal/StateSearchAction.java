@@ -207,7 +207,10 @@ public class StateSearchAction extends AbstractActionHandler implements ICommand
         // Fetch state/province information
         try {
             StateCriteria criteria = (StateCriteria) this.query.getCustomObj();
-            PostalResponse response = StateSoapRequests.callGet(criteria);
+
+            // UI-37: added login id and session id parameters to the callSave
+            // method invocation
+            PostalResponse response = StateSoapRequests.callGet(criteria, this.loginId, this.session.getId());
 
             // Get message text from reply status
             ReplyStatusType rst = response.getReplyStatus();
@@ -242,7 +245,9 @@ public class StateSearchAction extends AbstractActionHandler implements ICommand
      */
     private List<Country> getLookupData() throws ActionCommandException {
         try {
-            PostalResponse response = CountrySoapRequests.callGet(null);
+            // UI-37: added login id and session id parameters to the callSave
+            // method invocation
+            PostalResponse response = CountrySoapRequests.callGet(null, this.loginId, this.session.getId());
 
             // Get message text from reply status
             ReplyStatusType rst = response.getReplyStatus();

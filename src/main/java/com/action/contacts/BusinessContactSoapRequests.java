@@ -38,10 +38,15 @@ public class BusinessContactSoapRequests {
     /**
      * SOAP call to fetch Business contacts.
      * 
+     * @param loginId
+     *            the id of logged in user
+     * @param sessionId
+     *            the web session id of the logged in user.
      * @return {@link AddressBookResponse}
      * @throws ContactException
      */
-    public static final AddressBookResponse callGet(ContactCriteria parms) throws ContactException {
+    public static final AddressBookResponse callGet(ContactCriteria parms, String loginId, String sessionId)
+            throws ContactException {
         // Retrieve all user group records from the database
         ObjectFactory fact = new ObjectFactory();
         AddressBookRequest req = fact.createAddressBookRequest();
@@ -54,6 +59,9 @@ public class BusinessContactSoapRequests {
                 .withDeliveryDate(new Date())
                 .withRouting(ApiTransactionCodes.ROUTE_ADDRESSBOOK)
                 .withDeliveryMode(ApiHeaderNames.DELIVERY_MODE_SYNC)
+                // UI-37: Added login id and session id to the request
+                .withUserId(loginId)
+                .withSessionId(sessionId)
                 .build();
 
         BusinessContactCriteria criteria = BusinessContactSoapRequests.buildPaylodCriteriaSearchCriteria(parms);
@@ -193,10 +201,15 @@ public class BusinessContactSoapRequests {
      * 
      * @param data
      *            {@link VwBusinessAddress}
+     * @param loginId
+     *            the id of logged in user
+     * @param sessionId
+     *            the web session id of the logged in user.
      * @return {@link AddressBookResponse}
      * @throws ContactException
      */
-    public static final AddressBookResponse callSave(VwBusinessAddress data) throws ContactException {
+    public static final AddressBookResponse callSave(VwBusinessAddress data, String loginId, String sessionId)
+            throws ContactException {
         ObjectFactory fact = new ObjectFactory();
         AddressBookRequest req = fact.createAddressBookRequest();
 
@@ -208,6 +221,9 @@ public class BusinessContactSoapRequests {
                 .withDeliveryDate(new Date())
                 .withRouting(ApiTransactionCodes.ROUTE_ADDRESSBOOK)
                 .withDeliveryMode(ApiHeaderNames.DELIVERY_MODE_SYNC)
+                // UI-37: Added login id and session id to the request
+                .withUserId(loginId)
+                .withSessionId(sessionId)
                 .build();
 
         ContactDetailGroup cdg = fact.createContactDetailGroup();
@@ -266,10 +282,15 @@ public class BusinessContactSoapRequests {
     /**
      * SOAP call to delete Business contacts.
      * 
+     * @param loginId
+     *            the id of logged in user
+     * @param sessionId
+     *            the web session id of the logged in user.
      * @return {@link AddressBookResponse}
      * @throws ContactException
      */
-    public static final AddressBookResponse callDelete(VwBusinessAddress parms) throws ContactException {
+    public static final AddressBookResponse callDelete(VwBusinessAddress parms, String loginId, String sessionId)
+            throws ContactException {
         ObjectFactory fact = new ObjectFactory();
         AddressBookRequest req = fact.createAddressBookRequest();
 
@@ -281,6 +302,9 @@ public class BusinessContactSoapRequests {
                 .withDeliveryDate(new Date())
                 .withRouting(ApiTransactionCodes.ROUTE_ADDRESSBOOK)
                 .withDeliveryMode(ApiHeaderNames.DELIVERY_MODE_SYNC)
+                // UI-37: Added login id and session id to the request
+                .withUserId(loginId)
+                .withSessionId(sessionId)
                 .build();
 
         ContactCriteriaGroup ccg = fact.createContactCriteriaGroup();

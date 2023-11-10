@@ -166,7 +166,9 @@ public class CodeAction extends AbstractActionHandler implements ICommand {
         // Call SOAP web service to get complete list of codes based on a
         // particular group
         try {
-            LookupCodesResponse response = CodeSoapRequests.callGet(code);
+            // UI-37: added login id and session id parameters to the callSave
+            // method invocation
+            LookupCodesResponse response = CodeSoapRequests.callGet(code, this.loginId, this.session.getId());
             ReplyStatusType rst = response.getReplyStatus();
             this.msg = rst.getMessage();
             if (rst.getReturnCode().intValue() == GeneralConst.RC_FAILURE) {
@@ -218,7 +220,9 @@ public class CodeAction extends AbstractActionHandler implements ICommand {
 
         // Call SOAP web service to persist general code record changes
         try {
-            LookupCodesResponse response = CodeSoapRequests.callSave(this.code);
+            // UI-37: added login id and session id parameters to the callSave
+            // method invocation
+            LookupCodesResponse response = CodeSoapRequests.callSave(this.code, this.loginId, this.session.getId());
             ReplyStatusType rst = response.getReplyStatus();
             this.msg = rst.getMessage();
             if (rst.getReturnCode().intValue() == GeneralConst.RC_FAILURE) {
@@ -245,7 +249,9 @@ public class CodeAction extends AbstractActionHandler implements ICommand {
 
         // Call SOAP web service to persist general code record changes
         try {
-            LookupCodesResponse response = CodeSoapRequests.callDelete(this.code);
+            // UI-37: added login id and session id parameters to the callSave
+            // method invocation
+            LookupCodesResponse response = CodeSoapRequests.callDelete(this.code, this.loginId, this.session.getId());
             ReplyStatusType rst = response.getReplyStatus();
             this.msg = rst.getMessage();
             if (rst.getReturnCode().intValue() == GeneralConst.RC_FAILURE) {
@@ -274,7 +280,9 @@ public class CodeAction extends AbstractActionHandler implements ICommand {
         // Call SOAP web service to get complete list of codes based on a
         // particular group
         try {
-            LookupCodesResponse response = CodeSoapRequests.callGet(code);
+            // UI-37: added login id and session id parameters to the callSave
+            // method invocation
+            LookupCodesResponse response = CodeSoapRequests.callGet(code, this.loginId, this.session.getId());
             ReplyStatusType rst = response.getReplyStatus();
             this.msg = rst.getMessage();
             if (rst.getReturnCode().intValue() == GeneralConst.RC_FAILURE) {
