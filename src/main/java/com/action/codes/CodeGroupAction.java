@@ -171,8 +171,7 @@ public class CodeGroupAction extends AbstractActionHandler implements ICommand {
             ReplyStatusType rst = response.getReplyStatus();
             this.msg = rst.getMessage();
             if (rst.getReturnCode().intValue() == GeneralConst.RC_FAILURE) {
-                this.msg = rst.getMessage();
-                return;
+                this.throwActionError(rst.getMessage(), rst.getExtMessage());
             }
             List<GeneralCodesGroup> results = GeneralCodesGroupFactory.create(response.getGroupCodes());
             this.list = results;
@@ -219,8 +218,7 @@ public class CodeGroupAction extends AbstractActionHandler implements ICommand {
             ReplyStatusType rst = response.getReplyStatus();
             this.msg = rst.getMessage();
             if (rst.getReturnCode().intValue() == GeneralConst.RC_FAILURE) {
-                this.msg = rst.getMessage();
-                return;
+                this.throwActionError(rst.getMessage(), rst.getExtMessage());
             }
             List<GeneralCodesGroup> results = GeneralCodesGroupFactory.create(response.getGroupCodes());
             this.rec = results.get(0);
@@ -246,8 +244,7 @@ public class CodeGroupAction extends AbstractActionHandler implements ICommand {
             ReplyStatusType rst = response.getReplyStatus();
             this.msg = rst.getMessage();
             if (rst.getReturnCode().intValue() == GeneralConst.RC_FAILURE) {
-                this.msg = rst.getMessage();
-                return;
+                this.throwActionError(rst.getMessage(), rst.getExtMessage());
             }
         } catch (Exception e) {
             logger.log(Level.ERROR, e.getMessage());

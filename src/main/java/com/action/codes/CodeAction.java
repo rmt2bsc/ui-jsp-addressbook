@@ -172,8 +172,7 @@ public class CodeAction extends AbstractActionHandler implements ICommand {
             ReplyStatusType rst = response.getReplyStatus();
             this.msg = rst.getMessage();
             if (rst.getReturnCode().intValue() == GeneralConst.RC_FAILURE) {
-                this.msg = rst.getMessage();
-                return;
+                this.throwActionError(rst.getMessage(), rst.getExtMessage());
             }
             List<GeneralCodes> results = GeneralCodesFactory.create(response.getDetailCodes());
             this.codes = results;
@@ -226,8 +225,7 @@ public class CodeAction extends AbstractActionHandler implements ICommand {
             ReplyStatusType rst = response.getReplyStatus();
             this.msg = rst.getMessage();
             if (rst.getReturnCode().intValue() == GeneralConst.RC_FAILURE) {
-                this.msg = rst.getMessage();
-                return;
+                this.throwActionError(rst.getMessage(), rst.getExtMessage());
             }
             List<GeneralCodes> results = GeneralCodesFactory.create(response.getDetailCodes());
             this.code = results.get(0);
@@ -255,8 +253,7 @@ public class CodeAction extends AbstractActionHandler implements ICommand {
             ReplyStatusType rst = response.getReplyStatus();
             this.msg = rst.getMessage();
             if (rst.getReturnCode().intValue() == GeneralConst.RC_FAILURE) {
-                this.msg = rst.getMessage();
-                return;
+                this.throwActionError(rst.getMessage(), rst.getExtMessage());
             }
             List<GeneralCodes> results = GeneralCodesFactory.create(response.getDetailCodes());
         } catch (Exception e) {
@@ -286,8 +283,7 @@ public class CodeAction extends AbstractActionHandler implements ICommand {
             ReplyStatusType rst = response.getReplyStatus();
             this.msg = rst.getMessage();
             if (rst.getReturnCode().intValue() == GeneralConst.RC_FAILURE) {
-                this.msg = rst.getMessage();
-                return;
+                this.throwActionError(rst.getMessage(), rst.getExtMessage());
             }
             List<GeneralCodes> results = GeneralCodesFactory.create(response.getDetailCodes());
             this.codes = results;

@@ -216,7 +216,7 @@ public class StateSearchAction extends AbstractActionHandler implements ICommand
             ReplyStatusType rst = response.getReplyStatus();
             this.msg = rst.getMessage();
             if (rst.getReturnCode().intValue() == GeneralConst.RC_FAILURE) {
-                return;
+                this.throwActionError(rst.getMessage(), rst.getExtMessage());
             }
             else {
                 this.msg += " (" + rst.getRecordCount() + ")";
@@ -252,8 +252,7 @@ public class StateSearchAction extends AbstractActionHandler implements ICommand
             // Get message text from reply status
             ReplyStatusType rst = response.getReplyStatus();
             if (rst.getReturnCode().intValue() == GeneralConst.RC_FAILURE) {
-                this.msg = rst.getMessage();
-                return null;
+                this.throwActionError(rst.getMessage(), rst.getExtMessage());
             }
 
             List<Country> results = null;
@@ -352,8 +351,8 @@ public class StateSearchAction extends AbstractActionHandler implements ICommand
      * for the client to process. Single state/province query results are
      * identified on the request as
      * {@link com.constants.GeneralConst#CLIENT_DATA_RECORD CLIENT_DATA_RECORD}.
-     * A resultset of a List of state/provinces are identified on the request as
-     * {@link com.constants.GeneralConst#CLIENT_DATA_LIST CLIENT_DATA_LIST}.
+     * A result set of a List of state/provinces are identified on the request
+     * as {@link com.constants.GeneralConst#CLIENT_DATA_LIST CLIENT_DATA_LIST}.
      * 
      * @throws ActionCommandException
      */

@@ -111,8 +111,7 @@ public class BusinessContactEditAction extends AbstractContactEditAction {
             ReplyStatusType rst = response.getReplyStatus();
             this.msg = rst.getMessage() + ": " + rst.getExtMessage();
             if (rst.getReturnCode().intValue() == GeneralConst.RC_FAILURE) {
-                this.msg = rst.getMessage();
-                return;
+                this.throwActionError(rst.getMessage(), rst.getExtMessage());
             }
 
             // In the event this is a contact, update the view object's business
@@ -144,8 +143,7 @@ public class BusinessContactEditAction extends AbstractContactEditAction {
             ReplyStatusType rst = response.getReplyStatus();
             this.msg = rst.getMessage() + ": " + rst.getExtMessage();
             if (rst.getReturnCode().intValue() == GeneralConst.RC_FAILURE) {
-                this.msg = rst.getMessage();
-                return;
+                this.throwActionError(rst.getMessage(), rst.getExtMessage());
             }
 
             // In the event this is a contact, update the view object's business

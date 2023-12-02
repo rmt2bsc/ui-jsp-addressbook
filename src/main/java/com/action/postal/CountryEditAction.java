@@ -93,27 +93,7 @@ public class CountryEditAction extends AbstractActionHandler implements ICommand
      * @throws ActionCommandException
      */
     public void save() throws ActionCommandException {
-        // DatabaseTransApi tx = DatabaseTransFactory.create();
-        // this.api =
-        // AddressComponentsFactory.createCountryApi((DatabaseConnectionBean)
-        // tx.getConnector(), this.request);
-        // try {
-        // this.api.maintainCountry(this.country);
-        // tx.commitUOW();
-        // this.refreshState();
-        // this.msg = "Country was saved successfully";
-        // }
-        // catch (Exception e) {
-        // tx.rollbackUOW();
-        // this.msg = "Error: " + e.getMessage();
-        // throw new ActionCommandException(e);
-        // }
-        // finally {
-        // this.api.close();
-        // tx.close();
-        // this.api = null;
-        // tx = null;
-        // }
+        return;
     }
 
     /**
@@ -139,13 +119,7 @@ public class CountryEditAction extends AbstractActionHandler implements ICommand
      *             Error obtaining client data.
      */
     protected void receiveClientData() throws ActionCommandException {
-        // this.country = AddressComponentsFactory.createCountry();
-        // try {
-        // DataSourceAdapter.packageBean(this.request, this.country);
-        // return;
-        // } catch (Exception e) {
-        // throw new ActionCommandException(e);
-        // }
+        return;
     }
 
     /**
@@ -170,28 +144,8 @@ public class CountryEditAction extends AbstractActionHandler implements ICommand
      * @throws ActionCommandException
      */
     public void delete() throws ActionCommandException {
-        // DatabaseTransApi tx = DatabaseTransFactory.create();
-        // this.api =
-        // AddressComponentsFactory.createCountryApi((DatabaseConnectionBean)
-        // tx.getConnector(), this.request);
-        // try {
-        // int rows = this.api.deleteCountry(this.country);
-        // this.msg = rows +
-        // " Country record(s) deleted successfully pertaining to state, " +
-        // this.country.getName();
-        // tx.commitUOW();
-        // return;
-        // } catch (ContactException e) {
-        // this.msg = "Error: " + e.getMessage();
-        // tx.rollbackUOW();
-        // } finally {
-        // this.api.close();
-        // tx.close();
-        // this.api = null;
-        // tx = null;
-        // }
+        return;
     }
-
 
     /**
      * N/A

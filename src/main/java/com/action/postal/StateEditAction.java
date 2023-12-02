@@ -93,32 +93,8 @@ public class StateEditAction extends AbstractActionHandler implements ICommand {
      * @throws ActionCommandException
      */
     public void save() throws ActionCommandException {
-        // DatabaseTransApi tx = DatabaseTransFactory.create();
-        // this.api =
-        // AddressComponentsFactory.createStatesApi((DatabaseConnectionBean)
-        // tx.getConnector(), this.request);
-        // try {
-        // this.api.maintainState(this.state);
-        // tx.commitUOW();
-        // this.refreshState();
-        // this.msg = "State was saved successfully";
-        // this.setError(false);
-        // } catch (Exception e) {
-        // tx.rollbackUOW();
-        // this.setError(true);
-        // this.msg = "Unable to save State/Province record [State Id = " +
-        // this.state.getStateId() + "].  " + e.getMessage();
-        // logger.error(this.msg);
-        // throw new ActionCommandException(e);
-        // } finally {
-        // this.api.close();
-        // tx.close();
-        // this.api = null;
-        // tx = null;
-        // }
+        return;
     }
-
-
 
     /**
      * Navigates the user back to the State/Province search page.
@@ -142,30 +118,7 @@ public class StateEditAction extends AbstractActionHandler implements ICommand {
      * @throws ActionCommandException
      */
     public void delete() throws ActionCommandException {
-        // DatabaseTransApi tx = DatabaseTransFactory.create();
-        // this.api =
-        // AddressComponentsFactory.createStatesApi((DatabaseConnectionBean)
-        // tx.getConnector(), this.request);
-        // try {
-        // int rows = this.api.deleteState(this.state);
-        // this.msg = rows +
-        // " State records deleted successfully pertaining to state, " +
-        // this.state.getStateName();
-        // this.setError(false);
-        // tx.commitUOW();
-        // return;
-        // } catch (ContactException e) {
-        // this.msg = "Unable to delete State/Province record [State Id = " +
-        // this.state.getStateId() + "].  " + e.getMessage();
-        // logger.error(this.msg);
-        // this.setError(true);
-        // tx.rollbackUOW();
-        // } finally {
-        // this.api.close();
-        // tx.close();
-        // this.api = null;
-        // tx = null;
-        // }
+        return;
     }
 
     /**
@@ -194,13 +147,7 @@ public class StateEditAction extends AbstractActionHandler implements ICommand {
      *             Error obtaining client data.
      */
     protected void receiveClientData() throws ActionCommandException {
-        // this.state = AddressComponentsFactory.createState();
-        // try {
-        // DataSourceAdapter.packageBean(this.request, this.state);
-        // return;
-        // } catch (Exception e) {
-        // throw new ActionCommandException(e);
-        // }
+        return;
     }
 
     /**
@@ -221,21 +168,4 @@ public class StateEditAction extends AbstractActionHandler implements ICommand {
         String xml = this.getXmlResults();
         this.request.setAttribute(RMT2ServletConst.RESPONSE_NONJSP_DATA, xml);
     }
-
-    // /**
-    // * Get data for a single state/province instance.
-    // *
-    // * @throws ActionCommandException
-    // */
-    // private void refreshState() throws ActionCommandException {
-    // try {
-    // this.state = (State) this.api.findStateById(this.state.getStateId());
-    // if (this.state == null) {
-    // this.state = AddressComponentsFactory.createState();
-    // }
-    // return;
-    // } catch (StatesException e) {
-    // throw new ActionCommandException(e);
-    // }
-    // }
 }

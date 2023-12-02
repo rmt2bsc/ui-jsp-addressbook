@@ -272,8 +272,7 @@ public class ZipCodeSearchAction extends AbstractActionHandler implements IComma
             PostalResponse response = TimezoneSoapRequests.callGet(null, this.loginId, this.session.getId());
             ReplyStatusType rst = response.getReplyStatus();
             if (rst.getReturnCode().intValue() == GeneralConst.RC_FAILURE) {
-                this.msg = rst.getMessage();
-                return null;
+                this.throwActionError(rst.getMessage(), rst.getExtMessage());
             }
             List<TimeZone> results = TimezoneFactory.create(response.getTimezones());
             return results;
@@ -295,8 +294,7 @@ public class ZipCodeSearchAction extends AbstractActionHandler implements IComma
             PostalResponse response = TimezoneSoapRequests.callGet(criteria, this.loginId, this.session.getId());
             ReplyStatusType rst = response.getReplyStatus();
             if (rst.getReturnCode().intValue() == GeneralConst.RC_FAILURE) {
-                this.msg = rst.getMessage();
-                return null;
+                this.throwActionError(rst.getMessage(), rst.getExtMessage());
             }
             TimeZone results = TimezoneFactory.create(response.getTimezones().get(0));
             return results;
@@ -406,46 +404,4 @@ public class ZipCodeSearchAction extends AbstractActionHandler implements IComma
     public void delete() throws ActionCommandException {
         return;
     }
-
-    protected void doList(int pageNo) throws ActionCommandException {
-        // DatabaseTransApi tx = DatabaseTransFactory.create();
-        // this.api =
-        // AddressComponentsFactory.createZipcodeApi((DatabaseConnectionBean)
-        // tx.getConnector(), this.request);
-        // this.pageResults = null;
-        // this.zipList = null;
-        // try {
-        // String criteria = this.query.getWhereClause();
-        // if (pageNo > 0) {
-        // this.pageResults = this.api.findZip(criteria, pageNo);
-        // if (this.pageResults == null) {
-        // this.msg = "Pagination API return invalid results";
-        // logger.error(this.msg);
-        // throw new ActionCommandException(this.msg);
-        // }
-        // this.zipList = this.pageResults.getResults();
-        // }
-        // else {
-        // this.zipList = this.api.findZip(criteria);
-        // }
-        //
-        // if (this.zipList == null) {
-        // this.zipList = new ArrayList<VwZipcode>();
-        // }
-        // this.msg = ((List<VwZipcode>) this.zipList).size() + " rows found";
-        // this.setError(false);
-        // this.sendClientData();
-        // } catch (ZipcodeException e) {
-        // this.setError(true);
-        // this.msg = e.getMessage();
-        // this.sendClientData();
-        // throw new ActionCommandException(e);
-        // } finally {
-        // this.api.close();
-        // tx.close();
-        // this.api = null;
-        // tx = null;
-        // }
-    }
-
 }
